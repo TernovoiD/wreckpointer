@@ -9,6 +9,7 @@ import SwiftUI
 
 class CollectionsViewModel: ObservableObject {
     
+    // Loading status
     @Published var loadingCollections: Bool = true
     @Published var loadingWrecks: Bool = false
     
@@ -20,7 +21,7 @@ class CollectionsViewModel: ObservableObject {
     @Published var allCollections: [WrecksCollection] = []
     @Published var allWrecks: [Wreck] = []
     
-    // This field is used to represent Wrecks owned by user selected WrecksCollection
+    // This field is used to represent Wrecks owned by WrecksCollection
     @Published var collectionWrecks: [Wreck] = []
     
     // Error handling
@@ -223,8 +224,10 @@ extension CollectionsViewModel {
                                   andField: "owningCollection",
                                   recordType: "Wreck") { [weak self] (items: [Wreck]) in
             DispatchQueue.main.async {
-                self?.collectionWrecks = items
-                self?.loadingWrecks = false
+                withAnimation(.easeInOut) {
+                    self?.collectionWrecks = items
+                    self?.loadingWrecks = false
+                }
             }
         }
     }

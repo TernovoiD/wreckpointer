@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		81028DF629E2C91800A69042 /* LoadingPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81028DF529E2C91800A69042 /* LoadingPanelView.swift */; };
 		8136D12129D6C7220025D489 /* MapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8136D12029D6C7220025D489 /* MapViewModel.swift */; };
 		8136D12329D6C7350025D489 /* CollectionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8136D12229D6C7350025D489 /* CollectionsViewModel.swift */; };
 		816E9FBD29CAF74E00C3BC0F /* WreckpointerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816E9FBC29CAF74E00C3BC0F /* WreckpointerApp.swift */; };
@@ -35,6 +36,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		81028DF529E2C91800A69042 /* LoadingPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingPanelView.swift; sourceTree = "<group>"; };
 		8136D12029D6C7220025D489 /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
 		8136D12229D6C7350025D489 /* CollectionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionsViewModel.swift; sourceTree = "<group>"; };
 		816E9FB929CAF74E00C3BC0F /* Wreckpointer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Wreckpointer.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -210,6 +212,7 @@
 				81E7102A29D9CB58008724FA /* PhotosPickerView.swift */,
 				81E7102C29D9D439008724FA /* CoordinatesSelectorView.swift */,
 				81AFC62A29DAC96400693DFB /* LoadingView.swift */,
+				81028DF529E2C91800A69042 /* LoadingPanelView.swift */,
 			);
 			name = SupportViews;
 			sourceTree = "<group>";
@@ -306,6 +309,7 @@
 				81E7102F29DA1069008724FA /* SelectedWreckPanel.swift in Sources */,
 				8199A2DD29CF0FB60082A9FA /* MainView.swift in Sources */,
 				8199A2C829CDA8C60082A9FA /* UpdateCollectionView.swift in Sources */,
+				81028DF629E2C91800A69042 /* LoadingPanelView.swift in Sources */,
 				8199A2C629CDA8B60082A9FA /* AddCollectionView.swift in Sources */,
 				81A13AFB29D569A800A04592 /* CKManager.swift in Sources */,
 				81A13AF129D43D9000A04592 /* MapPinView.swift in Sources */,
@@ -455,7 +459,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1.0;
+				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.danyloternovoi.Wreckpointer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -491,7 +495,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1.0;
+				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.danyloternovoi.Wreckpointer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

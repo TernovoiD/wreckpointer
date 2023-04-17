@@ -19,6 +19,11 @@ struct MainView: View {
             LoadingView()
                 .ignoresSafeArea()
                 .offset(x: collectionsVM.loadingCollections ? 0 : -1000)
+            VStack {
+                Spacer()
+                LoadingPanelView()
+                    .offset(y: collectionsVM.loadingWrecks ? 0 : 1000)
+            }
         }
         .alert(collectionsVM.errorMessage, isPresented: $collectionsVM.error) {
             Button("OK", role: .cancel) {
