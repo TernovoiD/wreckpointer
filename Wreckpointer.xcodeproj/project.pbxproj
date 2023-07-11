@@ -7,64 +7,44 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		81028DF629E2C91800A69042 /* LoadingPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81028DF529E2C91800A69042 /* LoadingPanelView.swift */; };
 		8136D12129D6C7220025D489 /* MapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8136D12029D6C7220025D489 /* MapViewModel.swift */; };
-		8136D12329D6C7350025D489 /* CollectionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8136D12229D6C7350025D489 /* CollectionsViewModel.swift */; };
 		816E9FBD29CAF74E00C3BC0F /* WreckpointerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816E9FBC29CAF74E00C3BC0F /* WreckpointerApp.swift */; };
 		816E9FC129CAF75000C3BC0F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 816E9FC029CAF75000C3BC0F /* Assets.xcassets */; };
 		816E9FC429CAF75000C3BC0F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 816E9FC329CAF75000C3BC0F /* Preview Assets.xcassets */; };
 		816E9FDD29CAF78300C3BC0F /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816E9FCC29CAF78300C3BC0F /* MapView.swift */; };
-		816E9FE029CAF78300C3BC0F /* AddWreckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816E9FD129CAF78300C3BC0F /* AddWreckView.swift */; };
-		816E9FE529CAF78300C3BC0F /* Wreck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816E9FD829CAF78300C3BC0F /* Wreck.swift */; };
-		816E9FE629CAF78300C3BC0F /* WrecksCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816E9FD929CAF78300C3BC0F /* WrecksCollection.swift */; };
-		818EA38629D1A22A00C83951 /* WreckDetailedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818EA38529D1A22A00C83951 /* WreckDetailedView.swift */; };
-		8199A2B229CC52310082A9FA /* CollectionsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8199A2B129CC52310082A9FA /* CollectionsListView.swift */; };
-		8199A2C029CD8BCB0082A9FA /* UpdateWreckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8199A2BF29CD8BCB0082A9FA /* UpdateWreckView.swift */; };
-		8199A2C629CDA8B60082A9FA /* AddCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8199A2C529CDA8B60082A9FA /* AddCollectionView.swift */; };
-		8199A2C829CDA8C60082A9FA /* UpdateCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8199A2C729CDA8C60082A9FA /* UpdateCollectionView.swift */; };
-		8199A2D929CF00820082A9FA /* CollectionRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8199A2D829CF00820082A9FA /* CollectionRowView.swift */; };
-		8199A2DB29CF00930082A9FA /* SelectedCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8199A2DA29CF00930082A9FA /* SelectedCollectionView.swift */; };
-		8199A2DD29CF0FB60082A9FA /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8199A2DC29CF0FB60082A9FA /* MainView.swift */; };
-		8199A2E029D056E70082A9FA /* PanelsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8199A2DF29D056E70082A9FA /* PanelsView.swift */; };
-		81A13AF129D43D9000A04592 /* MapPinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A13AF029D43D9000A04592 /* MapPinView.swift */; };
-		81A13AFB29D569A800A04592 /* CKManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A13AFA29D569A800A04592 /* CKManager.swift */; };
-		81AFC62B29DAC96400693DFB /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AFC62A29DAC96400693DFB /* LoadingView.swift */; };
-		81E7102729D9B12F008724FA /* WreckRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E7102629D9B12F008724FA /* WreckRowView.swift */; };
+		81C84FD82A5C6C78004D01B2 /* AuthorizationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C84FD52A5C6C78004D01B2 /* AuthorizationManager.swift */; };
+		81C84FD92A5C6C78004D01B2 /* JSONDataCoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C84FD62A5C6C78004D01B2 /* JSONDataCoder.swift */; };
+		81C84FDA2A5C6C78004D01B2 /* HTTPManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C84FD72A5C6C78004D01B2 /* HTTPManager.swift */; };
+		81C84FDF2A5C6D6C004D01B2 /* URLRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C84FDE2A5C6D6C004D01B2 /* URLRoutes.swift */; };
+		81C84FE12A5C6DA3004D01B2 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C84FE02A5C6DA3004D01B2 /* UserService.swift */; };
+		81C84FE32A5C6DAC004D01B2 /* WreckService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C84FE22A5C6DAC004D01B2 /* WreckService.swift */; };
+		81E0E7652A5D5F6800645AF0 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E0E7642A5D5F6800645AF0 /* User.swift */; };
+		81E0E7672A5D7A7C00645AF0 /* Wreck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E0E7662A5D7A7C00645AF0 /* Wreck.swift */; };
+		81E0E7692A5D80F000645AF0 /* WreckTypesEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E0E7682A5D80F000645AF0 /* WreckTypesEnum.swift */; };
+		81E0E76B2A5D810300645AF0 /* WreckCausesEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E0E76A2A5D810300645AF0 /* WreckCausesEnum.swift */; };
 		81E7102B29D9CB58008724FA /* PhotosPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E7102A29D9CB58008724FA /* PhotosPickerView.swift */; };
-		81E7102D29D9D439008724FA /* CoordinatesSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E7102C29D9D439008724FA /* CoordinatesSelectorView.swift */; };
-		81E7102F29DA1069008724FA /* SelectedWreckPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E7102E29DA1069008724FA /* SelectedWreckPanel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		81028DF529E2C91800A69042 /* LoadingPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingPanelView.swift; sourceTree = "<group>"; };
 		8136D12029D6C7220025D489 /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
-		8136D12229D6C7350025D489 /* CollectionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionsViewModel.swift; sourceTree = "<group>"; };
 		816E9FB929CAF74E00C3BC0F /* Wreckpointer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Wreckpointer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		816E9FBC29CAF74E00C3BC0F /* WreckpointerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WreckpointerApp.swift; sourceTree = "<group>"; };
 		816E9FC029CAF75000C3BC0F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		816E9FC329CAF75000C3BC0F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		816E9FCC29CAF78300C3BC0F /* MapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
-		816E9FD129CAF78300C3BC0F /* AddWreckView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddWreckView.swift; sourceTree = "<group>"; };
-		816E9FD829CAF78300C3BC0F /* Wreck.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Wreck.swift; sourceTree = "<group>"; };
-		816E9FD929CAF78300C3BC0F /* WrecksCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WrecksCollection.swift; sourceTree = "<group>"; };
 		816E9FE929CAF7FD00C3BC0F /* Wreckpointer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Wreckpointer.entitlements; sourceTree = "<group>"; };
-		818EA38529D1A22A00C83951 /* WreckDetailedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WreckDetailedView.swift; sourceTree = "<group>"; };
-		8199A2B129CC52310082A9FA /* CollectionsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionsListView.swift; sourceTree = "<group>"; };
-		8199A2BF29CD8BCB0082A9FA /* UpdateWreckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateWreckView.swift; sourceTree = "<group>"; };
-		8199A2C529CDA8B60082A9FA /* AddCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCollectionView.swift; sourceTree = "<group>"; };
-		8199A2C729CDA8C60082A9FA /* UpdateCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateCollectionView.swift; sourceTree = "<group>"; };
-		8199A2D829CF00820082A9FA /* CollectionRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionRowView.swift; sourceTree = "<group>"; };
-		8199A2DA29CF00930082A9FA /* SelectedCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedCollectionView.swift; sourceTree = "<group>"; };
-		8199A2DC29CF0FB60082A9FA /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
-		8199A2DF29D056E70082A9FA /* PanelsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelsView.swift; sourceTree = "<group>"; };
-		81A13AF029D43D9000A04592 /* MapPinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapPinView.swift; sourceTree = "<group>"; };
-		81A13AFA29D569A800A04592 /* CKManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKManager.swift; sourceTree = "<group>"; };
-		81AFC62A29DAC96400693DFB /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
-		81E7102629D9B12F008724FA /* WreckRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WreckRowView.swift; sourceTree = "<group>"; };
+		81C84FD52A5C6C78004D01B2 /* AuthorizationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthorizationManager.swift; sourceTree = "<group>"; };
+		81C84FD62A5C6C78004D01B2 /* JSONDataCoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONDataCoder.swift; sourceTree = "<group>"; };
+		81C84FD72A5C6C78004D01B2 /* HTTPManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPManager.swift; sourceTree = "<group>"; };
+		81C84FDE2A5C6D6C004D01B2 /* URLRoutes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRoutes.swift; sourceTree = "<group>"; };
+		81C84FE02A5C6DA3004D01B2 /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
+		81C84FE22A5C6DAC004D01B2 /* WreckService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WreckService.swift; sourceTree = "<group>"; };
+		81E0E7642A5D5F6800645AF0 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		81E0E7662A5D7A7C00645AF0 /* Wreck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wreck.swift; sourceTree = "<group>"; };
+		81E0E7682A5D80F000645AF0 /* WreckTypesEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WreckTypesEnum.swift; sourceTree = "<group>"; };
+		81E0E76A2A5D810300645AF0 /* WreckCausesEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WreckCausesEnum.swift; sourceTree = "<group>"; };
 		81E7102829D9C4C7008724FA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		81E7102A29D9CB58008724FA /* PhotosPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosPickerView.swift; sourceTree = "<group>"; };
-		81E7102C29D9D439008724FA /* CoordinatesSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatesSelectorView.swift; sourceTree = "<group>"; };
-		81E7102E29DA1069008724FA /* SelectedWreckPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedWreckPanel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,13 +78,15 @@
 		816E9FBB29CAF74E00C3BC0F /* Wreckpointer */ = {
 			isa = PBXGroup;
 			children = (
-				81E7102829D9C4C7008724FA /* Info.plist */,
-				816E9FE929CAF7FD00C3BC0F /* Wreckpointer.entitlements */,
 				816E9FBC29CAF74E00C3BC0F /* WreckpointerApp.swift */,
 				816E9FCA29CAF78300C3BC0F /* Views */,
 				816E9FDA29CAF78300C3BC0F /* ViewModels */,
 				816E9FD729CAF78300C3BC0F /* Models */,
-				816E9FE829CAF7A600C3BC0F /* Resources */,
+				81C84FD42A5C6B71004D01B2 /* Services */,
+				81C84FD32A5C6B66004D01B2 /* Managers */,
+				81C84FDB2A5C6D2E004D01B2 /* Supporting */,
+				816E9FE929CAF7FD00C3BC0F /* Wreckpointer.entitlements */,
+				81E7102829D9C4C7008724FA /* Info.plist */,
 			);
 			path = Wreckpointer;
 			sourceTree = "<group>";
@@ -120,10 +102,7 @@
 		816E9FCA29CAF78300C3BC0F /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				8199A2DC29CF0FB60082A9FA /* MainView.swift */,
-				818EA38729D1A41800C83951 /* MapViews */,
-				8199A2B029CC520C0082A9FA /* CollectionViews */,
-				8199A2B529CC6F490082A9FA /* WreckViews */,
+				816E9FCC29CAF78300C3BC0F /* MapView.swift */,
 				81E7102929D9CABC008724FA /* SupportViews */,
 			);
 			path = Views;
@@ -132,8 +111,10 @@
 		816E9FD729CAF78300C3BC0F /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				816E9FD829CAF78300C3BC0F /* Wreck.swift */,
-				816E9FD929CAF78300C3BC0F /* WrecksCollection.swift */,
+				81E0E7642A5D5F6800645AF0 /* User.swift */,
+				81E0E7662A5D7A7C00645AF0 /* Wreck.swift */,
+				81E0E7682A5D80F000645AF0 /* WreckTypesEnum.swift */,
+				81E0E76A2A5D810300645AF0 /* WreckCausesEnum.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -142,29 +123,8 @@
 			isa = PBXGroup;
 			children = (
 				8136D12029D6C7220025D489 /* MapViewModel.swift */,
-				8136D12229D6C7350025D489 /* CollectionsViewModel.swift */,
-				81A13AFA29D569A800A04592 /* CKManager.swift */,
 			);
 			path = ViewModels;
-			sourceTree = "<group>";
-		};
-		816E9FE829CAF7A600C3BC0F /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				816E9FC029CAF75000C3BC0F /* Assets.xcassets */,
-				816E9FC229CAF75000C3BC0F /* Preview Content */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
-		818EA38729D1A41800C83951 /* MapViews */ = {
-			isa = PBXGroup;
-			children = (
-				816E9FCC29CAF78300C3BC0F /* MapView.swift */,
-				81E7102E29DA1069008724FA /* SelectedWreckPanel.swift */,
-				81A13AF029D43D9000A04592 /* MapPinView.swift */,
-			);
-			name = MapViews;
 			sourceTree = "<group>";
 		};
 		818EA38C29D1E1F400C83951 /* Frameworks */ = {
@@ -174,45 +134,39 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		8199A2B029CC520C0082A9FA /* CollectionViews */ = {
+		81C84FD32A5C6B66004D01B2 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				8199A2B129CC52310082A9FA /* CollectionsListView.swift */,
-				8199A2DA29CF00930082A9FA /* SelectedCollectionView.swift */,
-				8199A2C729CDA8C60082A9FA /* UpdateCollectionView.swift */,
-				8199A2C529CDA8B60082A9FA /* AddCollectionView.swift */,
-				8199A2C329CDA7250082A9FA /* SupportViews */,
+				81C84FD52A5C6C78004D01B2 /* AuthorizationManager.swift */,
+				81C84FD72A5C6C78004D01B2 /* HTTPManager.swift */,
+				81C84FD62A5C6C78004D01B2 /* JSONDataCoder.swift */,
 			);
-			name = CollectionViews;
+			path = Managers;
 			sourceTree = "<group>";
 		};
-		8199A2B529CC6F490082A9FA /* WreckViews */ = {
+		81C84FD42A5C6B71004D01B2 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				818EA38529D1A22A00C83951 /* WreckDetailedView.swift */,
-				8199A2BF29CD8BCB0082A9FA /* UpdateWreckView.swift */,
-				816E9FD129CAF78300C3BC0F /* AddWreckView.swift */,
-				81E7102629D9B12F008724FA /* WreckRowView.swift */,
+				81C84FE02A5C6DA3004D01B2 /* UserService.swift */,
+				81C84FE22A5C6DAC004D01B2 /* WreckService.swift */,
 			);
-			path = WreckViews;
+			path = Services;
 			sourceTree = "<group>";
 		};
-		8199A2C329CDA7250082A9FA /* SupportViews */ = {
+		81C84FDB2A5C6D2E004D01B2 /* Supporting */ = {
 			isa = PBXGroup;
 			children = (
-				8199A2DF29D056E70082A9FA /* PanelsView.swift */,
-				8199A2D829CF00820082A9FA /* CollectionRowView.swift */,
+				81C84FDE2A5C6D6C004D01B2 /* URLRoutes.swift */,
+				816E9FC029CAF75000C3BC0F /* Assets.xcassets */,
+				816E9FC229CAF75000C3BC0F /* Preview Content */,
 			);
-			name = SupportViews;
+			path = Supporting;
 			sourceTree = "<group>";
 		};
 		81E7102929D9CABC008724FA /* SupportViews */ = {
 			isa = PBXGroup;
 			children = (
 				81E7102A29D9CB58008724FA /* PhotosPickerView.swift */,
-				81E7102C29D9D439008724FA /* CoordinatesSelectorView.swift */,
-				81AFC62A29DAC96400693DFB /* LoadingView.swift */,
-				81028DF529E2C91800A69042 /* LoadingPanelView.swift */,
 			);
 			name = SupportViews;
 			sourceTree = "<group>";
@@ -292,29 +246,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				816E9FDD29CAF78300C3BC0F /* MapView.swift in Sources */,
-				818EA38629D1A22A00C83951 /* WreckDetailedView.swift in Sources */,
-				8199A2E029D056E70082A9FA /* PanelsView.swift in Sources */,
-				816E9FE529CAF78300C3BC0F /* Wreck.swift in Sources */,
-				81E7102729D9B12F008724FA /* WreckRowView.swift in Sources */,
-				816E9FE029CAF78300C3BC0F /* AddWreckView.swift in Sources */,
-				8199A2DB29CF00930082A9FA /* SelectedCollectionView.swift in Sources */,
+				81E0E7652A5D5F6800645AF0 /* User.swift in Sources */,
+				81C84FE32A5C6DAC004D01B2 /* WreckService.swift in Sources */,
+				81C84FDF2A5C6D6C004D01B2 /* URLRoutes.swift in Sources */,
+				81C84FD82A5C6C78004D01B2 /* AuthorizationManager.swift in Sources */,
+				81E0E76B2A5D810300645AF0 /* WreckCausesEnum.swift in Sources */,
+				81E0E7692A5D80F000645AF0 /* WreckTypesEnum.swift in Sources */,
 				81E7102B29D9CB58008724FA /* PhotosPickerView.swift in Sources */,
-				8199A2D929CF00820082A9FA /* CollectionRowView.swift in Sources */,
-				8199A2B229CC52310082A9FA /* CollectionsListView.swift in Sources */,
-				8199A2C029CD8BCB0082A9FA /* UpdateWreckView.swift in Sources */,
 				816E9FBD29CAF74E00C3BC0F /* WreckpointerApp.swift in Sources */,
-				8136D12329D6C7350025D489 /* CollectionsViewModel.swift in Sources */,
-				81E7102D29D9D439008724FA /* CoordinatesSelectorView.swift in Sources */,
-				816E9FE629CAF78300C3BC0F /* WrecksCollection.swift in Sources */,
-				81E7102F29DA1069008724FA /* SelectedWreckPanel.swift in Sources */,
-				8199A2DD29CF0FB60082A9FA /* MainView.swift in Sources */,
-				8199A2C829CDA8C60082A9FA /* UpdateCollectionView.swift in Sources */,
-				81028DF629E2C91800A69042 /* LoadingPanelView.swift in Sources */,
-				8199A2C629CDA8B60082A9FA /* AddCollectionView.swift in Sources */,
-				81A13AFB29D569A800A04592 /* CKManager.swift in Sources */,
-				81A13AF129D43D9000A04592 /* MapPinView.swift in Sources */,
+				81C84FE12A5C6DA3004D01B2 /* UserService.swift in Sources */,
+				81E0E7672A5D7A7C00645AF0 /* Wreck.swift in Sources */,
+				81C84FD92A5C6C78004D01B2 /* JSONDataCoder.swift in Sources */,
+				81C84FDA2A5C6C78004D01B2 /* HTTPManager.swift in Sources */,
 				8136D12129D6C7220025D489 /* MapViewModel.swift in Sources */,
-				81AFC62B29DAC96400693DFB /* LoadingView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -443,7 +387,7 @@
 				CODE_SIGN_ENTITLEMENTS = Wreckpointer/Wreckpointer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "Wreckpointer/Resources/Preview\\ Content";
+				DEVELOPMENT_ASSET_PATHS = "Wreckpointer/Supporting/Preview\\ Content";
 				DEVELOPMENT_TEAM = MWQ8P93RWJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -452,7 +396,7 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortrait";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -479,7 +423,7 @@
 				CODE_SIGN_ENTITLEMENTS = Wreckpointer/Wreckpointer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "Wreckpointer/Resources/Preview\\ Content";
+				DEVELOPMENT_ASSET_PATHS = "Wreckpointer/Supporting/Preview\\ Content";
 				DEVELOPMENT_TEAM = MWQ8P93RWJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -488,7 +432,7 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortrait";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (

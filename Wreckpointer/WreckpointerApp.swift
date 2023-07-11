@@ -10,13 +10,11 @@ import SwiftUI
 @main
 struct WreckpointerApp: App {
     @StateObject var MapVM = MapViewModel()
-    @StateObject var CollectionsVM = CollectionsViewModel()
     
     var body: some Scene {
         WindowGroup {
-            MainView()
+            MapView()
                 .environmentObject(MapViewModel())
-                .environmentObject(CollectionsViewModel())
         }
     }
 }
