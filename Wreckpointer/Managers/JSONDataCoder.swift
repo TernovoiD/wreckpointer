@@ -21,6 +21,16 @@ class JSONDataCoder {
         return data
     }
     
+    func encodeItemsToData<T: Codable>(items: [T]) throws -> Data {
+        let encoder = JSONEncoder()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = dateFormat
+        encoder.dateEncodingStrategy = .formatted(dateFormatter)
+        
+        let data = try encoder.encode(items)
+        return data
+    }
+    
     func decodeItemFromData<T: Codable>(data: Data) throws -> T {
         let decoder = JSONDecoder()
         let dateFormatter = DateFormatter()

@@ -7,14 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8111B2852A5DE8640038DD53 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8111B2842A5DE8640038DD53 /* MainView.swift */; };
 		8136D12129D6C7220025D489 /* MapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8136D12029D6C7220025D489 /* MapViewModel.swift */; };
 		816E9FBD29CAF74E00C3BC0F /* WreckpointerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816E9FBC29CAF74E00C3BC0F /* WreckpointerApp.swift */; };
 		816E9FC129CAF75000C3BC0F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 816E9FC029CAF75000C3BC0F /* Assets.xcassets */; };
 		816E9FC429CAF75000C3BC0F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 816E9FC329CAF75000C3BC0F /* Preview Assets.xcassets */; };
 		816E9FDD29CAF78300C3BC0F /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816E9FCC29CAF78300C3BC0F /* MapView.swift */; };
+		81AB027F2A5ED0A1006AAD5E /* WrecksCoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AB027E2A5ED0A1006AAD5E /* WrecksCoreDataManager.swift */; };
+		81AB02842A5EF9D5006AAD5E /* WreckpointerContainer.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 81AB02822A5EF9D5006AAD5E /* WreckpointerContainer.xcdatamodeld */; };
+		81AB02862A5EFBCE006AAD5E /* CoreDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AB02852A5EFBCE006AAD5E /* CoreDataService.swift */; };
 		81C84FD82A5C6C78004D01B2 /* AuthorizationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C84FD52A5C6C78004D01B2 /* AuthorizationManager.swift */; };
 		81C84FD92A5C6C78004D01B2 /* JSONDataCoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C84FD62A5C6C78004D01B2 /* JSONDataCoder.swift */; };
-		81C84FDA2A5C6C78004D01B2 /* HTTPManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C84FD72A5C6C78004D01B2 /* HTTPManager.swift */; };
+		81C84FDA2A5C6C78004D01B2 /* HTTPRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C84FD72A5C6C78004D01B2 /* HTTPRequestManager.swift */; };
 		81C84FDF2A5C6D6C004D01B2 /* URLRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C84FDE2A5C6D6C004D01B2 /* URLRoutes.swift */; };
 		81C84FE12A5C6DA3004D01B2 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C84FE02A5C6DA3004D01B2 /* UserService.swift */; };
 		81C84FE32A5C6DAC004D01B2 /* WreckService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C84FE22A5C6DAC004D01B2 /* WreckService.swift */; };
@@ -26,6 +30,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8111B2842A5DE8640038DD53 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		8136D12029D6C7220025D489 /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
 		816E9FB929CAF74E00C3BC0F /* Wreckpointer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Wreckpointer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		816E9FBC29CAF74E00C3BC0F /* WreckpointerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WreckpointerApp.swift; sourceTree = "<group>"; };
@@ -33,9 +38,12 @@
 		816E9FC329CAF75000C3BC0F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		816E9FCC29CAF78300C3BC0F /* MapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		816E9FE929CAF7FD00C3BC0F /* Wreckpointer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Wreckpointer.entitlements; sourceTree = "<group>"; };
+		81AB027E2A5ED0A1006AAD5E /* WrecksCoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrecksCoreDataManager.swift; sourceTree = "<group>"; };
+		81AB02832A5EF9D5006AAD5E /* WreckpointerContainer.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WreckpointerContainer.xcdatamodel; sourceTree = "<group>"; };
+		81AB02852A5EFBCE006AAD5E /* CoreDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataService.swift; sourceTree = "<group>"; };
 		81C84FD52A5C6C78004D01B2 /* AuthorizationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthorizationManager.swift; sourceTree = "<group>"; };
 		81C84FD62A5C6C78004D01B2 /* JSONDataCoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONDataCoder.swift; sourceTree = "<group>"; };
-		81C84FD72A5C6C78004D01B2 /* HTTPManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPManager.swift; sourceTree = "<group>"; };
+		81C84FD72A5C6C78004D01B2 /* HTTPRequestManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPRequestManager.swift; sourceTree = "<group>"; };
 		81C84FDE2A5C6D6C004D01B2 /* URLRoutes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRoutes.swift; sourceTree = "<group>"; };
 		81C84FE02A5C6DA3004D01B2 /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		81C84FE22A5C6DAC004D01B2 /* WreckService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WreckService.swift; sourceTree = "<group>"; };
@@ -58,6 +66,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8111B2832A5DE67B0038DD53 /* Enums */ = {
+			isa = PBXGroup;
+			children = (
+				81E0E7682A5D80F000645AF0 /* WreckTypesEnum.swift */,
+				81E0E76A2A5D810300645AF0 /* WreckCausesEnum.swift */,
+			);
+			path = Enums;
+			sourceTree = "<group>";
+		};
 		816E9FB029CAF74E00C3BC0F = {
 			isa = PBXGroup;
 			children = (
@@ -82,11 +99,13 @@
 				816E9FCA29CAF78300C3BC0F /* Views */,
 				816E9FDA29CAF78300C3BC0F /* ViewModels */,
 				816E9FD729CAF78300C3BC0F /* Models */,
+				8111B2832A5DE67B0038DD53 /* Enums */,
 				81C84FD42A5C6B71004D01B2 /* Services */,
 				81C84FD32A5C6B66004D01B2 /* Managers */,
 				81C84FDB2A5C6D2E004D01B2 /* Supporting */,
 				816E9FE929CAF7FD00C3BC0F /* Wreckpointer.entitlements */,
 				81E7102829D9C4C7008724FA /* Info.plist */,
+				81AB02822A5EF9D5006AAD5E /* WreckpointerContainer.xcdatamodeld */,
 			);
 			path = Wreckpointer;
 			sourceTree = "<group>";
@@ -102,6 +121,7 @@
 		816E9FCA29CAF78300C3BC0F /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				8111B2842A5DE8640038DD53 /* MainView.swift */,
 				816E9FCC29CAF78300C3BC0F /* MapView.swift */,
 				81E7102929D9CABC008724FA /* SupportViews */,
 			);
@@ -113,8 +133,6 @@
 			children = (
 				81E0E7642A5D5F6800645AF0 /* User.swift */,
 				81E0E7662A5D7A7C00645AF0 /* Wreck.swift */,
-				81E0E7682A5D80F000645AF0 /* WreckTypesEnum.swift */,
-				81E0E76A2A5D810300645AF0 /* WreckCausesEnum.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -137,8 +155,9 @@
 		81C84FD32A5C6B66004D01B2 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				81AB027E2A5ED0A1006AAD5E /* WrecksCoreDataManager.swift */,
 				81C84FD52A5C6C78004D01B2 /* AuthorizationManager.swift */,
-				81C84FD72A5C6C78004D01B2 /* HTTPManager.swift */,
+				81C84FD72A5C6C78004D01B2 /* HTTPRequestManager.swift */,
 				81C84FD62A5C6C78004D01B2 /* JSONDataCoder.swift */,
 			);
 			path = Managers;
@@ -149,6 +168,7 @@
 			children = (
 				81C84FE02A5C6DA3004D01B2 /* UserService.swift */,
 				81C84FE22A5C6DAC004D01B2 /* WreckService.swift */,
+				81AB02852A5EFBCE006AAD5E /* CoreDataService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -251,13 +271,17 @@
 				81C84FDF2A5C6D6C004D01B2 /* URLRoutes.swift in Sources */,
 				81C84FD82A5C6C78004D01B2 /* AuthorizationManager.swift in Sources */,
 				81E0E76B2A5D810300645AF0 /* WreckCausesEnum.swift in Sources */,
+				81AB027F2A5ED0A1006AAD5E /* WrecksCoreDataManager.swift in Sources */,
 				81E0E7692A5D80F000645AF0 /* WreckTypesEnum.swift in Sources */,
 				81E7102B29D9CB58008724FA /* PhotosPickerView.swift in Sources */,
 				816E9FBD29CAF74E00C3BC0F /* WreckpointerApp.swift in Sources */,
 				81C84FE12A5C6DA3004D01B2 /* UserService.swift in Sources */,
 				81E0E7672A5D7A7C00645AF0 /* Wreck.swift in Sources */,
+				81AB02862A5EFBCE006AAD5E /* CoreDataService.swift in Sources */,
 				81C84FD92A5C6C78004D01B2 /* JSONDataCoder.swift in Sources */,
-				81C84FDA2A5C6C78004D01B2 /* HTTPManager.swift in Sources */,
+				81AB02842A5EF9D5006AAD5E /* WreckpointerContainer.xcdatamodeld in Sources */,
+				81C84FDA2A5C6C78004D01B2 /* HTTPRequestManager.swift in Sources */,
+				8111B2852A5DE8640038DD53 /* MainView.swift in Sources */,
 				8136D12129D6C7220025D489 /* MapViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -473,6 +497,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		81AB02822A5EF9D5006AAD5E /* WreckpointerContainer.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				81AB02832A5EF9D5006AAD5E /* WreckpointerContainer.xcdatamodel */,
+			);
+			currentVersion = 81AB02832A5EF9D5006AAD5E /* WreckpointerContainer.xcdatamodel */;
+			path = WreckpointerContainer.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 816E9FB129CAF74E00C3BC0F /* Project object */;
 }

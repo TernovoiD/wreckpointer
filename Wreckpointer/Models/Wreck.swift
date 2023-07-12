@@ -7,13 +7,13 @@
 
 import Foundation
 
-struct Wreck {
+struct Wreck: Codable, Identifiable {
     
     var id: UUID?
-    var cause: WreckCausesEnum
-    var type: WreckTypesEnum
+    var cause: String
+    var type: String
     var title: String
-    var image: String?
+    var image: Data?
     var depth: Int?
     var approved: Bool?
     var latitude: Double
@@ -23,7 +23,7 @@ struct Wreck {
     var information: String?
     var createdAt: Date?
     var updatedAt: Date?
-    var moderators: [User]
+    var moderators: [User]?
 }
 
 extension Wreck: Equatable {

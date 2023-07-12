@@ -9,12 +9,15 @@ import MapKit
 
 class MapViewModel: ObservableObject {
     
-    @Published var showMap: Bool = false
+    @Published var mapWrecks: [Wreck] = []
     
-    @Published var mapWrecks: [Wreck] = [] {
-        didSet {
-            mapSelectedWreck = mapWrecks.first
-        }
+    let wreckService: WreckService
+    let coreDataService: CoreDataService
+    
+    init(wreckService: WreckService, coreDataService: CoreDataService) {
+        self.wreckService = wreckService
+        self.coreDataService = coreDataService
+        downloadWrecks()
     }
     
     @Published var mapSelectedWreck: Wreck? {
@@ -24,29 +27,49 @@ class MapViewModel: ObservableObject {
     }
     
     @Published var mapDetailedWreckView: Wreck?
-    @Published var mapRegion: MKCoordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 30, longitude: 0),
+    @Published var mapRegion: MKCoordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 30.5, longitude: 0),
                                                                       span: MKCoordinateSpan(latitudeDelta: 50, longitudeDelta: 50))
     @Published var mapSpan: Double = 50
-    
-    
-    // MARK: Map functions
-    
-    func nextWreck() {
-        guard let currentIndex = mapWrecks.firstIndex(where: { $0 == mapSelectedWreck }) else { return }
-        let nextIndex = currentIndex + 1
-        
-        if mapWrecks.indices.contains(nextIndex) {
-            let nextWreck = mapWrecks[nextIndex]
-            mapSelectedWreck = nextWreck
-        } else {
-            guard let nextWreck = mapWrecks.first else { return }
-            mapSelectedWreck = nextWreck
-            return
-        }
-    }
     
     private func updateMapRegion() {
         guard let location = mapSelectedWreck else { return }
         mapRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude), span: MKCoordinateSpan(latitudeDelta: mapSpan, longitudeDelta: mapSpan))
+    }
+    
+    private func downloadWrecks() {
+        Task {
+            do {
+                let (coreDataWrecks, lastUpdateTime) = try coreDataService.fetchWrecks()
+                if coreDataWrecks.isEmpty {
+                    let loadedWrecks = try await wreckService.downloadWrecksFromServer()
+                    DispatchQueue.main.async {
+                        self.mapWrecks = loadedWrecks
+                    }
+                    try coreDataService.addWrecks(loadedWrecks)
+                } else {
+                    DispatchQueue.main.async {
+                        self.mapWrecks = coreDataWrecks
+                    }
+                    updateWrecks(fromDate: lastUpdateTime)
+                }
+            } catch let error {
+                print(error)
+            }
+        }
+    }
+    
+    func updateWrecks(fromDate lastUpdate: Date) {
+        Task {
+            do {
+                let updatedWrecks = try await wreckService.requestUpdatedWrecks(fromDate: lastUpdate)
+                try coreDataService.addWrecks(updatedWrecks)
+                let (coreDataWrecks, _) = try coreDataService.fetchWrecks()
+                DispatchQueue.main.async {
+                    self.mapWrecks = coreDataWrecks
+                }
+            } catch let error {
+                print(error)
+            }
+        }
     }
 }

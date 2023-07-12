@@ -9,12 +9,25 @@ import SwiftUI
 
 @main
 struct WreckpointerApp: App {
-    @StateObject var MapVM = MapViewModel()
+    
+    @StateObject var mapVM: MapViewModel
+    
+    init() {
+        // Init managers
+        let httpManager = HTTPRequestManager()
+        let dataCoder = JSONDataCoder()
+        
+        // Init services
+        let wreckService = WreckService(httpManager: httpManager, dataCoder: dataCoder)
+        let coreDataService = CoreDataService(dataCoder: dataCoder)
+        
+        _mapVM = StateObject(wrappedValue: MapViewModel(wreckService: wreckService, coreDataService: coreDataService))
+    }
     
     var body: some Scene {
         WindowGroup {
-            MapView()
-                .environmentObject(MapViewModel())
+            MainView()
+                .environmentObject(mapVM)
         }
     }
 }

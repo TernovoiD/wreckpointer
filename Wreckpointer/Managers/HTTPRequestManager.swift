@@ -34,12 +34,12 @@ enum HTTPError: Error {
     case forbidden
 }
 
-class HTTPManager {
+class HTTPRequestManager {
     func sendRequest(toURL url: URL,
                      withData data: Data? = nil,
                      withHTTPMethod HTTPMethod: String,
                      withloginToken loginToken: String? = nil,
-                     withbasicAuthorization basicAuthorization: String? = nil) async throws -> (Data, URLResponse) {
+                     withbasicAuthorization basicAuthorization: String? = nil) async throws -> Data {
         
         // Create request
         var request = URLRequest(url: url)
@@ -63,8 +63,7 @@ class HTTPManager {
         
         let (data, response) = try await URLSession.shared.data(for: request)
         try verifyResponse(response)
-        return (data, response)
-        
+        return data
     }
     
     
