@@ -25,9 +25,19 @@ struct MapView: View {
 
 struct MapView_Previews: PreviewProvider {
     static var previews: some View {
+        
+        // Init managers
         let httpManager = HTTPRequestManager()
         let dataCoder = JSONDataCoder()
+        
+        // Init services
+        let wreckService = WreckService(httpManager: httpManager, dataCoder: dataCoder)
+        let coreDataService = CoreDataService(dataCoder: dataCoder)
+        
+        // Init View model
+        let mapViewModel = MapViewModel(wreckService: wreckService, coreDataService: coreDataService)
+        
         MapView()
-            .environmentObject(MapViewModel(wreckService: WreckService(httpManager: httpManager, dataCoder: dataCoder), coreDataService: CoreDataService(dataCoder: dataCoder)))
+            .environmentObject(mapViewModel)
     }
 }

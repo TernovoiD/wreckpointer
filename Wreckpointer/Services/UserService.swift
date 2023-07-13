@@ -12,13 +12,11 @@ class UserService {
     let authManager: AuthorizationManager
     let httpManager: HTTPRequestManager
     let dataCoder: JSONDataCoder
-    var authenticatedUser: User?
     
     init(authManager: AuthorizationManager, httpManager: HTTPRequestManager, dataCoder: JSONDataCoder) {
         self.authManager = authManager
         self.httpManager = httpManager
         self.dataCoder = dataCoder
-        self.authenticatedUser = nil
     }
     
     func changePassword(userPassword: String, newPassword: String, newPasswordConfirm: String) async throws {
@@ -35,15 +33,15 @@ class UserService {
         let _ = try await httpManager.sendRequest(toURL: url, withData: emailData , withHTTPMethod: HTTPMethods.POST.rawValue)
     }
     
-    func register(user: User) async throws -> User {
+    func register(user: User) async throws {
         let encodedUserData = try dataCoder.encodeItemToData(item: user)
         guard let url = URL(string: BaseRoutes.baseURL + Endpoints.userLogin + "/register") else {
             throw HTTPError.badURL
         }
         let data = try await httpManager.sendRequest(toURL: url, withData: encodedUserData, withHTTPMethod: HTTPMethods.POST.rawValue)
         
-        let user = try dataCoder.decodeItemFromData(data: data) as User
-        return user
+        let token = try dataCoder.decodeItemFromData(data: data) as String
+        authManager.saveToken(token)
     }
     
     func signIn(withLogin login: String, andPassword password: String) async throws {
@@ -54,30 +52,29 @@ class UserService {
         let data = try await httpManager.sendRequest(toURL: url, withHTTPMethod: HTTPMethods.POST.rawValue, withbasicAuthorization: basicAuth)
         let userToken = String(decoding: data, as: UTF8.self)
         authManager.saveToken(userToken)
-        try await fetchUser()
     }
     
     func signOut() {
         authManager.deleteToken()
-        authenticatedUser = nil
     }
     
-    func deleteAccount() async throws {
+    func deleteAccount(forUser user: User) async throws {
         guard let userToken = authManager.getToken() else { throw HTTPError.notAuthorized }
-        guard let url = URL(string: BaseRoutes.baseURL + Endpoints.user + "/" + (authenticatedUser?.id ?? "error")) else {
+        guard let url = URL(string: BaseRoutes.baseURL + Endpoints.user + "/" + (user.id ?? "error")) else {
             throw HTTPError.badURL
         }
         let _ = try await httpManager.sendRequest(toURL: url, withHTTPMethod: HTTPMethods.DELETE.rawValue, withloginToken: userToken)
         signOut()
     }
     
-    func fetchUser() async throws {
+    func fetchUser() async throws -> User {
         guard let userToken = authManager.getToken() else { throw HTTPError.notAuthorized }
         guard let url = URL(string: BaseRoutes.baseURL + Endpoints.user) else {
             throw HTTPError.badURL
         }
         let data = try await httpManager.sendRequest(toURL: url, withHTTPMethod: HTTPMethods.GET.rawValue, withloginToken: userToken)
-        authenticatedUser = try dataCoder.decodeItemFromData(data: data) as User
+        let authenticatedUser = try dataCoder.decodeItemFromData(data: data) as User
+        return authenticatedUser
     }
     
     private func createBasicAuthorization(login: String, password: String) -> String {
