@@ -11,23 +11,28 @@ import SwiftUI
 struct WreckpointerApp: App {
     
     @StateObject var mapVM: MapViewModel
+    @StateObject var authVM: AuthenticationViewModel
     
     init() {
         // Init managers
+        let authManager = AuthorizationManager()
         let httpManager = HTTPRequestManager()
         let dataCoder = JSONDataCoder()
         
         // Init services
         let wreckService = WreckService(httpManager: httpManager, dataCoder: dataCoder)
         let coreDataService = CoreDataService(dataCoder: dataCoder)
+        let userService = UserService(authManager: authManager, httpManager: httpManager, dataCoder: dataCoder)
         
         _mapVM = StateObject(wrappedValue: MapViewModel(wreckService: wreckService, coreDataService: coreDataService))
+        _authVM = StateObject(wrappedValue: AuthenticationViewModel(userService: userService))
     }
     
     var body: some Scene {
         WindowGroup {
-            MainView()
+            LoginView()
                 .environmentObject(mapVM)
+                .environmentObject(authVM)
         }
     }
 }
