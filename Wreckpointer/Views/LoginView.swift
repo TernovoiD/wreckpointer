@@ -55,6 +55,7 @@ struct LoginView: View {
                     createAccountLink
                     forgotPasswordLink
                 }
+                closeButton
             }
             .background()
             .onTapGesture {
@@ -102,7 +103,10 @@ struct LoginView: View {
     
     var signInButton: some View {
         Button {
-            signIn()
+                selectedField = .none
+                if isFormValid {
+                    signIn()
+                }
         } label: {
             Text("Sign In")
                 .frame(maxWidth: .infinity)
@@ -145,6 +149,19 @@ struct LoginView: View {
             .background()
     }
     
+    var closeButton: some View {
+        VStack {
+            HStack {
+                CloseButton()
+                    .onTapGesture {
+                        selectedField = .none
+                    }
+                Spacer()
+            }
+            Spacer()
+        }
+    }
+    
     // MARK: - Functions
     
     func clearForm() {
@@ -165,10 +182,13 @@ struct LoginView: View {
     }
     
     func signIn() {
-        if isFormValid {
-            selectedField = .none
-            clearForm()
-            print("sign in")
+        Task {
+            do {
+                try await authVM.logIn(email: email, password: password)
+                clearForm()
+            } catch let error {
+                print(error)
+            }
         }
     }
 }
