@@ -30,7 +30,7 @@ struct WreckpointerApp: App {
     
     var body: some Scene {
         WindowGroup {
-            LoginView()
+            MainView()
                 .environmentObject(mapVM)
                 .environmentObject(authVM)
         }

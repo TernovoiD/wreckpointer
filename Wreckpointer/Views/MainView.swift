@@ -17,12 +17,9 @@ struct MainView: View {
         ZStack {
             MapView()
             MapOverlayView()
-//            LoginView()
-        }
-        .onTapGesture {
-            withAnimation(.easeInOut) {
-                scale.toggle()
-            }
+                .scaleEffect(mapVM.showLoginView ? 0.8 : 1)
+            AccountView()
+                .offset(x: mapVM.showLoginView ? 0 : 1000)
         }
     }
 }

@@ -49,6 +49,7 @@ struct ForgotPasswordView: View {
                 requesPasswordResetButton
                 createAccountLink
             }
+            closeButton
         }
         .background()
         .onTapGesture {
@@ -119,6 +120,19 @@ struct ForgotPasswordView: View {
         .padding(.horizontal, 10)
         .background()
         .mask(RoundedRectangle(cornerRadius: 15))
+    }
+    
+    var closeButton: some View {
+        VStack {
+            HStack {
+                CloseButton()
+                    .onTapGesture {
+                        selectedField = .none
+                    }
+                Spacer()
+            }
+            Spacer()
+        }
     }
     
     // MARK: - Functions

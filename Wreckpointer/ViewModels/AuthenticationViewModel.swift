@@ -14,6 +14,7 @@ class AuthenticationViewModel: ObservableObject {
     
     init(userService: UserService) {
         self.userService = userService
+        authenticateUser()
     }
     
     func createAccount(forUser user: User) async throws {

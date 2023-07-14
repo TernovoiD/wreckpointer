@@ -9,17 +9,24 @@ import SwiftUI
 import MapKit
 
 struct MapView: View {
+    
     @EnvironmentObject var mapVM: MapViewModel
     
     var body: some View {
-        Map(coordinateRegion: $mapVM.mapRegion, annotationItems: mapVM.mapWrecks) { wreck in
+        Map(coordinateRegion: $mapVM.mapRegion, annotationItems: mapVM.wrecksFilterdBySearch()) { wreck in
             MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: wreck.latitude,
                                                              longitude: wreck.longitude)) {
-                Circle()
-                    .size(width: 10, height: 10)
+                MapPinView(wreck: wreck)
             }
         }
         .ignoresSafeArea()
+        .onTapGesture {
+            withAnimation(.easeInOut) {
+                mapVM.searchIsActive = false
+                mapVM.openMenu = false
+                mapVM.openFilter = false
+            }
+        }
     }
 }
 

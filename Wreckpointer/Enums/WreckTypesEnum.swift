@@ -5,7 +5,10 @@
 //  Created by Danylo Ternovoi on 11.07.2023.
 //
 
-enum WreckTypesEnum: String, Codable {
+enum WreckTypesEnum: String, Codable, CaseIterable, Identifiable {
+    var id: Self { self }
+    
+    case all
     
     // Cargo vessels
     case bulkerVessel

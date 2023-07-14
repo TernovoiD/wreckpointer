@@ -32,7 +32,7 @@ struct CreateAccountView: View {
         } else if !email.isValidEmail {
             showFormError(withText: "Email is not valid.")
             return false
-        } else if username.isValidName {
+        } else if !username.isValidName {
             showFormError(withText: "username must contain at least 5 characters.")
             return false
         } else if !password.isValidPassword {
@@ -66,6 +66,7 @@ struct CreateAccountView: View {
                 createAccountButton
                 createAccountLink
             }
+            closeButton
         }
         .background()
         .onTapGesture {
@@ -147,7 +148,10 @@ struct CreateAccountView: View {
     
     var createAccountButton: some View {
         Button {
-            createAccount()
+            selectedField = .none
+            if isFormValid {
+                createAccount()
+            }
         } label: {
             Text("Create")
                 .frame(maxWidth: .infinity)
@@ -189,6 +193,19 @@ struct CreateAccountView: View {
         .mask(RoundedRectangle(cornerRadius: 25))
     }
     
+    var closeButton: some View {
+        VStack {
+            HStack {
+                CloseButton()
+                    .onTapGesture {
+                        selectedField = .none
+                    }
+                Spacer()
+            }
+            Spacer()
+        }
+    }
+    
     // MARK: - Functions
     
     func clearForm() {
@@ -209,10 +226,15 @@ struct CreateAccountView: View {
     }
     
     func createAccount() {
-        if isFormValid {
-            selectedField = .none
-            clearForm()
-            print("Create Account")
+        Task {
+            do {
+                let newUser = User(username: username, email: email, password: password, confirmPassword: passwordConfirmation)
+                try await authVM.createAccount(forUser: newUser)
+                clearForm()
+                dismiss()
+            } catch let error {
+                print(error)
+            }
         }
     }
 }
