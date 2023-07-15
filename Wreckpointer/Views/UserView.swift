@@ -45,7 +45,7 @@ struct UserView: View {
     }
     
     var username: some View {
-        Text("TernovoiD")
+        Text(authVM.user?.username ?? "unknown")
             .font(.largeTitle.weight(.bold))
             .padding()
             .neonField(light: true)
@@ -53,7 +53,7 @@ struct UserView: View {
     }
     
     var userInfo: some View {
-        Text("Oh hi! My name is Danylo Ternovoi, and I'm thrilled to welcome you to my GitHub page. While my professional background lies in the role of a Tanker Fleet Navigational Officer, my true passion lies in the world of iOS app development and all related aspects. On this GitHub page, you'll find a collection of my personal projects and experiments in iOS app development. Through these projects, I aim to demonstrate my growing proficiency in the field and showcase my creativity in crafting delightful user interfaces and seamless functionality.")
+        Text(authVM.user?.username ?? "No info")
             .font(.headline)
             .padding()
             .frame(maxWidth: .infinity, alignment: .leading)

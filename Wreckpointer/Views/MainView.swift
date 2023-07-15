@@ -17,7 +17,9 @@ struct MainView: View {
         ZStack {
             MapView()
             MapOverlayView()
-                .scaleEffect(mapVM.showLoginView ? 0.8 : 1)
+                .scaleEffect(mapVM.showLoginView || mapVM.showAddWreckView ? 0.9 : 1)
+            AddUpdateWreck()
+                .offset(x: mapVM.showAddWreckView ? 0 : 1000)
             AccountView()
                 .offset(x: mapVM.showLoginView ? 0 : 1000)
         }

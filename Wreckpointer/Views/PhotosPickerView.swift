@@ -82,7 +82,7 @@ extension PhotosPickerView {
                 .resizable()
                 .aspectRatio(contentMode: .fit)
         } placeholder: {
-            Color.gray
+            Color.gray.opacity(0.2)
                 .frame(height: 250)
                 .overlay {
                     Text("Add image")

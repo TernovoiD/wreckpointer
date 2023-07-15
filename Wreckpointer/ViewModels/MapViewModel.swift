@@ -11,10 +11,28 @@ class MapViewModel: ObservableObject {
     
     @Published var mapWrecks: [Wreck] = []
     
-    // Interface
+    // Map Overlay
     @Published var openMenu: Bool = false
     @Published var openFilter: Bool = false
+    @Published var openSettings: Bool = false
+    
+    // Map settings
+    @Published var mapScale: mapScales = .large
+    
+    func mapSpan() -> Double {
+        switch mapScale {
+        case .small:
+            return 25
+        case .middle:
+            return 50
+        case .large:
+            return 75
+        }
+    }
+    
+    // Interface
     @Published var showLoginView: Bool = false
+    @Published var showAddWreckView: Bool = false
     
     // Filter
     @Published var searchIsActive: Bool = false
@@ -33,26 +51,25 @@ class MapViewModel: ObservableObject {
         downloadWrecks()
     }
     
-    @Published var mapSelectedWreck: Wreck? {
-        didSet {
-            updateMapRegion()
-        }
-    }
-    
-    @Published var mapDetailedWreckView: Wreck?
+//    @Published var mapSelectedWreck: Wreck? {
+//        didSet {
+//            updateMapRegion()
+//        }
+//    }
+//
+//    @Published var mapDetailedWreckView: Wreck?
     @Published var mapRegion: MKCoordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 30.5,
                                                                                                      longitude: 0),
                                                                       span: MKCoordinateSpan(latitudeDelta: 50,
                                                                                              longitudeDelta: 50))
-    @Published var mapSpan: Double = 50
     
-    private func updateMapRegion() {
-        guard let location = mapSelectedWreck else { return }
-        mapRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: location.latitude,
-                                                                      longitude: location.longitude),
-                                       span: MKCoordinateSpan(latitudeDelta: mapSpan,
-                                                              longitudeDelta: mapSpan))
-    }
+//    private func updateMapRegion() {
+//        guard let location = mapSelectedWreck else { return }
+//        mapRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: location.latitude,
+//                                                                      longitude: location.longitude),
+//                                       span: MKCoordinateSpan(latitudeDelta: mapSpan,
+//                                                              longitudeDelta: mapSpan))
+//    }
     
 }
 

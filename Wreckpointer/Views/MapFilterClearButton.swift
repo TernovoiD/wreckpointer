@@ -22,12 +22,10 @@ struct MapFilterClearButton: View {
             }
         } label: {
             Text("Clear filter")
+                .frame(height: 35)
                 .font(.title3)
                 .padding()
-                .background(RoundedRectangle(cornerRadius: 15).stroke(lineWidth: 3))
-                .background(.ultraThinMaterial)
-                .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
-                .foregroundColor(.purple)
+                .accentColorBorder()
                 .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
         }
     }
