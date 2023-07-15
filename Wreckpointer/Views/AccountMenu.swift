@@ -43,7 +43,7 @@ struct AccountMenu: View {
             }
         } label: {
             if openAccountMenu {
-                Label("Close", systemImage: "xmark")
+                Label("Close", systemImage: "xmark.rectangle")
             } else {
                 Image(systemName: "gear")
                     .font(.title2)

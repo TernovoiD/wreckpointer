@@ -12,24 +12,25 @@ struct MapFilter: View {
     @EnvironmentObject var mapVM: MapViewModel
     
     var body: some View {
-        VStack(spacing: 20) {
+        VStack(alignment: .leading, spacing: 10) {
             openFilterMenuButton
             if mapVM.openFilter {
+                Divider()
+                minimumDate
+                maximumDate
+                Divider()
                 wreckTypePicker
-                datePicker
+                Divider()
                 Toggle("Wreck dives only", isOn: $mapVM.showWreckDivesOnly)
             }
         }
-        .padding(mapVM.openFilter ? 15 : 30)
-        .background(RoundedRectangle(cornerRadius: 25, style: .continuous).stroke(lineWidth: 3))
-        .background(.ultraThinMaterial)
-        .clipShape(RoundedRectangle(cornerRadius: 25,
-                                    style: .continuous))
-        .foregroundColor(.purple)
+        .font(.headline)
         .padding()
+        .accentColorBorder()
         .onTapGesture {
             withAnimation(.easeInOut) {
                 mapVM.openFilter = true
+                mapVM.openSettings = false
                 mapVM.openMenu = false
                 mapVM.searchIsActive = false
             }
@@ -40,16 +41,18 @@ struct MapFilter: View {
         Button {
             withAnimation(.easeInOut) {
                 mapVM.openFilter.toggle()
+                mapVM.openSettings = false
                 mapVM.openMenu = false
                 mapVM.searchIsActive = false
             }
         } label: {
             if mapVM.openFilter {
-                Label("Close", systemImage: "xmark")
-                    .font(.title3.weight(.black))
+                Label("Filter", systemImage: "xmark")
             } else {
-                Label("Filter", systemImage: "slider.horizontal.3")
-                    .font(.title3.weight(.black))
+                Image(systemName: "slider.horizontal.3")
+                    .frame(width: 35, height: 35)
+                    .font(.title2)
+                    .bold()
             }
         }
     }
@@ -69,14 +72,14 @@ struct MapFilter: View {
         }
     }
     
-    var datePicker: some View {
-        HStack {
-            DatePicker("From", selection: $mapVM.minimumDate, in: ...mapVM.maximumDate, displayedComponents: .date)
-                .datePickerStyle(.compact)
-            DatePicker("To", selection: $mapVM.maximumDate, in: mapVM.minimumDate...Date(), displayedComponents: .date)
-                .datePickerStyle(.compact)
-                .padding(.leading)
-        }
+    var minimumDate: some View {
+        DatePicker("From", selection: $mapVM.minimumDate, in: ...mapVM.maximumDate, displayedComponents: .date)
+            .datePickerStyle(.compact)
+    }
+    
+    var maximumDate: some View {
+        DatePicker("To", selection: $mapVM.maximumDate, in: mapVM.minimumDate...Date(), displayedComponents: .date)
+            .datePickerStyle(.compact)
     }
 }
 

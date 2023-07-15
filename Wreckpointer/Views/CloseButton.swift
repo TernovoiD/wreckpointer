@@ -16,6 +16,7 @@ struct CloseButton: View {
             withAnimation(.easeInOut) {
                 dismissKeyboard()
                 mapVM.showLoginView = false
+                mapVM.showAddWreckView = false
             }
         } label: {
             Image(systemName: "xmark")
@@ -24,10 +25,7 @@ struct CloseButton: View {
                 .frame(maxWidth: 25)
                 .font(.title3)
                 .padding()
-                .background(RoundedRectangle(cornerRadius: 15).stroke(lineWidth: 3))
-                .background(.ultraThinMaterial)
-                .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
-                .foregroundColor(.purple)
+                .accentColorBorder()
                 .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
                 .padding()
         }

@@ -16,18 +16,19 @@ struct MapOverlayView: View {
     }
     
     var body: some View {
-        VStack(spacing: 0) {
+        VStack(alignment: .leading, spacing: 10) {
             MapSearchBar()
-            HStack(alignment: .top, spacing: 0) {
+            HStack(alignment: .top, spacing: 10) {
                 MapMenu()
+                StoriesButton()
                 MapFilterClearButton()
                     .offset(x: mapVM.showWreckDivesOnly == true || mapVM.minimumDate != mapVM.minimumDateOfLossDate() || mapVM.maximumDate != mapVM.maximumDateOfLossDate() || mapVM.wreckType != .all ? 0 : 1000)
-                Spacer()
             }
-            Spacer()
+            MapSettings()
             MapFilter()
-                .offset(y: -20)
+            Spacer()
         }
+        .padding()
     }
 }
 

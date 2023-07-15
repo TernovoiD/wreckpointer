@@ -23,7 +23,6 @@ struct MapSearchBar: View {
                 searchBarClearButton
             }
         }
-        .padding()
     }
     
     var searchBar: some View {
@@ -49,6 +48,7 @@ struct MapSearchBar: View {
                     withAnimation(.easeInOut) {
                         mapVM.openFilter = false
                         mapVM.openMenu = false
+                        mapVM.openSettings = false
                     }
                 }
             }
