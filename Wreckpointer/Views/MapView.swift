@@ -34,6 +34,28 @@ struct MapView: View {
                 adjustMap()
             }
         }
+        .onChange(of: mapVM.mapSelectedWreck) { wreck in
+            if let wreck {
+                DispatchQueue.main.async {
+                    showWreck(wreck)
+                }
+            }
+        }
+        .onChange(of: mapVM.textToSearch) { text in
+            guard !text.isEmpty else { return }
+            if let wreck = mapVM.wrecksFilterdBySearch().first {
+                showWreck(wreck)
+            }
+        }
+    }
+    
+    func showWreck(_ wreck: Wreck) {
+        let mapSpan = mapVM.mapSpan()
+        let mapCoordinateSpan = MKCoordinateSpan(latitudeDelta: mapSpan, longitudeDelta: mapSpan)
+        let mapCoordinate2D = CLLocationCoordinate2D(latitude: wreck.latitude, longitude: wreck.longitude)
+        withAnimation(.easeInOut) {
+            mapRegion = MKCoordinateRegion(center: mapCoordinate2D, span: mapCoordinateSpan)
+        }
     }
     
     func adjustMap() {
@@ -51,11 +73,12 @@ struct MapView_Previews: PreviewProvider {
         let dataCoder = JSONDataCoder()
         
         // Init services
-        let wreckService = WreckService(httpManager: httpManager, dataCoder: dataCoder)
+        let wreckLoader = WrecksLoader(httpManager: httpManager, dataCoder: dataCoder)
+        let wrecksService = WrecksService(httpManager: httpManager, dataCoder: dataCoder)
         let coreDataService = CoreDataService(dataCoder: dataCoder)
         
         // Init View model
-        let mapViewModel = MapViewModel(wreckService: wreckService, coreDataService: coreDataService)
+        let mapViewModel = MapViewModel(wreckLoader: wreckLoader, wrecksService: wrecksService, coreDataService: coreDataService)
         
         MapView()
             .environmentObject(mapViewModel)

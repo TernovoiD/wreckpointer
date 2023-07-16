@@ -10,6 +10,7 @@ import MapKit
 class MapViewModel: ObservableObject {
     
     @Published var mapWrecks: [Wreck] = []
+    @Published var mapSelectedWreck: Wreck?
     
     // Map Overlay
     @Published var openMenu: Bool = false
@@ -22,17 +23,18 @@ class MapViewModel: ObservableObject {
     func mapSpan() -> Double {
         switch mapScale {
         case .small:
-            return 25
+            return 0.33
         case .middle:
-            return 50
+            return 1.5
         case .large:
-            return 75
+            return 3
         }
     }
     
     // Interface
     @Published var showLoginView: Bool = false
     @Published var showAddWreckView: Bool = false
+    @Published var showStoriesView: Bool = false
     
     // Filter
     @Published var searchIsActive: Bool = false
@@ -42,35 +44,17 @@ class MapViewModel: ObservableObject {
     @Published var maximumDate: Date = Date()
     @Published var wreckType: WreckTypesEnum = .all
     
-    let wreckService: WreckService
+    let wreckLoader: WrecksLoader
+    let wrecksService: WrecksService
     let coreDataService: CoreDataService
     
-    init(wreckService: WreckService, coreDataService: CoreDataService) {
-        self.wreckService = wreckService
+    init(wreckLoader: WrecksLoader, wrecksService: WrecksService, coreDataService: CoreDataService) {
+        self.wreckLoader = wreckLoader
+        self.wrecksService = wrecksService
         self.coreDataService = coreDataService
         downloadWrecks()
+        updateWrecks()
     }
-    
-//    @Published var mapSelectedWreck: Wreck? {
-//        didSet {
-//            updateMapRegion()
-//        }
-//    }
-//
-//    @Published var mapDetailedWreckView: Wreck?
-    @Published var mapRegion: MKCoordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 30.5,
-                                                                                                     longitude: 0),
-                                                                      span: MKCoordinateSpan(latitudeDelta: 50,
-                                                                                             longitudeDelta: 50))
-    
-//    private func updateMapRegion() {
-//        guard let location = mapSelectedWreck else { return }
-//        mapRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: location.latitude,
-//                                                                      longitude: location.longitude),
-//                                       span: MKCoordinateSpan(latitudeDelta: mapSpan,
-//                                                              longitudeDelta: mapSpan))
-//    }
-    
 }
 
 
@@ -88,6 +72,18 @@ extension MapViewModel {
             let text: String = textToSearch.lowercased()
             filteredWrecks = filteredWrecks.filter({ $0.title.lowercased().contains(text)})
         }
+        if minimumDate != minimumDateOfLossDate() {
+            filteredWrecks = filteredWrecks.filter({
+                if let dateOfLoss = $0.dateOfLoss {
+                    return dateOfLoss >= minimumDate
+                } else {
+                    return false
+                }
+            })
+        }
+        if maximumDate != maximumDateOfLossDate() {
+            
+        }
         return filteredWrecks
     }
     
@@ -96,18 +92,14 @@ extension MapViewModel {
         for wreck in mapWrecks {
             datesArray.append(wreck.dateOfLoss ?? Date())
         }
-        print(datesArray)
         return datesArray.min() ?? Date()
     }
     
     func maximumDateOfLossDate() -> Date {
         var datesArray: [Date] = [ ]
         for wreck in mapWrecks {
-            if let date = wreck.dateOfLoss {
-                datesArray.append(date)
-            }
+            datesArray.append(wreck.dateOfLoss ?? Date())
         }
-        print(datesArray)
         return datesArray.max() ?? Date()
     }
 }
@@ -117,12 +109,30 @@ extension MapViewModel {
 
 extension MapViewModel {
     
+    func create(_ wreck: Wreck) async throws {
+        let createdWreck = try await wrecksService.createWreck(wreck)
+        try coreDataService.addWreck(createdWreck)
+        updateWrecks()
+    }
+    
+    func update(_ wreck: Wreck) async throws {
+        let updatedWreck = try await wrecksService.updateWreck(wreck)
+        try coreDataService.addWreck(updatedWreck)
+        updateWrecks()
+    }
+    
+    func delete(_ wreck: Wreck) async throws {
+        try await wrecksService.deleteWreck(wreck)
+        try coreDataService.deleteWreck(wreck: wreck)
+        updateWrecks()
+    }
+    
     private func downloadWrecks() {
         Task {
             do {
-                let (coreDataWrecks, lastUpdateTime) = try coreDataService.fetchWrecks()
+                let coreDataWrecks = try coreDataService.fetchWrecks()
                 if coreDataWrecks.isEmpty {
-                    let loadedWrecks = try await wreckService.downloadWrecksFromServer()
+                    let loadedWrecks = try await wreckLoader.downloadWrecksFromServer()
                     DispatchQueue.main.async {
                         self.mapWrecks = loadedWrecks
                         self.minimumDate = self.minimumDateOfLossDate()
@@ -135,7 +145,6 @@ extension MapViewModel {
                         self.minimumDate = self.minimumDateOfLossDate()
                         self.maximumDate = self.maximumDateOfLossDate()
                     }
-                    updateWrecks(fromDate: lastUpdateTime)
                 }
             } catch let error {
                 print(error)
@@ -143,12 +152,13 @@ extension MapViewModel {
         }
     }
     
-    func updateWrecks(fromDate lastUpdate: Date) {
+    func updateWrecks() {
         Task {
             do {
-                let updatedWrecks = try await wreckService.requestUpdatedWrecks(fromDate: lastUpdate)
+                let lastUpdateTime = try coreDataService.lastUpdateTime()
+                let updatedWrecks = try await wreckLoader.requestUpdatedWrecks(fromDate: lastUpdateTime)
                 try coreDataService.addWrecks(updatedWrecks)
-                let (coreDataWrecks, _) = try coreDataService.fetchWrecks()
+                let coreDataWrecks = try coreDataService.fetchWrecks()
                 DispatchQueue.main.async {
                     self.mapWrecks = coreDataWrecks
                     self.minimumDate = self.minimumDateOfLossDate()

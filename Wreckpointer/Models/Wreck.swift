@@ -14,7 +14,7 @@ struct Wreck: Codable, Identifiable {
     var type: String
     var title: String
     var image: Data?
-    var depth: Int?
+    var depth: Double?
     var approved: Bool?
     var latitude: Double
     var longitude: Double

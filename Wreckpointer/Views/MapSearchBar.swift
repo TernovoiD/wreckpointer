@@ -29,6 +29,7 @@ struct MapSearchBar: View {
         TextField("Search", text: $mapVM.textToSearch)
             .padding()
             .focused($selectedField, equals: .searchField)
+            .background(mapVM.wrecksFilterdBySearch().count == 0 && !mapVM.textToSearch.isEmpty ? Color.red.opacity(0.3) : Color.clear)
             .neonField(light: selectedField == .searchField ? true : false)
             .submitLabel(.search)
             .autocorrectionDisabled(true)
@@ -77,11 +78,12 @@ struct MapSearchBar_Previews: PreviewProvider {
         let dataCoder = JSONDataCoder()
         
         // Init services
-        let wreckService = WreckService(httpManager: httpManager, dataCoder: dataCoder)
+        let wreckLoader = WrecksLoader(httpManager: httpManager, dataCoder: dataCoder)
+        let wrecksService = WrecksService(httpManager: httpManager, dataCoder: dataCoder)
         let coreDataService = CoreDataService(dataCoder: dataCoder)
         
         // Init View model
-        let mapViewModel = MapViewModel(wreckService: wreckService, coreDataService: coreDataService)
+        let mapViewModel = MapViewModel(wreckLoader: wreckLoader, wrecksService: wrecksService, coreDataService: coreDataService)
         
         ZStack {
             Color.indigo

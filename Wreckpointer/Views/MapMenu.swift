@@ -26,7 +26,7 @@ struct MapMenu: View {
         .accentColorBorder()
         .onTapGesture {
             withAnimation(.easeInOut) {
-                mapVM.openMenu.toggle()
+                mapVM.openMenu = true
                 mapVM.openFilter = false
                 mapVM.openSettings = false
                 mapVM.searchIsActive = false
@@ -109,11 +109,12 @@ struct MapMenu_Previews: PreviewProvider {
         let dataCoder = JSONDataCoder()
         
         // Init services
-        let wreckService = WreckService(httpManager: httpManager, dataCoder: dataCoder)
+        let wreckLoader = WrecksLoader(httpManager: httpManager, dataCoder: dataCoder)
+        let wrecksService = WrecksService(httpManager: httpManager, dataCoder: dataCoder)
         let coreDataService = CoreDataService(dataCoder: dataCoder)
         
         // Init View model
-        let mapViewModel = MapViewModel(wreckService: wreckService, coreDataService: coreDataService)
+        let mapViewModel = MapViewModel(wreckLoader: wreckLoader, wrecksService: wrecksService, coreDataService: coreDataService)
         
         ZStack {
             Color.indigo

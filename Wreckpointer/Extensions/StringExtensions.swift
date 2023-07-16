@@ -22,4 +22,27 @@ extension String {
     var isValidName: Bool {
         return self.count >= 5 ? true : false
     }
+    
+    var isValidWreckName: Bool {
+        return self.count >= 3 ? true : false
+    }
+    
+    var isValidLatitude: Bool {
+        let latitude = Double(self) ?? 999
+        return latitude >= 0 && latitude <= 90 ? true : false
+    }
+    
+    var isValidLongitude: Bool {
+        let latitude = Double(self) ?? 999
+        return latitude >= 0 && latitude <= 180 ? true : false
+    }
+    
+    var isValidDepth: Bool {
+        let depth = Double(self)
+        if let _ = depth {
+            return true
+        } else {
+            return false
+        }
+    }
 }

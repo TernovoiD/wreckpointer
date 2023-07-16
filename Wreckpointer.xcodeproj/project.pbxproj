@@ -28,6 +28,10 @@
 		816E9FC129CAF75000C3BC0F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 816E9FC029CAF75000C3BC0F /* Assets.xcassets */; };
 		816E9FC429CAF75000C3BC0F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 816E9FC329CAF75000C3BC0F /* Preview Assets.xcassets */; };
 		816E9FDD29CAF78300C3BC0F /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816E9FCC29CAF78300C3BC0F /* MapView.swift */; };
+		817343042A63EFB600E92F6D /* WrecksService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817343032A63EFB600E92F6D /* WrecksService.swift */; };
+		817343082A63F1AE00E92F6D /* WrecksViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817343072A63F1AE00E92F6D /* WrecksViewModel.swift */; };
+		8173430A2A6415A800E92F6D /* MapPinEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817343092A6415A800E92F6D /* MapPinEnum.swift */; };
+		817343102A64292D00E92F6D /* DoubleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8173430F2A64292D00E92F6D /* DoubleExtensions.swift */; };
 		81899BBD2A62C9530053F042 /* AddUpdateWreck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81899BBC2A62C9530053F042 /* AddUpdateWreck.swift */; };
 		81899BC12A6302F10053F042 /* MapSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81899BC02A6302F10053F042 /* MapSettings.swift */; };
 		81899BC32A6305220053F042 /* StoriesButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81899BC22A6305220053F042 /* StoriesButton.swift */; };
@@ -44,7 +48,7 @@
 		81C84FDA2A5C6C78004D01B2 /* HTTPRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C84FD72A5C6C78004D01B2 /* HTTPRequestManager.swift */; };
 		81C84FDF2A5C6D6C004D01B2 /* URLRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C84FDE2A5C6D6C004D01B2 /* URLRoutes.swift */; };
 		81C84FE12A5C6DA3004D01B2 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C84FE02A5C6DA3004D01B2 /* UserService.swift */; };
-		81C84FE32A5C6DAC004D01B2 /* WreckService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C84FE22A5C6DAC004D01B2 /* WreckService.swift */; };
+		81C84FE32A5C6DAC004D01B2 /* WrecksLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C84FE22A5C6DAC004D01B2 /* WrecksLoader.swift */; };
 		81E0E7652A5D5F6800645AF0 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E0E7642A5D5F6800645AF0 /* User.swift */; };
 		81E0E7672A5D7A7C00645AF0 /* Wreck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E0E7662A5D7A7C00645AF0 /* Wreck.swift */; };
 		81E0E7692A5D80F000645AF0 /* WreckTypesEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E0E7682A5D80F000645AF0 /* WreckTypesEnum.swift */; };
@@ -76,6 +80,10 @@
 		816E9FC329CAF75000C3BC0F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		816E9FCC29CAF78300C3BC0F /* MapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		816E9FE929CAF7FD00C3BC0F /* Wreckpointer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Wreckpointer.entitlements; sourceTree = "<group>"; };
+		817343032A63EFB600E92F6D /* WrecksService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrecksService.swift; sourceTree = "<group>"; };
+		817343072A63F1AE00E92F6D /* WrecksViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrecksViewModel.swift; sourceTree = "<group>"; };
+		817343092A6415A800E92F6D /* MapPinEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapPinEnum.swift; sourceTree = "<group>"; };
+		8173430F2A64292D00E92F6D /* DoubleExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoubleExtensions.swift; sourceTree = "<group>"; };
 		81899BBC2A62C9530053F042 /* AddUpdateWreck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddUpdateWreck.swift; sourceTree = "<group>"; };
 		81899BC02A6302F10053F042 /* MapSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapSettings.swift; sourceTree = "<group>"; };
 		81899BC22A6305220053F042 /* StoriesButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoriesButton.swift; sourceTree = "<group>"; };
@@ -92,7 +100,7 @@
 		81C84FD72A5C6C78004D01B2 /* HTTPRequestManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPRequestManager.swift; sourceTree = "<group>"; };
 		81C84FDE2A5C6D6C004D01B2 /* URLRoutes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRoutes.swift; sourceTree = "<group>"; };
 		81C84FE02A5C6DA3004D01B2 /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
-		81C84FE22A5C6DAC004D01B2 /* WreckService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WreckService.swift; sourceTree = "<group>"; };
+		81C84FE22A5C6DAC004D01B2 /* WrecksLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrecksLoader.swift; sourceTree = "<group>"; };
 		81E0E7642A5D5F6800645AF0 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		81E0E7662A5D7A7C00645AF0 /* Wreck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wreck.swift; sourceTree = "<group>"; };
 		81E0E7682A5D80F000645AF0 /* WreckTypesEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WreckTypesEnum.swift; sourceTree = "<group>"; };
@@ -130,6 +138,7 @@
 			isa = PBXGroup;
 			children = (
 				81899BCA2A631C330053F042 /* MapScales.swift */,
+				817343092A6415A800E92F6D /* MapPinEnum.swift */,
 				81E0E7682A5D80F000645AF0 /* WreckTypesEnum.swift */,
 				81E0E76A2A5D810300645AF0 /* WreckCausesEnum.swift */,
 			);
@@ -232,6 +241,7 @@
 			children = (
 				8136D12029D6C7220025D489 /* MapViewModel.swift */,
 				8154A5F12A5FF56000395076 /* AuthenticationViewModel.swift */,
+				817343072A63F1AE00E92F6D /* WrecksViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -247,6 +257,7 @@
 			isa = PBXGroup;
 			children = (
 				81B6D0F52A601D4A00B5978F /* StringExtensions.swift */,
+				8173430F2A64292D00E92F6D /* DoubleExtensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -266,7 +277,8 @@
 			isa = PBXGroup;
 			children = (
 				81C84FE02A5C6DA3004D01B2 /* UserService.swift */,
-				81C84FE22A5C6DAC004D01B2 /* WreckService.swift */,
+				817343032A63EFB600E92F6D /* WrecksService.swift */,
+				81C84FE22A5C6DAC004D01B2 /* WrecksLoader.swift */,
 				81AB02852A5EFBCE006AAD5E /* CoreDataService.swift */,
 			);
 			path = Services;
@@ -367,7 +379,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				816E9FDD29CAF78300C3BC0F /* MapView.swift in Sources */,
+				8173430A2A6415A800E92F6D /* MapPinEnum.swift in Sources */,
 				8154A5F72A60038D00395076 /* LinearBackgroundColor.swift in Sources */,
+				817343082A63F1AE00E92F6D /* WrecksViewModel.swift in Sources */,
+				817343042A63EFB600E92F6D /* WrecksService.swift in Sources */,
 				81E0E7652A5D5F6800645AF0 /* User.swift in Sources */,
 				81899BC32A6305220053F042 /* StoriesButton.swift in Sources */,
 				81B6D0FE2A60A3DA00B5978F /* MapPinView.swift in Sources */,
@@ -375,7 +390,7 @@
 				81899BBD2A62C9530053F042 /* AddUpdateWreck.swift in Sources */,
 				81B6D0FA2A6079A200B5978F /* MapOverlayView.swift in Sources */,
 				8103E75D2A6171D500FA53D0 /* MapFilterClearButton.swift in Sources */,
-				81C84FE32A5C6DAC004D01B2 /* WreckService.swift in Sources */,
+				81C84FE32A5C6DAC004D01B2 /* WrecksLoader.swift in Sources */,
 				8103E7632A61B60C00FA53D0 /* UserView.swift in Sources */,
 				8154A5EE2A5FF4F300395076 /* CreateAccountView.swift in Sources */,
 				81899BC52A6314C90053F042 /* BorderButtonModifier.swift in Sources */,
@@ -400,6 +415,7 @@
 				81C84FDA2A5C6C78004D01B2 /* HTTPRequestManager.swift in Sources */,
 				8154A5FD2A600E9C00395076 /* NeonTextFieldModifier.swift in Sources */,
 				8154A5EA2A5FF4CC00395076 /* LoginView.swift in Sources */,
+				817343102A64292D00E92F6D /* DoubleExtensions.swift in Sources */,
 				8103E7592A61477300FA53D0 /* MapMenu.swift in Sources */,
 				8111B2852A5DE8640038DD53 /* MainView.swift in Sources */,
 				81899BC12A6302F10053F042 /* MapSettings.swift in Sources */,

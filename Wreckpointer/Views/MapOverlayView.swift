@@ -40,11 +40,12 @@ struct MapOverlayView_Previews: PreviewProvider {
         let dataCoder = JSONDataCoder()
         
         // Init services
-        let wreckService = WreckService(httpManager: httpManager, dataCoder: dataCoder)
+        let wreckLoader = WrecksLoader(httpManager: httpManager, dataCoder: dataCoder)
+        let wrecksService = WrecksService(httpManager: httpManager, dataCoder: dataCoder)
         let coreDataService = CoreDataService(dataCoder: dataCoder)
         
         // Init View model
-        let mapViewModel = MapViewModel(wreckService: wreckService, coreDataService: coreDataService)
+        let mapViewModel = MapViewModel(wreckLoader: wreckLoader, wrecksService: wrecksService, coreDataService: coreDataService)
         
         MapOverlayView()
             .background(Color.green)
