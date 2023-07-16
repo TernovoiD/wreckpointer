@@ -1,5 +1,5 @@
 //
-//  WreckService.swift
+//  WrecksLoader.swift
 //  Wreckpointer
 //
 //  Created by Danylo Ternovoi on 10.07.2023.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-class WreckService {
+class WrecksLoader {
     
     let httpManager: HTTPRequestManager
     let dataCoder: JSONDataCoder
@@ -16,33 +16,6 @@ class WreckService {
         self.httpManager = httpManager
         self.dataCoder = dataCoder
     }
-    
-//    func updateWrecks(lastUpdate: Date) async throws {
-//        let updatedWrecks = try await requestUpdatedWrecks(fromDate: lastUpdate)
-//        let (wrecksData, _) = try wrecksCDManager.fetchWrecks()
-//        var coreDataWrecks = try decodeWrecks(data: wrecksData)
-//        for wreck in updatedWrecks {
-//            coreDataWrecks.removeAll(where: { $0.id == wreck.id })
-//            coreDataWrecks.append(wreck)
-//        }
-//
-//        try wrecksCDManager.deleteWrecks()
-//        let encodedWrecks = try encodeWrecks(wrecks: updatedWrecks)
-//        try wrecksCDManager.addWrecks(wrecksData: encodedWrecks)
-//    }
-    
-//    func downloadWrecks() async throws -> ([Wreck], Date) {
-//        let (wrecksData, lastUpdateTime) = try wrecksCDManager.fetchWrecks()
-//        if wrecksData.isEmpty {
-//            let wrecks = try await downloadWrecksFromServer()
-//            let loadedWrecksData = try encodeWrecks(wrecks: wrecks)
-//            try wrecksCDManager.addWrecks(wrecksData: loadedWrecksData)
-//            return (wrecks, lastUpdateTime)
-//        } else {
-//            let wrecks = try decodeWrecks(data: wrecksData)
-//            return (wrecks, lastUpdateTime)
-//        }
-//    }
     
     func requestUpdatedWrecks(fromDate lastUpdate: Date) async throws -> [Wreck] {
         let lastUpdateTimeData = try dataCoder.encodeItemToData(item: lastUpdate)

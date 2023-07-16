@@ -23,8 +23,19 @@ class CoreDataService {
         }
     }
     
-    func fetchWrecks() throws -> ([Wreck], Date) {
+    func lastUpdateTime() throws -> Date {
         var updateTimes: [Date] = [ ]
+        let request = NSFetchRequest<WreckEntity>(entityName: "WreckEntity")
+        let wreckEntities = try container.viewContext.fetch(request)
+        for wreckEntity in wreckEntities {
+            updateTimes.append(wreckEntity.createdAt ?? Date())
+            updateTimes.append(wreckEntity.updatedAt ?? Date())
+        }
+        let lastUpdateTime = updateTimes.max() ?? Date()
+        return lastUpdateTime
+    }
+    
+    func fetchWrecks() throws -> [Wreck] {
         var wrecks: [Wreck] = [ ]
         let request = NSFetchRequest<WreckEntity>(entityName: "WreckEntity")
         let wreckEntities = try container.viewContext.fetch(request)
@@ -35,7 +46,7 @@ class CoreDataService {
                                  type: wreckEntity.type ?? "unknown",
                                  title: wreckEntity.title ?? "unknown",
                                  image: wreckEntity.image,
-                                 depth: Int(exactly: wreckEntity.depth),
+                                 depth: Double(exactly: wreckEntity.depth),
                                  approved: wreckEntity.approved,
                                  latitude: wreckEntity.latitude,
                                  longitude: wreckEntity.longitude,
@@ -51,11 +62,8 @@ class CoreDataService {
                 newWreck.moderators = moderators
             }
             wrecks.append(newWreck)
-            updateTimes.append(wreckEntity.createdAt ?? Date())
-            updateTimes.append(wreckEntity.updatedAt ?? Date())
         }
-        let lastUpdateTime = updateTimes.max() ?? Date()
-        return (wrecks, lastUpdateTime)
+        return wrecks
     }
     
     func addWrecks(_ wrecks: [Wreck]) throws {
@@ -71,12 +79,34 @@ class CoreDataService {
         try saveData()
     }
     
+    func addWreck(_ wreck: Wreck) throws {
+        let request = NSFetchRequest<WreckEntity>(entityName: "WreckEntity")
+        let wreckEntities = try container.viewContext.fetch(request)
+        
+        if let index = wreckEntities.firstIndex(where: { $0.id == wreck.id }) {
+            deleteWreck(wreckEntity: wreckEntities[index])
+        }
+        try createEntity(forWreck: wreck)
+        
+        try saveData()
+    }
+    
     func deleteWrecks() throws {
         let request = NSFetchRequest<WreckEntity>(entityName: "WreckEntity")
         let wreckEntities = try container.viewContext.fetch(request)
         
         for entity in wreckEntities {
             deleteWreck(wreckEntity: entity)
+        }
+        try saveData()
+    }
+    
+    func deleteWreck(wreck: Wreck) throws {
+        let request = NSFetchRequest<WreckEntity>(entityName: "WreckEntity")
+        let wreckEntities = try container.viewContext.fetch(request)
+        
+        if let index = wreckEntities.firstIndex(where: { $0.id == wreck.id }) {
+            deleteWreck(wreckEntity: wreckEntities[index])
         }
         try saveData()
     }
@@ -112,14 +142,4 @@ class CoreDataService {
     private func saveData() throws {
         try container.viewContext.save()
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 }

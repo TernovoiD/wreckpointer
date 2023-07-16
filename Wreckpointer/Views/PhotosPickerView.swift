@@ -20,12 +20,15 @@ struct PhotosPickerView: View {
         VStack {
             photosPicker
                 .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
-                .padding()
                 .onChange(of: selectedImage) { newItem in
                     updateImage(with: newItem)
                 }
+            Text("Image must not exceed 1MB")
+                .font(.caption)
+                .padding(.bottom, 5)
             imageWeightCounter
         }
+        .padding()
     }
 }
 
@@ -71,9 +74,26 @@ extension PhotosPickerView {
     }
     
     private var imageWeightCounter: some View {
-        Text("\(imageWeight / 1000000, specifier: "%.2F") MB")
-            .font(.subheadline)
-            .frame(maxWidth: .infinity)
+        HStack {
+            Text("Image weight:")
+            Text("\(imageWeight / 1000000, specifier: "%.2F") MB")
+            Spacer()
+            if selectedImageData != nil {
+                Button("Clear") {
+                    withAnimation(.easeInOut) {
+                        selectedImageData = nil
+                        imageWeight = 0
+                    }
+                }
+                .padding(.horizontal)
+                .padding(.vertical, 5)
+                .foregroundColor(.white)
+                .background(Color.accentColor)
+                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+            }
+        }
+        .font(.subheadline)
+        .padding(.horizontal)
     }
     
     private var loadedImage: some View {

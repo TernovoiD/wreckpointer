@@ -9,8 +9,9 @@ import SwiftUI
 
 struct AddUpdateWreck: View {
     
+    @EnvironmentObject var mapVM: MapViewModel
     @FocusState var selectedField: FocusText?
-    @State var selectedImageDate: Data? = nil
+    @State var selectedImageData: Data? = nil
     @State var imageURL: URL? = nil
     
     // Wreck
@@ -23,6 +24,11 @@ struct AddUpdateWreck: View {
     @State var wreckType: WreckTypesEnum = .other
     @State var wreckCause: WreckCausesEnum = .unknown
     @State var wreckDive: Bool = false
+    @State var north: Bool = true
+    @State var west: Bool = true
+    @State var feets: Bool = true
+    
+    @State var error: String = ""
     
     enum FocusText {
         case title
@@ -35,7 +41,7 @@ struct AddUpdateWreck: View {
     var body: some View {
         ZStack {
             ScrollView(showsIndicators: false) {
-                PhotosPickerView(selectedImageData: $selectedImageDate, imageURL: $imageURL)
+                PhotosPickerView(selectedImageData: $selectedImageData, imageURL: $imageURL)
                     .padding(.top, 80)
                 VStack(spacing: 10) {
                     titleTextField
@@ -54,12 +60,13 @@ struct AddUpdateWreck: View {
                 VStack(spacing: 15) {
                     typeSelector
                     causeSelector
-                    Toggle("Open for wreck dive?", isOn: $wreckDive)
+                    Toggle("Wreck dive?", isOn: $wreckDive)
+                    formErrorText
                 }
                 .padding(.horizontal)
                 .padding(.leading)
                 addUpdateWreckButton
-                    .padding(.top, 20)
+                    .padding(.top)
                     .padding(.bottom, 20)
             }
             .background(.ultraThinMaterial)
@@ -76,6 +83,31 @@ struct AddUpdateWreck: View {
         }
         .foregroundColor(.purple)
     }
+}
+
+struct AddUpdateWreck_Previews: PreviewProvider {
+    static var previews: some View {
+        
+        // Init managers
+        let httpManager = HTTPRequestManager()
+        let dataCoder = JSONDataCoder()
+        
+        // Init services
+        let wrecksLoader = WrecksLoader(httpManager: httpManager, dataCoder: dataCoder)
+        let wrecksService = WrecksService(httpManager: httpManager, dataCoder: dataCoder)
+        let coreDataService = CoreDataService(dataCoder: dataCoder)
+        
+        // Init View model
+        let mapViewModel = MapViewModel(wreckLoader: wrecksLoader, wrecksService: wrecksService, coreDataService: coreDataService)
+        
+        AddUpdateWreck()
+            .environmentObject(mapViewModel)
+    }
+}
+
+    // MARK: - Variables
+
+extension AddUpdateWreck {
     
     var titleTextField: some View {
         TextField("Name of wreck", text: $wreckTitle)
@@ -91,42 +123,69 @@ struct AddUpdateWreck: View {
     }
     
     var latitude: some View {
-        TextField("Latitude", text: $wreckLatitude)
-            .padding()
-            .focused($selectedField, equals: .latitude)
-            .neonField(light: selectedField == .latitude ? true : false)
-            .onSubmit {
-                selectedField = .longitude
-            }
-            .onTapGesture {
-                selectedField = .latitude
-            }
+        HStack {
+            TextField("Latitude", text: $wreckLatitude)
+                .padding()
+                .focused($selectedField, equals: .latitude)
+                .neonField(light: selectedField == .latitude ? true : false)
+                .onSubmit {
+                    selectedField = .longitude
+                }
+                .onTapGesture {
+                    selectedField = .latitude
+                }
+            Text(north ? "N" : "S")
+                .frame(width: 20)
+                .padding()
+                .accentColorBorder()
+                .onTapGesture {
+                    north.toggle()
+                }
+        }
     }
     
     var longitude: some View {
-        TextField("Longitude", text: $wreckLongitude)
-            .padding()
-            .focused($selectedField, equals: .longitude)
-            .neonField(light: selectedField == .longitude ? true : false)
-            .onSubmit {
-                selectedField = .depth
-            }
-            .onTapGesture {
-                selectedField = .longitude
-            }
+        HStack {
+            TextField("Longitude", text: $wreckLongitude)
+                .padding()
+                .focused($selectedField, equals: .longitude)
+                .neonField(light: selectedField == .longitude ? true : false)
+                .onSubmit {
+                    selectedField = .depth
+                }
+                .onTapGesture {
+                    selectedField = .longitude
+                }
+            Text(west ? "W" : "E")
+                .frame(width: 20)
+                .padding()
+                .accentColorBorder()
+                .onTapGesture {
+                    west.toggle()
+                }
+        }
     }
     
     var depth: some View {
-        TextField("Depth", text: $wreckDepth)
-            .padding()
-            .focused($selectedField, equals: .depth)
-            .neonField(light: selectedField == .depth ? true : false)
-            .onSubmit {
-                selectedField = .info
+        HStack {
+            TextField("Depth", text: $wreckDepth)
+                .padding()
+                .focused($selectedField, equals: .depth)
+                .neonField(light: selectedField == .depth ? true : false)
+                .onSubmit {
+                    selectedField = .info
+                }
+                .onTapGesture {
+                    selectedField = .depth
             }
-            .onTapGesture {
-                selectedField = .depth
-            }
+            Text(feets ? "Feets" : "Metres")
+                .frame(width: 100)
+                .padding()
+                .accentColorBorder()
+                .onTapGesture {
+                    feets.toggle()
+                }
+        }
     }
     
     var typeSelector: some View {
@@ -135,7 +194,7 @@ struct AddUpdateWreck: View {
             Spacer()
             Picker("Wreck type", selection: $wreckType) {
                 ForEach(WreckTypesEnum.allCases) { option in
-                    Text(String(describing: option))
+                    Text(String(describing: option).capitalized)
                 }
             }
             .pickerStyle(.menu)
@@ -146,11 +205,11 @@ struct AddUpdateWreck: View {
     
     var causeSelector: some View {
         HStack {
-            Text("Type of wreck")
+            Text("Cause of wreck")
             Spacer()
             Picker("Wreck type", selection: $wreckCause) {
                 ForEach(WreckCausesEnum.allCases) { option in
-                    Text(String(describing: option))
+                    Text(String(describing: option).capitalized)
                 }
             }
             .pickerStyle(.menu)
@@ -171,9 +230,17 @@ struct AddUpdateWreck: View {
             .padding(.horizontal)
     }
     
+    var formErrorText: some View {
+        Text(error)
+            .font(.callout)
+            .glassyFont(textColor: .red)
+    }
+    
     var addUpdateWreckButton: some View {
         Button {
-            
+            if isFormValid {
+                createWreck()
+            }
         } label: {
             Text(wreckID == nil ? "Create wreck" : "Update wreck")
                 .padding()
@@ -183,12 +250,85 @@ struct AddUpdateWreck: View {
                 .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
                 .padding(.horizontal)
         }
-
     }
 }
 
-struct AddUpdateWreck_Previews: PreviewProvider {
-    static var previews: some View {
-        AddUpdateWreck()
+    // MARK: - Functions
+
+extension AddUpdateWreck {
+    
+    func clearForm() {
+        wreckID = nil
+        wreckTitle = ""
+        wreckLatitude = ""
+        wreckLongitude = ""
+        wreckDepth = ""
+        wreckInfo = ""
+        wreckType = WreckTypesEnum.other
+        wreckCause = WreckCausesEnum.unknown
+        wreckDive = false
+        imageURL = nil
+        selectedImageData = nil
+    }
+    
+    func showFormError(withText text: String) {
+        withAnimation(.easeInOut) {
+            error = text
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
+            withAnimation(.easeInOut) {
+                error = ""
+            }
+        }
+    }
+    
+    func createWreck() {
+        let wreckType = wreckType == .all ? WreckTypesEnum.other.rawValue : wreckType.rawValue
+        let latitudeValue = Double(wreckLatitude) ?? 0
+        let longitudeValue = Double(wreckLongitude) ?? 0
+        let depthValue = Double(wreckDepth) ?? 0
+        let newWreck = Wreck(cause: wreckCause.rawValue,
+                             type: wreckType,
+                             title: wreckTitle,
+                             depth: feets ? depthValue.feetsToMeters : depthValue,
+                             latitude: north ? latitudeValue : -latitudeValue,
+                             longitude: west ? longitudeValue : -longitudeValue,
+                             wreckDive: wreckDive)
+        Task {
+            do {
+                try await mapVM.create(newWreck)
+                DispatchQueue.main.async {
+                    withAnimation(.easeInOut) {
+                        clearForm()
+                        mapVM.showAddWreckView = false
+                    }
+                }
+            } catch let error {
+                print(error)
+            }
+        }
+    }
+}
+
+    // MARK: - Validation
+
+extension AddUpdateWreck {
+    
+    var isFormValid: Bool {
+        if !wreckTitle.isValidWreckName {
+            showFormError(withText: "The name must include at least 3 symbols.")
+            return false
+        } else if !wreckLatitude.isValidLatitude {
+            showFormError(withText: "Latitude error! Latitude ranges between 0 and 90 degrees (North or South).")
+            return false
+        } else if !wreckLongitude.isValidLongitude {
+            showFormError(withText: "Longitude error! Latitude ranges between 0 and 180 degrees (West or East).")
+            return false
+        } else if !wreckDepth.isValidDepth {
+            showFormError(withText: "Depth is incorrect.")
+            return false
+        } else {
+            return true
+        }
     }
 }

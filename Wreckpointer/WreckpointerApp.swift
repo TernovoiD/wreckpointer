@@ -20,11 +20,12 @@ struct WreckpointerApp: App {
         let dataCoder = JSONDataCoder()
         
         // Init services
-        let wreckService = WreckService(httpManager: httpManager, dataCoder: dataCoder)
+        let wrecksService = WrecksService(httpManager: httpManager, dataCoder: dataCoder)
+        let wreckLoader = WrecksLoader(httpManager: httpManager, dataCoder: dataCoder)
         let coreDataService = CoreDataService(dataCoder: dataCoder)
         let userService = UserService(authManager: authManager, httpManager: httpManager, dataCoder: dataCoder)
         
-        _mapVM = StateObject(wrappedValue: MapViewModel(wreckService: wreckService, coreDataService: coreDataService))
+        _mapVM = StateObject(wrappedValue: MapViewModel(wreckLoader: wreckLoader, wrecksService: wrecksService, coreDataService: coreDataService))
         _authVM = StateObject(wrappedValue: AuthenticationViewModel(userService: userService))
     }
     

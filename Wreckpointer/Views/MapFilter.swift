@@ -73,7 +73,7 @@ struct MapFilter: View {
     }
     
     var minimumDate: some View {
-        DatePicker("From", selection: $mapVM.minimumDate, in: ...mapVM.maximumDate, displayedComponents: .date)
+        DatePicker("From", selection: $mapVM.minimumDate, in: mapVM.minimumDate...mapVM.maximumDate, displayedComponents: .date)
             .datePickerStyle(.compact)
     }
     
@@ -91,11 +91,12 @@ struct MapFilter_Previews: PreviewProvider {
         let dataCoder = JSONDataCoder()
         
         // Init services
-        let wreckService = WreckService(httpManager: httpManager, dataCoder: dataCoder)
+        let wreckLoader = WrecksLoader(httpManager: httpManager, dataCoder: dataCoder)
+        let wrecksService = WrecksService(httpManager: httpManager, dataCoder: dataCoder)
         let coreDataService = CoreDataService(dataCoder: dataCoder)
         
         // Init View model
-        let mapViewModel = MapViewModel(wreckService: wreckService, coreDataService: coreDataService)
+        let mapViewModel = MapViewModel(wreckLoader: wreckLoader, wrecksService: wrecksService, coreDataService: coreDataService)
         
         ZStack {
             Color.clear
