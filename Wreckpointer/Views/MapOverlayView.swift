@@ -21,8 +21,6 @@ struct MapOverlayView: View {
             HStack(alignment: .top, spacing: 10) {
                 MapMenu()
                 StoriesButton()
-                MapFilterClearButton()
-                    .offset(x: mapVM.showWreckDivesOnly == true || mapVM.minimumDate != mapVM.minimumDateOfLossDate() || mapVM.maximumDate != mapVM.maximumDateOfLossDate() || mapVM.wreckType != .all ? 0 : 1000)
             }
             MapSettings()
             MapFilter()

@@ -12,34 +12,41 @@ struct StoriesButton: View {
     @EnvironmentObject var mapVM: MapViewModel
     
     var body: some View {
-        openStoriesButton
-            .frame(width: 35, height: 35)
-            .font(.headline)
-            .padding()
-            .accentColorBorder()
-            .onTapGesture {
-                withAnimation(.easeInOut) {
-                    mapVM.openSettings.toggle()
-                    mapVM.openMenu = false
-                    mapVM.openFilter = false
-                    mapVM.searchIsActive = false
+        ZStack {
+            openStoriesButton
+                .overlay(alignment: .topTrailing) {
+                    starIcon
+                        .offset(x: 5, y: -5)
                 }
-            }
+        }
     }
     
     var openStoriesButton: some View {
         Button {
             withAnimation(.easeInOut) {
+                mapVM.showCollectionsView = true
                 mapVM.openSettings = false
                 mapVM.openMenu = false
                 mapVM.openFilter = false
                 mapVM.searchIsActive = false
             }
         } label: {
-            Image(systemName: "text.book.closed")
-                .font(.title2)
-                .bold()
+            Text("Collections")
+                .frame(height: 35)
+                .font(.headline)
+                .padding()
+                .accentColorBorder()
         }
+    }
+    
+    var starIcon: some View {
+        Text("New!")
+            .font(.caption2)
+            .bold()
+            .padding(3)
+            .foregroundColor(.white)
+            .background(Color.red)
+            .clipShape(RoundedRectangle(cornerRadius: 5, style: .continuous))
     }
 }
 

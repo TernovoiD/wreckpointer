@@ -17,6 +17,7 @@ struct CloseButton: View {
                 dismissKeyboard()
                 mapVM.showLoginView = false
                 mapVM.showAddWreckView = false
+                mapVM.showCollectionsView = false
             }
         } label: {
             Image(systemName: "xmark")

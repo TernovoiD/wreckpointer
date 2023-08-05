@@ -117,7 +117,7 @@ struct AccountMenu: View {
             }
         } label: {
             HStack {
-                Image(systemName: "trash.square")
+                Image(systemName: "trash")
                     .frame(maxWidth: 20)
                 Text("Delete my account")
             }

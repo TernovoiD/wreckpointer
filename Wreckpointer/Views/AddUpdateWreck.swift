@@ -292,7 +292,7 @@ extension AddUpdateWreck {
                              title: wreckTitle,
                              depth: feets ? depthValue.feetsToMeters : depthValue,
                              latitude: north ? latitudeValue : -latitudeValue,
-                             longitude: west ? longitudeValue : -longitudeValue,
+                             longitude: west ? -longitudeValue : longitudeValue,
                              wreckDive: wreckDive)
         Task {
             do {
