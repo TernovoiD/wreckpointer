@@ -22,6 +22,10 @@ struct MapFilter: View {
                 wreckTypePicker
                 Divider()
                 Toggle("Wreck dives only", isOn: $mapVM.showWreckDivesOnly)
+                if mapVM.showWreckDivesOnly == true || mapVM.minimumDate != mapVM.minimumDateOfLossDate() || mapVM.maximumDate != mapVM.maximumDateOfLossDate() || mapVM.wreckType != .all {
+                    Divider()
+                    clearButton
+                }
             }
         }
         .font(.headline)
@@ -80,6 +84,25 @@ struct MapFilter: View {
     var maximumDate: some View {
         DatePicker("To", selection: $mapVM.maximumDate, in: mapVM.minimumDate...Date(), displayedComponents: .date)
             .datePickerStyle(.compact)
+    }
+    
+    var clearButton: some View {
+        Button {
+            withAnimation(.easeInOut) {
+                mapVM.showWreckDivesOnly = false
+                mapVM.minimumDate = mapVM.minimumDateOfLossDate()
+                mapVM.maximumDate = mapVM.maximumDateOfLossDate()
+                mapVM.wreckType = .all
+                mapVM.openFilter = false
+            }
+        } label: {
+            Text("Clear")
+                .frame(maxWidth: .infinity, alignment: .center)
+                .padding()
+                .foregroundColor(.white)
+                .background(Color.accentColor)
+                .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
+        }
     }
 }
 

@@ -23,11 +23,13 @@ struct PhotosPickerView: View {
                 .onChange(of: selectedImage) { newItem in
                     updateImage(with: newItem)
                 }
-            Text("Image must not exceed 1MB")
-                .font(.caption)
+            Text("Image size must not exceed 1MB")
+                .font(.caption2)
                 .padding(.bottom, 5)
+                .foregroundColor(.red)
             imageWeightCounter
         }
+        .foregroundColor(.accentColor)
         .padding()
     }
 }
@@ -75,7 +77,7 @@ extension PhotosPickerView {
     
     private var imageWeightCounter: some View {
         HStack {
-            Text("Image weight:")
+            Text("Image size:")
             Text("\(imageWeight / 1000000, specifier: "%.2F") MB")
             Spacer()
             if selectedImageData != nil {
@@ -92,7 +94,7 @@ extension PhotosPickerView {
                 .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
             }
         }
-        .font(.subheadline)
+        .font(.headline)
         .padding(.horizontal)
     }
     

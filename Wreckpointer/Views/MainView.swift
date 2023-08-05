@@ -11,6 +11,7 @@ struct MainView: View {
     
     @EnvironmentObject var mapVM: MapViewModel
     @EnvironmentObject var authVM: AuthenticationViewModel
+    @EnvironmentObject var collectionsVM: CollectionsViewModel
     
     @State var scale: Bool = false
     
@@ -18,7 +19,9 @@ struct MainView: View {
         ZStack {
             MapView()
             MapOverlayView()
-                .scaleEffect(mapVM.showLoginView || mapVM.showAddWreckView ? 0.9 : 1)
+                .scaleEffect(mapVM.showLoginView || mapVM.showAddWreckView || mapVM.showCollectionsView ? 0.9 : 1)
+            CollectionsView()
+                .offset(x: mapVM.showCollectionsView ? 0 : 1000)
             AddUpdateWreck()
                 .offset(x: mapVM.showAddWreckView ? 0 : 1000)
             AccountView()
@@ -40,13 +43,16 @@ struct MainView_Previews: PreviewProvider {
         let wrecksService = WrecksService(httpManager: httpManager, dataCoder: dataCoder)
         let coreDataService = CoreDataService(dataCoder: dataCoder)
         let userService = UserService(authManager: authManager, httpManager: httpManager, dataCoder: dataCoder)
-        
+        let collectionsService = CollectionsService(authManager: authManager, httpManager: httpManager, dataCoder: dataCoder)
+ 
         // Init View model
         let mapViewModel = MapViewModel(wreckLoader: wreckLoader, wrecksService: wrecksService, coreDataService: coreDataService)
         let authViewModel = AuthenticationViewModel(userService: userService)
+        let collectionsViewModel = CollectionsViewModel(collectionsService: collectionsService)
         
         MainView()
             .environmentObject(mapViewModel)
             .environmentObject(authViewModel)
+            .environmentObject(collectionsViewModel)
     }
 }

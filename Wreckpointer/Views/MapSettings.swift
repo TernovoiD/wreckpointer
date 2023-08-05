@@ -57,6 +57,7 @@ struct MapSettings: View {
             Text("This scale will be used to present selected wreck on map.")
                 .font(.caption)
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal)
         }
     }
 }

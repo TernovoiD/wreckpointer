@@ -125,10 +125,15 @@ struct ForgotPasswordView: View {
     var closeButton: some View {
         VStack {
             HStack {
-                CloseButton()
-                    .onTapGesture {
-                        selectedField = .none
-                    }
+                Button {
+                    dismiss()
+                    selectedField = .none
+                } label: {
+                    Label("Back", systemImage: "chevron.left")
+                        .padding()
+                        .accentColorBorder()
+                        .padding()
+                }
                 Spacer()
             }
             Spacer()

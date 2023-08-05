@@ -14,18 +14,23 @@ struct MapPinView: View {
     let wreck: Wreck
     
     var body: some View {
-        Image(systemName: "exclamationmark.triangle")
-            .padding(5)
-            .offset(y: -2)
-            .foregroundColor(.yellow)
-            .bold()
-            .background(Color.accentColor)
-            .clipShape(Circle())
-            .onTapGesture {
-                DispatchQueue.main.async {
-                    mapVM.mapSelectedWreck = wreck
+        VStack(spacing: 0) {
+            Text(wreck.title)
+                .bold()
+                .foregroundColor(.white)
+            Image(systemName: "exclamationmark.triangle")
+                .padding(5)
+                .offset(y: -2)
+                .foregroundColor(.yellow)
+                .bold()
+                .background(Color.accentColor)
+                .clipShape(Circle())
+                .onTapGesture {
+                    DispatchQueue.main.async {
+                        mapVM.mapSelectedWreck = wreck
+                    }
                 }
-            }
+        }
     }
 }
 

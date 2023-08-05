@@ -10,6 +10,7 @@ import MapKit
 class MapViewModel: ObservableObject {
     
     @Published var mapWrecks: [Wreck] = []
+    @Published var filteredWrecks: [Wreck] = []
     @Published var mapSelectedWreck: Wreck?
     
     // Map Overlay
@@ -25,16 +26,16 @@ class MapViewModel: ObservableObject {
         case .small:
             return 0.33
         case .middle:
-            return 1.5
+            return 1
         case .large:
-            return 3
+            return 2
         }
     }
     
     // Interface
     @Published var showLoginView: Bool = false
     @Published var showAddWreckView: Bool = false
-    @Published var showStoriesView: Bool = false
+    @Published var showCollectionsView: Bool = false
     
     // Filter
     @Published var searchIsActive: Bool = false
@@ -52,8 +53,6 @@ class MapViewModel: ObservableObject {
         self.wreckLoader = wreckLoader
         self.wrecksService = wrecksService
         self.coreDataService = coreDataService
-        downloadWrecks()
-        updateWrecks()
     }
 }
 
@@ -72,7 +71,7 @@ extension MapViewModel {
             let text: String = textToSearch.lowercased()
             filteredWrecks = filteredWrecks.filter({ $0.title.lowercased().contains(text)})
         }
-        if minimumDate != minimumDateOfLossDate() {
+        if !Calendar.current.isDate(minimumDate, equalTo: minimumDateOfLossDate(), toGranularity: .second) {
             filteredWrecks = filteredWrecks.filter({
                 if let dateOfLoss = $0.dateOfLoss {
                     return dateOfLoss >= minimumDate
@@ -81,26 +80,44 @@ extension MapViewModel {
                 }
             })
         }
-        if maximumDate != maximumDateOfLossDate() {
-            
+        if !Calendar.current.isDate(maximumDate, equalTo: maximumDateOfLossDate(), toGranularity: .second) {
+            filteredWrecks = filteredWrecks.filter({
+                if let dateOfLoss = $0.dateOfLoss {
+                    return dateOfLoss <= maximumDate
+                } else {
+                    return false
+                }
+            })
         }
         return filteredWrecks
     }
     
     func minimumDateOfLossDate() -> Date {
         var datesArray: [Date] = [ ]
-        for wreck in mapWrecks {
-            datesArray.append(wreck.dateOfLoss ?? Date())
+        let wrecks = mapWrecks.filter({ $0.dateOfLoss != nil })
+        
+        if wrecks.isEmpty {
+            return minimumDate
+        } else {
+            for wreck in mapWrecks {
+                datesArray.append(wreck.dateOfLoss ?? Date())
+            }
+            return datesArray.min() ?? minimumDate
         }
-        return datesArray.min() ?? Date()
     }
     
     func maximumDateOfLossDate() -> Date {
         var datesArray: [Date] = [ ]
-        for wreck in mapWrecks {
-            datesArray.append(wreck.dateOfLoss ?? Date())
+        let wrecks = mapWrecks.filter({ $0.dateOfLoss != nil })
+        
+        if wrecks.isEmpty {
+            return maximumDate
+        } else {
+            for wreck in mapWrecks {
+                datesArray.append(wreck.dateOfLoss ?? Date())
+            }
+            return datesArray.min() ?? maximumDate
         }
-        return datesArray.max() ?? Date()
     }
 }
 
@@ -112,61 +129,43 @@ extension MapViewModel {
     func create(_ wreck: Wreck) async throws {
         let createdWreck = try await wrecksService.createWreck(wreck)
         try coreDataService.addWreck(createdWreck)
-        updateWrecks()
+        mapWrecks.append(createdWreck)
     }
     
     func update(_ wreck: Wreck) async throws {
         let updatedWreck = try await wrecksService.updateWreck(wreck)
         try coreDataService.addWreck(updatedWreck)
-        updateWrecks()
+        if let index = mapWrecks.firstIndex(where: { $0.id == updatedWreck.id }) {
+            mapWrecks.remove(at: index)
+            mapWrecks.append(updatedWreck)
+        }
     }
     
     func delete(_ wreck: Wreck) async throws {
         try await wrecksService.deleteWreck(wreck)
         try coreDataService.deleteWreck(wreck: wreck)
-        updateWrecks()
-    }
-    
-    private func downloadWrecks() {
-        Task {
-            do {
-                let coreDataWrecks = try coreDataService.fetchWrecks()
-                if coreDataWrecks.isEmpty {
-                    let loadedWrecks = try await wreckLoader.downloadWrecksFromServer()
-                    DispatchQueue.main.async {
-                        self.mapWrecks = loadedWrecks
-                        self.minimumDate = self.minimumDateOfLossDate()
-                        self.maximumDate = self.maximumDateOfLossDate()
-                    }
-                    try coreDataService.addWrecks(loadedWrecks)
-                } else {
-                    DispatchQueue.main.async {
-                        self.mapWrecks = coreDataWrecks
-                        self.minimumDate = self.minimumDateOfLossDate()
-                        self.maximumDate = self.maximumDateOfLossDate()
-                    }
-                }
-            } catch let error {
-                print(error)
-            }
+        if let index = mapWrecks.firstIndex(where: { $0.id == wreck.id }) {
+            mapWrecks.remove(at: index)
         }
     }
     
-    func updateWrecks() {
-        Task {
-            do {
-                let lastUpdateTime = try coreDataService.lastUpdateTime()
-                let updatedWrecks = try await wreckLoader.requestUpdatedWrecks(fromDate: lastUpdateTime)
-                try coreDataService.addWrecks(updatedWrecks)
-                let coreDataWrecks = try coreDataService.fetchWrecks()
-                DispatchQueue.main.async {
-                    self.mapWrecks = coreDataWrecks
-                    self.minimumDate = self.minimumDateOfLossDate()
-                    self.maximumDate = self.maximumDateOfLossDate()
-                }
-            } catch let error {
-                print(error)
-            }
+    func loadWrecksFromServer() async throws {
+        let loadedWrecks = try await wreckLoader.downloadWrecksFromServer()
+        try coreDataService.deleteWrecks()
+        try coreDataService.addWrecks(loadedWrecks)
+        updateMap(withWrecks: loadedWrecks)
+    }
+    
+    func loadWrecksFromCoreData() throws {
+        let loadedWrecks = try coreDataService.fetchWrecks()
+        updateMap(withWrecks: loadedWrecks)
+    }
+    
+    func updateMap(withWrecks wrecks: [Wreck]) {
+        DispatchQueue.main.async {
+            self.mapWrecks = wrecks
+            self.minimumDate = self.minimumDateOfLossDate()
+            self.maximumDate = self.maximumDateOfLossDate()
         }
     }
 }

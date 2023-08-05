@@ -20,6 +20,14 @@ struct MapView: View {
                 MapPinView(wreck: wreck)
             }
         }
+        .task {
+            do {
+                try await mapVM.loadWrecksFromServer()
+            } catch let error {
+                loadWrecksFromMemory()
+                print(error)
+            }
+        }
         .ignoresSafeArea()
         .onTapGesture {
             withAnimation(.spring()) {
@@ -29,6 +37,12 @@ struct MapView: View {
                 mapVM.openFilter = false
             }
         }
+//        .onChange(of: mapVM.mapWrecks) { newValue in
+//            mapVM.minimumDate = mapVM.minimumDateOfLossDate()
+//            mapVM.maximumDate = mapVM.maximumDateOfLossDate()
+//            print(mapVM.minimumDateOfLossDate())
+//            print(mapVM.maximumDateOfLossDate())
+//        }
         .onChange(of: mapVM.mapScale) { newValue in
             withAnimation(.easeInOut) {
                 adjustMap()
@@ -47,21 +61,6 @@ struct MapView: View {
                 showWreck(wreck)
             }
         }
-    }
-    
-    func showWreck(_ wreck: Wreck) {
-        let mapSpan = mapVM.mapSpan()
-        let mapCoordinateSpan = MKCoordinateSpan(latitudeDelta: mapSpan, longitudeDelta: mapSpan)
-        let mapCoordinate2D = CLLocationCoordinate2D(latitude: wreck.latitude, longitude: wreck.longitude)
-        withAnimation(.easeInOut) {
-            mapRegion = MKCoordinateRegion(center: mapCoordinate2D, span: mapCoordinateSpan)
-        }
-    }
-    
-    func adjustMap() {
-        let mapSpan = mapVM.mapSpan()
-        let mapCoordinateSpan = MKCoordinateSpan(latitudeDelta: mapSpan, longitudeDelta: mapSpan)
-        mapRegion.span = mapCoordinateSpan
     }
 }
 
@@ -82,5 +81,34 @@ struct MapView_Previews: PreviewProvider {
         
         MapView()
             .environmentObject(mapViewModel)
+    }
+}
+
+
+// MARK: - Functions
+
+extension MapView {
+    
+    func showWreck(_ wreck: Wreck) {
+        let mapSpan = mapVM.mapSpan()
+        let mapCoordinateSpan = MKCoordinateSpan(latitudeDelta: mapSpan, longitudeDelta: mapSpan)
+        let mapCoordinate2D = CLLocationCoordinate2D(latitude: wreck.latitude, longitude: wreck.longitude)
+        withAnimation(.easeInOut) {
+            mapRegion = MKCoordinateRegion(center: mapCoordinate2D, span: mapCoordinateSpan)
+        }
+    }
+    
+    func adjustMap() {
+        let mapSpan = mapVM.mapSpan()
+        let mapCoordinateSpan = MKCoordinateSpan(latitudeDelta: mapSpan, longitudeDelta: mapSpan)
+        mapRegion.span = mapCoordinateSpan
+    }
+    
+    func loadWrecksFromMemory() {
+        do {
+            try mapVM.loadWrecksFromCoreData()
+        } catch let error {
+            print(error)
+        }
     }
 }
