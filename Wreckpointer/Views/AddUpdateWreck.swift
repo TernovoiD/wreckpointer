@@ -12,7 +12,6 @@ struct AddUpdateWreck: View {
     @EnvironmentObject var mapVM: MapViewModel
     @FocusState var selectedField: FocusText?
     @State var selectedImageData: Data? = nil
-    @State var imageURL: URL? = nil
     
     // Wreck
     @State var wreckID: UUID?
@@ -41,7 +40,7 @@ struct AddUpdateWreck: View {
     var body: some View {
         ZStack {
             ScrollView(showsIndicators: false) {
-                PhotosPickerView(selectedImageData: $selectedImageData, imageURL: $imageURL)
+                PhotosPickerView(selectedImageData: $selectedImageData)
                     .padding(.top, 80)
                 VStack(spacing: 10) {
                     titleTextField
@@ -69,7 +68,7 @@ struct AddUpdateWreck: View {
                     .padding(.top)
                     .padding(.bottom, 20)
             }
-            .background(.ultraThinMaterial)
+//            .background(Color.clear)
             .onTapGesture {
                 selectedField = .none
             }
@@ -267,7 +266,6 @@ extension AddUpdateWreck {
         wreckType = WreckTypesEnum.other
         wreckCause = WreckCausesEnum.unknown
         wreckDive = false
-        imageURL = nil
         selectedImageData = nil
     }
     

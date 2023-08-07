@@ -9,12 +9,21 @@ import SwiftUI
 
 struct CollectionBlockView: View {
     
-    let block: Block
+    @EnvironmentObject var collectionsVM: CollectionsViewModel
+    @Binding var collection: Collection
+    @Binding var block: Block
     
     var body: some View {
         VStack {
             blockImage
-                .padding(.top, 50)
+                .contextMenu {
+                    Button(role: .destructive) {
+                        delete(block: block)
+                    } label: {
+                        Label("Delete block", systemImage: "trash.circle")
+                    }
+                }
+                .padding(.top, 20)
             blockDescription
             if let _ = block.wreckID {
                 HStack(alignment: .center) {
@@ -36,15 +45,11 @@ struct CollectionBlockView: View {
                 .frame(maxHeight: 60)
                 .background(Color.gray.opacity(0.3))
             }
-            Divider()
         }
     }
     
     var blockImage: some View {
-        Image("battleship.logo")
-            .resizable()
-            .aspectRatio(1, contentMode: .fit)
-            .frame(maxWidth: 450)
+        ImageView(imageData: $block.image)
             .overlay(alignment: .bottom) {
                 HStack {
                     if let number = block.number {
@@ -60,10 +65,24 @@ struct CollectionBlockView: View {
                 .frame(maxWidth: .infinity)
                 .background(.ultraThinMaterial)
             }
+            .overlay(alignment: .top) {
+                NavigationLink {
+                    AddUpdateBlockView(originalCollection: $collection, block: block)
+                } label: {
+                    Label("Edit", systemImage: "pencil.circle")
+                        .foregroundColor(.yellow)
+                }
+                .font(.title)
+                .bold()
+                .padding(.horizontal)
+                .glassyFont(textColor: .white)
+                .frame(maxWidth: .infinity, alignment: .trailing)
+                .background(.ultraThinMaterial)
+            }
     }
     
     var blockDescription: some View {
-        Text(block.description ?? "No information")
+        Text(block.description)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal)
     }
@@ -71,6 +90,7 @@ struct CollectionBlockView: View {
 
 struct CollectionBlockView_Previews: PreviewProvider {
     static var previews: some View {
+        let collection = Collection(title: "Empty", description: "", blocks: [ ])
         let block = Block(id: "block1",
                           title: "Titanic",
                           number: 1,
@@ -79,6 +99,39 @@ struct CollectionBlockView_Previews: PreviewProvider {
                           image: nil,
                           createdAt: Date(),
                           updatedAt: Date())
-        CollectionBlockView(block: block)
+        
+        // Init managers
+        let authManager = AuthorizationManager()
+        let httpManager = HTTPRequestManager()
+        let dataCoder = JSONDataCoder()
+        
+        // Init services
+        let collectionsService = CollectionsService(authManager: authManager, httpManager: httpManager, dataCoder: dataCoder)
+ 
+        // Init View model
+        let collectionsViewModel = CollectionsViewModel(collectionsService: collectionsService)
+        
+        CollectionBlockView(collection: .constant(collection), block: .constant(block))
+            .environmentObject(collectionsViewModel)
+    }
+}
+
+
+// MARK: - Functions
+
+extension CollectionBlockView {
+    func delete(block: Block) {
+        Task {
+            do {
+                try await collectionsVM.removeBlock(block, fromCollection: collection)
+                if let index = collection.blocks.firstIndex(where: { $0.id == block.id }) {
+                    DispatchQueue.main.async {
+                        collection.blocks.remove(at: index)
+                    }
+                }
+            } catch let error {
+                print(error)
+            }
+        }
     }
 }

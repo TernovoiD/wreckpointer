@@ -9,27 +9,41 @@ import SwiftUI
 
 struct CollectionDetailedView: View {
     
-    let collection: Collection
+    @State var collection: Collection
+    let emptyBlock = Block(title: "", description: "")
     
     var body: some View {
         ScrollView(showsIndicators: false) {
             collectionImage
             collectionTitle
-            Text(collection.description ?? "No information")
+            Text(collection.description)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal)
-            Divider()
-            ForEach(collection.blocks) { block in
-                CollectionBlockView(block: block)
+            ForEach($collection.blocks) { $block in
+                CollectionBlockView(collection: $collection, block: $block)
+            }
+            NavigationLink {
+                AddUpdateBlockView(originalCollection: $collection, block: emptyBlock)
+            } label: {
+                Label("Add block", systemImage: "plus")
+                    .font(.headline)
+                    .padding()
+                    .foregroundColor(.accentColor)
+                    .background(RoundedRectangle(cornerRadius: 15, style: .continuous).stroke())
             }
         }
+        .toolbar(content: {
+            ToolbarItem(placement: .confirmationAction) {
+                NavigationLink("Update") {
+                    AddUpdateCollection(originalCollection: $collection, collection: collection)
+                }
+            }
+        })
         .navigationBarTitleDisplayMode(.inline)
     }
     
     var collectionImage: some View {
-        Image("battleship.logo")
-            .resizable()
-            .aspectRatio(1, contentMode: .fit)
+        ImageView(imageData: $collection.image)
             .frame(maxHeight: 450)
             .background(Color.gray.opacity(0.4))
     }

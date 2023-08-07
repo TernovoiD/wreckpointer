@@ -13,7 +13,7 @@ struct PhotosPickerView: View {
     @State var imageWeight: Double = 0
     
     @Binding var selectedImageData: Data?
-    @Binding var imageURL: URL?
+//    @Binding var imageURL: URL?
     
     
     var body: some View {
@@ -38,7 +38,7 @@ struct PhotosPickerView: View {
 
 struct PhotosPickerView_Previews: PreviewProvider {
     static var previews: some View {
-        PhotosPickerView(selectedImageData: .constant(nil), imageURL: .constant(nil))
+        PhotosPickerView(selectedImageData: .constant(nil))
     }
 }
 
@@ -63,7 +63,16 @@ extension PhotosPickerView {
     private var photosPicker: some View {
         PhotosPicker(selection: $selectedImage, photoLibrary: .shared()) {
             if selectedImageData == nil {
-                loadedImage
+                Color.gray.opacity(0.2)
+                    .frame(height: 250)
+                    .overlay {
+                        Text("Add image")
+                            .font(.title)
+                            .foregroundColor(.white)
+                            .padding()
+                            .background(.ultraThinMaterial)
+                            .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
+                    }
             } else {
                 if let selectedImageData,
                    let uiImage = UIImage(data: selectedImageData) {
@@ -98,22 +107,22 @@ extension PhotosPickerView {
         .padding(.horizontal)
     }
     
-    private var loadedImage: some View {
-        AsyncImage(url: imageURL) { image in
-            image
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-        } placeholder: {
-            Color.gray.opacity(0.2)
-                .frame(height: 250)
-                .overlay {
-                    Text("Add image")
-                        .font(.title)
-                        .foregroundColor(.white)
-                        .padding()
-                        .background(.ultraThinMaterial)
-                        .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
-                }
-        }
-    }
+//    private var loadedImage: some View {
+//        AsyncImage(url: imageURL) { image in
+//            image
+//                .resizable()
+//                .aspectRatio(contentMode: .fit)
+//        } placeholder: {
+//            Color.gray.opacity(0.2)
+//                .frame(height: 250)
+//                .overlay {
+//                    Text("Add image")
+//                        .font(.title)
+//                        .foregroundColor(.white)
+//                        .padding()
+//                        .background(.ultraThinMaterial)
+//                        .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
+//                }
+//        }
+//    }
 }

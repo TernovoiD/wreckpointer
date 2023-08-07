@@ -11,6 +11,7 @@ struct CollectionsView: View {
     
     @EnvironmentObject var mapVM: MapViewModel
     @EnvironmentObject var collectionsVM: CollectionsViewModel
+    @State var blankCollection: Collection = Collection(title: "", description: "", blocks: [])
 
     var body: some View {
         NavigationView {
@@ -42,12 +43,14 @@ struct CollectionsView: View {
                 } label: {
                     CollectionView(collection: collection)
                 }
-            }
-            .onDelete(perform: { indexSet in
-                for index in indexSet {
-                    deleteCollection(withIndex: index)
+                .contextMenu {
+                    Button(role: .destructive) {
+                        delete(collection: collection)
+                    } label: {
+                        Label("Delete", systemImage: "trash.circle")
+                    }
                 }
-            })
+            }
             .listRowSeparator(.hidden)
             .listRowBackground(Color.clear)
         }
@@ -70,7 +73,7 @@ struct CollectionsView: View {
     
     var createCollectionButton: some View {
         NavigationLink {
-            AddUpdateCollection()
+            AddUpdateCollection(originalCollection: $blankCollection, collection: blankCollection)
         } label: {
             HStack {
                 Text("Create")
@@ -110,13 +113,11 @@ struct CollectionsView_Previews: PreviewProvider {
 
 extension CollectionsView {
     
-    private func deleteCollection(withIndex index: Int) {
+    private func delete(collection: Collection) {
         Task {
             do {
-                print(collectionsVM.collections)
-                let collection = collectionsVM.collections[index]
                 try await collectionsVM.delete(collection: collection)
-                collectionsVM.collections.remove(at: index)
+                collectionsVM.collections.removeAll(where: { $0.id == collection.id })
             } catch let error {
                 print(error)
             }

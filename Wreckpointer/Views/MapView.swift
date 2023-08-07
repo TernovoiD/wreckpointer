@@ -11,6 +11,7 @@ import MapKit
 struct MapView: View {
     
     @EnvironmentObject var mapVM: MapViewModel
+    @AppStorage("saveWrecks") var saveWrecks: Bool = true
     @State var mapRegion: MKCoordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 30.5, longitude: 0), span: MKCoordinateSpan(latitudeDelta: 50, longitudeDelta: 50))
     
     var body: some View {
@@ -20,14 +21,7 @@ struct MapView: View {
                 MapPinView(wreck: wreck)
             }
         }
-        .task {
-            do {
-                try await mapVM.loadWrecksFromServer()
-            } catch let error {
-                loadWrecksFromMemory()
-                print(error)
-            }
-        }
+        .task { await loadWrecksFromServer() }
         .ignoresSafeArea()
         .onTapGesture {
             withAnimation(.spring()) {
@@ -37,12 +31,9 @@ struct MapView: View {
                 mapVM.openFilter = false
             }
         }
-//        .onChange(of: mapVM.mapWrecks) { newValue in
-//            mapVM.minimumDate = mapVM.minimumDateOfLossDate()
-//            mapVM.maximumDate = mapVM.maximumDateOfLossDate()
-//            print(mapVM.minimumDateOfLossDate())
-//            print(mapVM.maximumDateOfLossDate())
-//        }
+        .onChange(of: saveWrecks, perform: { newValue in
+            toggleSaveRules(newRule: newValue)
+        })
         .onChange(of: mapVM.mapScale) { newValue in
             withAnimation(.easeInOut) {
                 adjustMap()
@@ -55,12 +46,12 @@ struct MapView: View {
                 }
             }
         }
-        .onChange(of: mapVM.textToSearch) { text in
-            guard !text.isEmpty else { return }
-            if let wreck = mapVM.wrecksFilterdBySearch().first {
-                showWreck(wreck)
-            }
-        }
+//        .onChange(of: mapVM.textToSearch) { text in
+//            guard !text.isEmpty else { return }
+//            if let wreck = mapVM.wrecksFilterdBySearch().first {
+//                showWreck(wreck)
+//            }
+//        }
     }
 }
 
@@ -89,7 +80,7 @@ struct MapView_Previews: PreviewProvider {
 
 extension MapView {
     
-    func showWreck(_ wreck: Wreck) {
+    private func showWreck(_ wreck: Wreck) {
         let mapSpan = mapVM.mapSpan()
         let mapCoordinateSpan = MKCoordinateSpan(latitudeDelta: mapSpan, longitudeDelta: mapSpan)
         let mapCoordinate2D = CLLocationCoordinate2D(latitude: wreck.latitude, longitude: wreck.longitude)
@@ -98,17 +89,39 @@ extension MapView {
         }
     }
     
-    func adjustMap() {
+    private func adjustMap() {
         let mapSpan = mapVM.mapSpan()
         let mapCoordinateSpan = MKCoordinateSpan(latitudeDelta: mapSpan, longitudeDelta: mapSpan)
         mapRegion.span = mapCoordinateSpan
     }
     
-    func loadWrecksFromMemory() {
+    private func loadWrecksFromMemory() {
         do {
             try mapVM.loadWrecksFromCoreData()
         } catch let error {
             print(error)
+        }
+    }
+    
+    private func loadWrecksFromServer() async {
+        do {
+            try await mapVM.loadWrecksFromServer()
+        } catch let error {
+            loadWrecksFromMemory()
+            print(error)
+        }
+    }
+    
+    private func toggleSaveRules(newRule: Bool) {
+        switch newRule {
+        case true:
+            Task { await loadWrecksFromServer() }
+        case false:
+            do {
+                try mapVM.deleteWrecksFromMemory()
+            } catch let error {
+                print(error)
+            }
         }
     }
 }

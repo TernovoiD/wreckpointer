@@ -10,6 +10,7 @@ import SwiftUI
 struct MapSettings: View {
     
     @EnvironmentObject var mapVM: MapViewModel
+    @AppStorage("saveWrecks") var saveWrecks: Bool = true
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -17,6 +18,9 @@ struct MapSettings: View {
             if mapVM.openSettings {
                 Divider()
                 mapSpanPicker
+                Divider()
+                wrecksSaveToggle
+                Divider()
             }
         }
         .font(.headline)
@@ -48,13 +52,26 @@ struct MapSettings: View {
     var mapSpanPicker: some View {
         VStack {
             Text("Map scale")
-                Picker("Map scale", selection: $mapVM.mapScale) {
-                    ForEach(mapScales.allCases) { option in
-                        Text(String(describing: option).capitalized)
-                    }
+            Picker("Map scale", selection: $mapVM.mapScale) {
+                ForEach(mapScales.allCases) { option in
+                    Text(String(describing: option).capitalized)
                 }
-                .pickerStyle(.segmented)
+            }
+            .pickerStyle(.segmented)
             Text("This scale will be used to present selected wreck on map.")
+                .font(.caption)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal)
+        }
+    }
+    
+    var wrecksSaveToggle: some View {
+        VStack {
+            Toggle(isOn: $saveWrecks) {
+                Text("Save wrecks in memory")
+                    .padding(.leading)
+            }
+            Text("Saving wrecks in memory allows to see them in offline mode.")
                 .font(.caption)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal)

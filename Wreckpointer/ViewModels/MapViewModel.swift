@@ -5,6 +5,7 @@
 //  Created by Danylo Ternovoi on 31.03.2023.
 //
 
+import SwiftUI
 import MapKit
 
 class MapViewModel: ObservableObject {
@@ -20,6 +21,7 @@ class MapViewModel: ObservableObject {
     
     // Map settings
     @Published var mapScale: mapScales = .large
+    @AppStorage("saveWrecks") var saveWrecks: Bool = true
     
     func mapSpan() -> Double {
         switch mapScale {
@@ -64,9 +66,6 @@ extension MapViewModel {
     func wrecksFilterdBySearch() -> [Wreck] {
         var filteredWrecks = mapWrecks
         
-        if showWreckDivesOnly {
-            filteredWrecks = filteredWrecks.filter({ $0.wreckDive })
-        }
         if !textToSearch.isEmpty {
             let text: String = textToSearch.lowercased()
             filteredWrecks = filteredWrecks.filter({ $0.title.lowercased().contains(text)})
@@ -88,6 +87,12 @@ extension MapViewModel {
                     return false
                 }
             })
+        }
+        if showWreckDivesOnly {
+            filteredWrecks = filteredWrecks.filter({ $0.wreckDive })
+        }
+        if wreckType != .all {
+            filteredWrecks = filteredWrecks.filter({ $0.type == wreckType.rawValue })
         }
         return filteredWrecks
     }
@@ -128,13 +133,17 @@ extension MapViewModel {
     
     func create(_ wreck: Wreck) async throws {
         let createdWreck = try await wrecksService.createWreck(wreck)
-        try coreDataService.addWreck(createdWreck)
+        if saveWrecks {
+            try coreDataService.addWreck(createdWreck)
+        }
         mapWrecks.append(createdWreck)
     }
     
     func update(_ wreck: Wreck) async throws {
         let updatedWreck = try await wrecksService.updateWreck(wreck)
-        try coreDataService.addWreck(updatedWreck)
+        if saveWrecks {
+            try coreDataService.addWreck(updatedWreck)
+        }
         if let index = mapWrecks.firstIndex(where: { $0.id == updatedWreck.id }) {
             mapWrecks.remove(at: index)
             mapWrecks.append(updatedWreck)
@@ -151,8 +160,10 @@ extension MapViewModel {
     
     func loadWrecksFromServer() async throws {
         let loadedWrecks = try await wreckLoader.downloadWrecksFromServer()
-        try coreDataService.deleteWrecks()
-        try coreDataService.addWrecks(loadedWrecks)
+        if saveWrecks {
+            try coreDataService.deleteWrecks()
+            try coreDataService.addWrecks(loadedWrecks)
+        }
         updateMap(withWrecks: loadedWrecks)
     }
     
@@ -167,5 +178,9 @@ extension MapViewModel {
             self.minimumDate = self.minimumDateOfLossDate()
             self.maximumDate = self.maximumDateOfLossDate()
         }
+    }
+    
+    func deleteWrecksFromMemory() throws {
+        try coreDataService.deleteWrecks()
     }
 }

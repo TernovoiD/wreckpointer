@@ -9,17 +9,11 @@ import SwiftUI
 
 struct AddUpdateBlockView: View {
     
+    @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var collectionVM: CollectionsViewModel
     @FocusState var selectedField: FocusText?
-    @State var selectedImageData: Data? = nil
-    @State var imageURL: URL? = nil
-    
-    // Block
-    @State var blockID: UUID?
-    @State var blockTitle: String = ""
-    @State var blockDescription: String = ""
-    @State var wreck: Wreck?
-    
+    @Binding var originalCollection: Collection
+    @State var block: Block
     @State var error: String = ""
     
     enum FocusText {
@@ -29,7 +23,7 @@ struct AddUpdateBlockView: View {
     
     var body: some View {
         ScrollView {
-            PhotosPickerView(selectedImageData: $selectedImageData, imageURL: $imageURL)
+            PhotosPickerView(selectedImageData: $block.image)
             titleTextField
                 .padding(.horizontal)
             Text("Description:")
@@ -39,18 +33,29 @@ struct AddUpdateBlockView: View {
                 .padding(.horizontal)
                 .padding(.top, 10)
             descriptionTextEditor
-            NavigationLink {
-                WrecksListView(selectedWreck: $wreck)
-            } label: {
-                wreckPanel
-            }
-
         }
+        .toolbar(content: {
+            ToolbarItem {
+                Button {
+                    if !block.title.isEmpty {
+                        if block.id == nil {
+                            create(block: block)
+                        } else {
+                            update(block: block)
+                        }
+                    }
+                } label: {
+                    Text("Save")
+                        .bold()
+                }
+
+            }
+        })
         .navigationTitle("Block")
     }
     
     var titleTextField: some View {
-        TextField("Block name", text: $blockTitle)
+        TextField("Block name", text: $block.title)
             .padding()
             .focused($selectedField, equals: .title)
             .neonField(light: selectedField == .title ? true : false)
@@ -63,7 +68,7 @@ struct AddUpdateBlockView: View {
     }
     
     var descriptionTextEditor: some View {
-        TextEditor(text: $blockDescription)
+        TextEditor(text: $block.description)
             .frame(height: 200)
             .mask(RoundedRectangle(cornerRadius: 15, style: .continuous))
             .padding(3)
@@ -73,30 +78,6 @@ struct AddUpdateBlockView: View {
                 selectedField = .none
             }
             .padding(.horizontal)
-    }
-    
-    var wreckPanel: some View {
-        HStack(alignment: .center) {
-            Image(systemName: "mappin.square")
-                .resizable()
-                .aspectRatio(1, contentMode: .fit)
-                .frame(maxWidth: 50, maxHeight: 50)
-                .clipShape(RoundedRectangle(cornerRadius: 7, style: .continuous))
-            VStack(alignment: .leading, spacing: 0) {
-                Text(wreck?.title ?? "No wreck selected")
-                if wreck != nil {
-                    Text("Date of loss: " + (wreck?.dateOfLoss?.formatted() ?? "unknown"))
-                }
-            }
-            Spacer()
-            Image(systemName: "chevron.right")
-                .resizable()
-                .aspectRatio(0.5, contentMode: .fit)
-                .frame(maxHeight: 30)
-                .foregroundColor(.accentColor)
-        }
-        .padding()
-        .background(Color.gray.opacity(0.2))
     }
 }
 
@@ -114,7 +95,50 @@ struct AddUpdateBlockView_Previews: PreviewProvider {
         // Init View model
         let collectionsViewModel = CollectionsViewModel(collectionsService: collectionsService)
         
-        AddUpdateBlockView()
+        let collection = Collection(title: "Blank collection", description: "", blocks: [ ])
+        let block = Block(title: "Blank", description: "")
+        
+        AddUpdateBlockView(originalCollection: .constant(collection), block: block)
             .environmentObject(collectionsViewModel)
+    }
+}
+
+
+// MARK: - Functions
+
+extension AddUpdateBlockView {
+    
+    func create(block: Block) {
+        Task {
+            do {
+                let createdBlock = try await collectionVM.addBlock(block, toCollection: originalCollection)
+                
+                DispatchQueue.main.async {
+                    originalCollection.blocks.append(createdBlock)
+                    dismiss()
+                }
+            } catch let error {
+                print(error)
+            }
+        }
+    }
+    
+    func update(block: Block) {
+        Task {
+            do {
+                let updatedBlock = try await collectionVM.updateBlock(block, inCollection: originalCollection)
+                
+                if let index = originalCollection.blocks.firstIndex(where: { $0.id == block.id }) {
+                    DispatchQueue.main.async {
+                        originalCollection.blocks[index].title = updatedBlock.title
+                        originalCollection.blocks[index].description = updatedBlock.description
+                        originalCollection.blocks[index].image = updatedBlock.image
+                    }
+                }
+                dismiss()
+            } catch let error {
+                print(error)
+            }
+        }
     }
 }

@@ -42,7 +42,7 @@ class CollectionsService {
         guard let url = URL(string: BaseRoutes.baseURL + Endpoints.collections + "/" + collectionID) else {
             throw HTTPError.badURL
         }
-        let data = try await httpManager.sendRequest(toURL: url, withData: encodedCollectionData, withHTTPMethod: HTTPMethods.POST.rawValue)
+        let data = try await httpManager.sendRequest(toURL: url, withData: encodedCollectionData, withHTTPMethod: HTTPMethods.PATCH.rawValue)
         let updatedCollection = try dataCoder.decodeItemFromData(data: data) as Collection
         return updatedCollection
     }
