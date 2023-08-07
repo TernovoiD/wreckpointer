@@ -10,17 +10,10 @@ import SwiftUI
 struct AddUpdateCollection: View {
     
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject var collectionVM: CollectionsViewModel
+    @EnvironmentObject var collectionsVM: CollectionsViewModel
     @FocusState var selectedField: FocusText?
-    @State var selectedImageData: Data? = nil
-    @State var imageURL: URL? = nil
-    
-    // Collection
-    @State var collectionID: UUID?
-    @State var collectionTitle: String = ""
-    @State var collectionDescription: String = ""
-    @State var collectionBlocks: [Block] = [ ]
-    
+    @Binding var originalCollection: Collection
+    @State var collection: Collection
     @State var error: String = ""
     
     enum FocusText {
@@ -30,7 +23,7 @@ struct AddUpdateCollection: View {
     
     var body: some View {
         ScrollView {
-            PhotosPickerView(selectedImageData: $selectedImageData, imageURL: $imageURL)
+            PhotosPickerView(selectedImageData: $collection.image)
             titleTextField
                 .padding(.horizontal)
             Text("Description:")
@@ -40,21 +33,17 @@ struct AddUpdateCollection: View {
                 .padding(.horizontal)
                 .padding(.top, 20)
             descriptionTextEditor
-            if !collectionBlocks.isEmpty {
-                blocks
-            }
-            createCollectionButton
         }
-        .navigationTitle("Create collection")
+        .navigationTitle(collection.id == nil ? "Create collection" : "Update collection")
         .toolbar {
             ToolbarItem {
-                NavigationLink("Add block", destination: AddUpdateBlockView())
+                saveButton
             }
         }
     }
     
     var titleTextField: some View {
-        TextField("Collection name", text: $collectionTitle)
+        TextField("Collection name", text: $collection.title)
             .padding()
             .focused($selectedField, equals: .title)
             .neonField(light: selectedField == .title ? true : false)
@@ -67,7 +56,7 @@ struct AddUpdateCollection: View {
     }
     
     var descriptionTextEditor: some View {
-        TextEditor(text: $collectionDescription)
+        TextEditor(text: $collection.description)
             .frame(height: 200)
             .mask(RoundedRectangle(cornerRadius: 15, style: .continuous))
             .padding(3)
@@ -79,49 +68,18 @@ struct AddUpdateCollection: View {
             .padding(.horizontal)
     }
     
-    var createCollectionButton: some View {
+    var saveButton: some View {
         Button {
-            if !collectionTitle.isEmpty {
-                let collection = Collection(title: collectionTitle,
-                                            description: collectionDescription,
-                                            image: selectedImageData,
-                                            blocks: collectionBlocks)
-                create(collection: collection)
-            }
-        } label: {
-            Text("Create collection")
-            .padding()
-            .frame(maxWidth: .infinity)
-            .font(.headline)
-            .foregroundColor(.white)
-            .background(Color.accentColor)
-            .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
-            .padding(.horizontal)
-            .padding(.bottom, 40)
-        }
-    }
-    
-    var blocks: some View {
-        VStack {
-            Text("Blocks:")
-                .font(.headline)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal)
-                .padding(.horizontal)
-                .padding(.top, 20)
-            List {
-                ForEach(collectionBlocks) { block in
-                    HStack {
-                        Text(block.title)
-                        Spacer()
-                    }
-                    .font(.headline)
-                    .padding()
-                    .background(Color.gray.opacity(0.15))
-                    .padding(.horizontal)
-                    .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
+            if !collection.title.isEmpty && !collection.description.isEmpty {
+                if collection.id == nil {
+                    create(collection: collection)
+                } else {
+                    update(collection: collection)
                 }
             }
+        } label: {
+            Text("Save")
+                .bold()
         }
     }
 }
@@ -140,7 +98,9 @@ struct AddUpdateCollection_Previews: PreviewProvider {
         // Init View model
         let collectionsViewModel = CollectionsViewModel(collectionsService: collectionsService)
         
-        AddUpdateCollection()
+        let collection = Collection(title: "Blank", description: " ", blocks: [])
+        
+        AddUpdateCollection(originalCollection: .constant(collection), collection: collection)
             .environmentObject(collectionsViewModel)
     }
 }
@@ -148,14 +108,35 @@ struct AddUpdateCollection_Previews: PreviewProvider {
     // MARK: - Functions
 
 extension AddUpdateCollection {
+    
     func create(collection: Collection) {
         Task {
             do {
-                try await collectionVM.create(collection: collection)
-                collectionID = nil
-                collectionTitle = ""
-                collectionDescription = ""
-                collectionBlocks = [ ]
+                try await collectionsVM.create(collection: collection)
+                DispatchQueue.main.async {
+                    originalCollection.title = ""
+                    originalCollection.description = ""
+                    originalCollection.image = nil
+                    originalCollection.blocks = [ ]
+                }
+                dismiss()
+            } catch let error {
+                print(error)
+            }
+        }
+    }
+    
+    func update(collection: Collection) {
+        Task {
+            do {
+                var collectionToUpdate = collection
+                collectionToUpdate.blocks = [ ]
+                try await collectionsVM.update(collection: collectionToUpdate)
+                DispatchQueue.main.async {
+                    originalCollection.title = collection.title
+                    originalCollection.description = collection.description
+                    originalCollection.image = collection.image
+                }
                 dismiss()
             } catch let error {
                 print(error)

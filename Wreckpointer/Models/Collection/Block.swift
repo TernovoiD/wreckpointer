@@ -12,12 +12,12 @@ struct Block: Codable, Identifiable {
     var title: String
     var number: Double?
     var wreckID: String?
-    var description: String?
+    var description: String
     var image: Data?
     var createdAt: Date?
     var updatedAt: Date?
     
-    init(id: String? = nil, title: String, number: Double? = nil, wreckID: String? = nil, description: String? = nil, image: Data? = nil, createdAt: Date? = nil, updatedAt: Date? = nil) {
+    init(id: String? = nil, title: String, number: Double? = nil, wreckID: String? = nil, description: String, image: Data? = nil, createdAt: Date? = nil, updatedAt: Date? = nil) {
         self.id = id
         self.title = title
         self.number = number

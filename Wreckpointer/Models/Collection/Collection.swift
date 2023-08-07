@@ -10,14 +10,14 @@ import Foundation
 struct Collection: Codable, Identifiable {
     var id: UUID?
     var title: String
-    var description: String?
+    var description: String
     var image: Data?
     var createdAt: Date?
     var updatedAt: Date?
     var blocks: [Block]
     var approved: Bool
     
-    init(id: UUID? = nil, title: String, description: String? = nil, image: Data? = nil, createdAt: Date? = nil, updatedAt: Date? = nil, blocks: [Block], approved: Bool = false) {
+    init(id: UUID? = nil, title: String, description: String, image: Data? = nil, createdAt: Date? = nil, updatedAt: Date? = nil, blocks: [Block], approved: Bool = false) {
         self.id = id
         self.title = title
         self.description = description

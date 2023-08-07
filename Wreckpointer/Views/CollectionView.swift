@@ -19,7 +19,9 @@ struct CollectionView: View {
                 Spacer()
                 numberOfWrecks
             }
-            collectionInfo
+            if collection.description != "" {
+                collectionInfo
+            }
         }
         .padding(.horizontal)
         .padding(.vertical, 10)
@@ -29,11 +31,9 @@ struct CollectionView: View {
     }
     
     var collectionImage: some View {
-        Image("battleship.logo")
-            .resizable()
-            .aspectRatio(1, contentMode: .fit)
-            .frame(maxWidth: 50, maxHeight: 50)
+        ImageView(imageData: .constant(collection.image))
             .clipShape(RoundedRectangle(cornerRadius: 7, style: .continuous))
+            .frame(maxWidth: 50, maxHeight: 50)
     }
     
     var collectionTitle: some View {
@@ -54,7 +54,7 @@ struct CollectionView: View {
     }
     
     var collectionInfo: some View {
-        Text("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.")
+        Text(collection.description)
             .font(.caption2)
             .frame(maxHeight: 40)
     }
