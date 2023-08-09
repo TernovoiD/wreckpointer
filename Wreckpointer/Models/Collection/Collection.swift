@@ -8,6 +8,7 @@
 import Foundation
 
 struct Collection: Codable, Identifiable {
+    
     var id: UUID?
     var title: String
     var description: String
@@ -16,8 +17,9 @@ struct Collection: Codable, Identifiable {
     var updatedAt: Date?
     var blocks: [Block]
     var approved: Bool
+    var creator: User?
     
-    init(id: UUID? = nil, title: String, description: String, image: Data? = nil, createdAt: Date? = nil, updatedAt: Date? = nil, blocks: [Block], approved: Bool = false) {
+    init(id: UUID? = nil, title: String, description: String, image: Data? = nil, createdAt: Date? = nil, updatedAt: Date? = nil, blocks: [Block], approved: Bool = false, creator: User? = nil) {
         self.id = id
         self.title = title
         self.description = description
@@ -26,5 +28,6 @@ struct Collection: Codable, Identifiable {
         self.updatedAt = updatedAt
         self.blocks = blocks
         self.approved = approved
+        self.creator = creator
     }
 }

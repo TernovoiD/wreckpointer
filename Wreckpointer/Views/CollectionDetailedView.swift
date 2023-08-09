@@ -10,7 +10,7 @@ import SwiftUI
 struct CollectionDetailedView: View {
     
     @State var collection: Collection
-    let emptyBlock = Block(title: "", description: "")
+    let emptyBlock = Block(title: "", number: 1, description: "")
     
     var body: some View {
         ScrollView(showsIndicators: false) {
@@ -32,6 +32,7 @@ struct CollectionDetailedView: View {
                     .background(RoundedRectangle(cornerRadius: 15, style: .continuous).stroke())
             }
         }
+        .onAppear { sortBlocks() }
         .toolbar(content: {
             ToolbarItem(placement: .confirmationAction) {
                 NavigationLink("Update") {
@@ -93,5 +94,15 @@ struct CollectionDetailedView_Previews: PreviewProvider {
                                                 approved: true)
         
         CollectionDetailedView(collection: collection)
+    }
+}
+
+
+// MARK: - Functions
+
+extension CollectionDetailedView {
+    
+    func sortBlocks() {
+        collection.blocks.sort(by: { $0.number < $1.number })
     }
 }

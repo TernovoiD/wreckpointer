@@ -52,11 +52,15 @@ struct CollectionBlockView: View {
         ImageView(imageData: $block.image)
             .overlay(alignment: .bottom) {
                 HStack {
-                    if let number = block.number {
-                        Text("\(Int(number)).")
-                    }
+                    Text("\(Int(block.number)).")
                     Text(block.title)
                     Spacer()
+                    NavigationLink {
+                        AddUpdateBlockView(originalCollection: $collection, block: block)
+                    } label: {
+                        Label("Edit", systemImage: "square.and.pencil")
+                            .font(.headline)
+                    }
                 }
                 .font(.title)
                 .bold()
@@ -65,20 +69,20 @@ struct CollectionBlockView: View {
                 .frame(maxWidth: .infinity)
                 .background(.ultraThinMaterial)
             }
-            .overlay(alignment: .top) {
-                NavigationLink {
-                    AddUpdateBlockView(originalCollection: $collection, block: block)
-                } label: {
-                    Label("Edit", systemImage: "pencil.circle")
-                        .foregroundColor(.yellow)
-                }
-                .font(.title)
-                .bold()
-                .padding(.horizontal)
-                .glassyFont(textColor: .white)
-                .frame(maxWidth: .infinity, alignment: .trailing)
-                .background(.ultraThinMaterial)
-            }
+//            .overlay(alignment: .top) {
+//                NavigationLink {
+//                    AddUpdateBlockView(originalCollection: $collection, block: block)
+//                } label: {
+//                    Label("Edit", systemImage: "pencil.circle")
+//                        .foregroundColor(.yellow)
+//                }
+//                .font(.title)
+//                .bold()
+//                .padding(.horizontal)
+//                .glassyFont(textColor: .white)
+//                .frame(maxWidth: .infinity, alignment: .trailing)
+//                .background(.ultraThinMaterial)
+//            }
     }
     
     var blockDescription: some View {

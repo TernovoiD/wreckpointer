@@ -18,19 +18,19 @@ struct MapView: View {
         Map(coordinateRegion: $mapRegion, annotationItems: mapVM.wrecksFilterdBySearch()) { wreck in
             MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: wreck.latitude,
                                                              longitude: wreck.longitude)) {
-                MapPinView(wreck: wreck)
+                if wreck == mapVM.mapSelectedWreck {
+                    MapPinSelecredView(wreck: wreck)
+                } else {
+                    MapPinView(wreck: wreck)
+                }
             }
         }
-        .task { await loadWrecksFromServer() }
+        .task {
+            loadWrecksFromMemory()
+            await loadWrecksFromServer()
+        }
         .ignoresSafeArea()
-        .onTapGesture {
-            withAnimation(.spring()) {
-                mapVM.searchIsActive = false
-                mapVM.openSettings = false
-                mapVM.openMenu = false
-                mapVM.openFilter = false
-            }
-        }
+        .onTapGesture { deselectAll() }
         .onChange(of: saveWrecks, perform: { newValue in
             toggleSaveRules(newRule: newValue)
         })
@@ -59,12 +59,13 @@ struct MapView_Previews: PreviewProvider {
     static var previews: some View {
         
         // Init managers
+        let authManager = AuthorizationManager()
         let httpManager = HTTPRequestManager()
         let dataCoder = JSONDataCoder()
         
         // Init services
         let wreckLoader = WrecksLoader(httpManager: httpManager, dataCoder: dataCoder)
-        let wrecksService = WrecksService(httpManager: httpManager, dataCoder: dataCoder)
+        let wrecksService = WrecksService(authManager: authManager, httpManager: httpManager, dataCoder: dataCoder)
         let coreDataService = CoreDataService(dataCoder: dataCoder)
         
         // Init View model
@@ -121,6 +122,17 @@ extension MapView {
                 try mapVM.deleteWrecksFromMemory()
             } catch let error {
                 print(error)
+            }
+        }
+    }
+    
+    private func deselectAll() {
+        DispatchQueue.main.async {
+            withAnimation(.spring()) {
+                mapVM.searchIsActive = false
+                mapVM.openSettings = false
+                mapVM.openMenu = false
+                mapVM.openFilter = false
             }
         }
     }

@@ -8,11 +8,13 @@
 import SwiftUI
 import MapKit
 
+@MainActor
 class MapViewModel: ObservableObject {
     
     @Published var mapWrecks: [Wreck] = []
     @Published var filteredWrecks: [Wreck] = []
     @Published var mapSelectedWreck: Wreck?
+    @Published var wreckToEdit: Wreck?
     
     // Map Overlay
     @Published var openMenu: Bool = false
@@ -26,11 +28,11 @@ class MapViewModel: ObservableObject {
     func mapSpan() -> Double {
         switch mapScale {
         case .small:
-            return 0.33
+            return 0.5
         case .middle:
-            return 1
+            return 5
         case .large:
-            return 2
+            return 15
         }
     }
     
@@ -136,7 +138,9 @@ extension MapViewModel {
         if saveWrecks {
             try coreDataService.addWreck(createdWreck)
         }
-        mapWrecks.append(createdWreck)
+        DispatchQueue.main.async {
+            self.mapWrecks.append(createdWreck)
+        }
     }
     
     func update(_ wreck: Wreck) async throws {
@@ -145,8 +149,10 @@ extension MapViewModel {
             try coreDataService.addWreck(updatedWreck)
         }
         if let index = mapWrecks.firstIndex(where: { $0.id == updatedWreck.id }) {
-            mapWrecks.remove(at: index)
-            mapWrecks.append(updatedWreck)
+            DispatchQueue.main.async {
+                self.mapWrecks.remove(at: index)
+                self.mapWrecks.append(updatedWreck)
+            }
         }
     }
     
@@ -154,7 +160,10 @@ extension MapViewModel {
         try await wrecksService.deleteWreck(wreck)
         try coreDataService.deleteWreck(wreck: wreck)
         if let index = mapWrecks.firstIndex(where: { $0.id == wreck.id }) {
-            mapWrecks.remove(at: index)
+            DispatchQueue.main.async {
+                self.mapWrecks.remove(at: index)
+            }
+            changeSelectedWreck(withWreck: nil)
         }
     }
     
@@ -182,5 +191,9 @@ extension MapViewModel {
     
     func deleteWrecksFromMemory() throws {
         try coreDataService.deleteWrecks()
+    }
+    
+    func changeSelectedWreck(withWreck wreck: Wreck?) {
+        mapSelectedWreck = wreck
     }
 }

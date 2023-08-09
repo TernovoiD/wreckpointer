@@ -9,10 +9,12 @@ import Foundation
 
 class WrecksService {
     
+    let authManager: AuthorizationManager
     let httpManager: HTTPRequestManager
     let dataCoder: JSONDataCoder
     
-    init(httpManager: HTTPRequestManager, dataCoder: JSONDataCoder) {
+    init(authManager: AuthorizationManager, httpManager: HTTPRequestManager, dataCoder: JSONDataCoder) {
+        self.authManager = authManager
         self.httpManager = httpManager
         self.dataCoder = dataCoder
     }
@@ -22,7 +24,7 @@ class WrecksService {
         guard let url = URL(string: BaseRoutes.baseURL + Endpoints.wreck) else {
             throw HTTPError.badURL
         }
-        let data = try await httpManager.sendRequest(toURL: url, withData: encodedWreckData, withHTTPMethod: HTTPMethods.POST.rawValue)
+        let data = try await httpManager.sendRequest(toURL: url, withData: encodedWreckData, withHTTPMethod: HTTPMethods.POST.rawValue, withloginToken: authManager.getToken())
         let createdWreck = try dataCoder.decodeItemFromData(data: data) as Wreck
         return createdWreck
     }
@@ -32,8 +34,8 @@ class WrecksService {
         let wreckID = wreck.id?.uuidString ?? "error"
         guard let url = URL(string: BaseRoutes.baseURL + Endpoints.wreck + "/" + wreckID) else {
             throw HTTPError.badURL
-        }
-        let data = try await httpManager.sendRequest(toURL: url, withData: encodedWreckData, withHTTPMethod: HTTPMethods.PATCH.rawValue)
+        } 
+        let data = try await httpManager.sendRequest(toURL: url, withData: encodedWreckData, withHTTPMethod: HTTPMethods.PATCH.rawValue, withloginToken: authManager.getToken())
         let updatedWreck = try dataCoder.decodeItemFromData(data: data) as Wreck
         return updatedWreck
     }
@@ -43,7 +45,7 @@ class WrecksService {
         guard let url = URL(string: BaseRoutes.baseURL + Endpoints.wreck + "/" + wreckID) else {
             throw HTTPError.badURL
         }
-        let _ = try await httpManager.sendRequest(toURL: url, withHTTPMethod: HTTPMethods.DELETE.rawValue)
+        let _ = try await httpManager.sendRequest(toURL: url, withHTTPMethod: HTTPMethods.DELETE.rawValue, withloginToken: authManager.getToken())
     }
     
     

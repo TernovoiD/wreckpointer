@@ -87,6 +87,7 @@ struct MapMenu: View {
     var addWreckButton: some View {
         Button {
             withAnimation(.easeInOut) {
+                mapVM.wreckToEdit = nil
                 mapVM.openMenu = false
                 mapVM.showAddWreckView = true
             }
@@ -105,12 +106,13 @@ struct MapMenu_Previews: PreviewProvider {
     static var previews: some View {
         
         // Init managers
+        let authManager = AuthorizationManager()
         let httpManager = HTTPRequestManager()
         let dataCoder = JSONDataCoder()
         
         // Init services
         let wreckLoader = WrecksLoader(httpManager: httpManager, dataCoder: dataCoder)
-        let wrecksService = WrecksService(httpManager: httpManager, dataCoder: dataCoder)
+        let wrecksService = WrecksService(authManager: authManager, httpManager: httpManager, dataCoder: dataCoder)
         let coreDataService = CoreDataService(dataCoder: dataCoder)
         
         // Init View model

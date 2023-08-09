@@ -64,7 +64,7 @@ struct CollectionsView: View {
             }
         } label: {
             HStack {
-                Image(systemName: "globe")
+                Image(systemName: "globe.europe.africa.fill")
                 Text("Back to Map")
             }
             .font(.headline)
@@ -94,7 +94,7 @@ struct CollectionsView_Previews: PreviewProvider {
         
         // Init services
         let wreckLoader = WrecksLoader(httpManager: httpManager, dataCoder: dataCoder)
-        let wrecksService = WrecksService(httpManager: httpManager, dataCoder: dataCoder)
+        let wrecksService = WrecksService(authManager: authManager, httpManager: httpManager, dataCoder: dataCoder)
         let coreDataService = CoreDataService(dataCoder: dataCoder)
         let collectionsService = CollectionsService(authManager: authManager, httpManager: httpManager, dataCoder: dataCoder)
  

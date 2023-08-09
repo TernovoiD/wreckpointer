@@ -31,7 +31,7 @@ class CollectionsService {
         guard let url = URL(string: BaseRoutes.baseURL + Endpoints.collections) else {
             throw HTTPError.badURL
         }
-        let data = try await httpManager.sendRequest(toURL: url, withData: encodedCollectionData, withHTTPMethod: HTTPMethods.POST.rawValue)
+        let data = try await httpManager.sendRequest(toURL: url, withData: encodedCollectionData, withHTTPMethod: HTTPMethods.POST.rawValue, withloginToken: authManager.getToken())
         let createdCollection = try dataCoder.decodeItemFromData(data: data) as Collection
         return createdCollection
     }
@@ -42,7 +42,7 @@ class CollectionsService {
         guard let url = URL(string: BaseRoutes.baseURL + Endpoints.collections + "/" + collectionID) else {
             throw HTTPError.badURL
         }
-        let data = try await httpManager.sendRequest(toURL: url, withData: encodedCollectionData, withHTTPMethod: HTTPMethods.PATCH.rawValue)
+        let data = try await httpManager.sendRequest(toURL: url, withData: encodedCollectionData, withHTTPMethod: HTTPMethods.PATCH.rawValue, withloginToken: authManager.getToken())
         let updatedCollection = try dataCoder.decodeItemFromData(data: data) as Collection
         return updatedCollection
     }
@@ -52,7 +52,7 @@ class CollectionsService {
         guard let url = URL(string: BaseRoutes.baseURL + Endpoints.collections + "/" + collectionID) else {
             throw HTTPError.badURL
         }
-        let _ = try await httpManager.sendRequest(toURL: url, withHTTPMethod: HTTPMethods.DELETE.rawValue)
+        let _ = try await httpManager.sendRequest(toURL: url, withHTTPMethod: HTTPMethods.DELETE.rawValue, withloginToken: authManager.getToken())
     }
     
     func addBlock(_ block: Block, toCollection collection: Collection) async throws -> Block {
@@ -61,7 +61,7 @@ class CollectionsService {
         guard let url = URL(string: BaseRoutes.baseURL + Endpoints.collections + "/" + collectionID + "/" + "blocks") else {
             throw HTTPError.badURL
         }
-        let data = try await httpManager.sendRequest(toURL: url, withData: encodedBlockData, withHTTPMethod: HTTPMethods.POST.rawValue)
+        let data = try await httpManager.sendRequest(toURL: url, withData: encodedBlockData, withHTTPMethod: HTTPMethods.POST.rawValue, withloginToken: authManager.getToken())
         let createdBlock = try dataCoder.decodeItemFromData(data: data) as Block
         return createdBlock
     }
@@ -73,7 +73,7 @@ class CollectionsService {
         guard let url = URL(string: BaseRoutes.baseURL + Endpoints.collections + "/" + collectionID + "/" + "blocks" + "/" + blockID) else {
             throw HTTPError.badURL
         }
-        let data = try await httpManager.sendRequest(toURL: url, withData: encodedBlockData, withHTTPMethod: HTTPMethods.PATCH.rawValue)
+        let data = try await httpManager.sendRequest(toURL: url, withData: encodedBlockData, withHTTPMethod: HTTPMethods.PATCH.rawValue, withloginToken: authManager.getToken())
         let updatedBlock = try dataCoder.decodeItemFromData(data: data) as Block
         return updatedBlock
     }
@@ -84,7 +84,6 @@ class CollectionsService {
         guard let url = URL(string: BaseRoutes.baseURL + Endpoints.collections + "/" + collectionID + "/" + "blocks" + "/" + blockID) else {
             throw HTTPError.badURL
         }
-        let _ = try await httpManager.sendRequest(toURL: url, withHTTPMethod: HTTPMethods.DELETE.rawValue)
+        let _ = try await httpManager.sendRequest(toURL: url, withHTTPMethod: HTTPMethods.DELETE.rawValue, withloginToken: authManager.getToken())
     }
-    
 }
