@@ -34,6 +34,9 @@ struct AddUpdateCollection: View {
                 .padding(.top, 20)
             descriptionTextEditor
         }
+        .onTapGesture {
+            selectedField = .none
+        }
         .navigationTitle(collection.id == nil ? "Create collection" : "Update collection")
         .toolbar {
             ToolbarItem {

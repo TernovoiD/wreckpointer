@@ -40,7 +40,7 @@ struct MainView_Previews: PreviewProvider {
         
         // Init services
         let wreckLoader = WrecksLoader(httpManager: httpManager, dataCoder: dataCoder)
-        let wrecksService = WrecksService(httpManager: httpManager, dataCoder: dataCoder)
+        let wrecksService = WrecksService(authManager: authManager, httpManager: httpManager, dataCoder: dataCoder)
         let coreDataService = CoreDataService(dataCoder: dataCoder)
         let userService = UserService(authManager: authManager, httpManager: httpManager, dataCoder: dataCoder)
         let collectionsService = CollectionsService(authManager: authManager, httpManager: httpManager, dataCoder: dataCoder)

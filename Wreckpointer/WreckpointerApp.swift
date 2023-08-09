@@ -21,7 +21,7 @@ struct WreckpointerApp: App {
         let dataCoder = JSONDataCoder()
         
         // Init services
-        let wrecksService = WrecksService(httpManager: httpManager, dataCoder: dataCoder)
+        let wrecksService = WrecksService(authManager: authManager, httpManager: httpManager, dataCoder: dataCoder)
         let wreckLoader = WrecksLoader(httpManager: httpManager, dataCoder: dataCoder)
         let coreDataService = CoreDataService(dataCoder: dataCoder)
         let userService = UserService(authManager: authManager, httpManager: httpManager, dataCoder: dataCoder)

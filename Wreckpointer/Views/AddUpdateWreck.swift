@@ -11,6 +11,7 @@ struct AddUpdateWreck: View {
     
     @EnvironmentObject var mapVM: MapViewModel
     @FocusState var selectedField: FocusText?
+    @AppStorage("showFeets") var showFeets: Bool = true
     @State var selectedImageData: Data? = nil
     
     // Wreck
@@ -26,6 +27,9 @@ struct AddUpdateWreck: View {
     @State var north: Bool = true
     @State var west: Bool = true
     @State var feets: Bool = true
+    
+    @State var dateOfLossKnown: Bool = false
+    @State var dateOfLoss: Date = Date()
     
     @State var error: String = ""
     
@@ -60,6 +64,7 @@ struct AddUpdateWreck: View {
                     typeSelector
                     causeSelector
                     Toggle("Wreck dive?", isOn: $wreckDive)
+                    dateOfLossPicker
                     formErrorText
                 }
                 .padding(.horizontal)
@@ -68,7 +73,7 @@ struct AddUpdateWreck: View {
                     .padding(.top)
                     .padding(.bottom, 20)
             }
-//            .background(Color.clear)
+            .background(.ultraThinMaterial)
             .onTapGesture {
                 selectedField = .none
             }
@@ -81,6 +86,9 @@ struct AddUpdateWreck: View {
             }
         }
         .foregroundColor(.purple)
+        .onChange(of: mapVM.wreckToEdit) { newValue in
+            updateView(withNewWreck: newValue)
+        }
     }
 }
 
@@ -88,12 +96,13 @@ struct AddUpdateWreck_Previews: PreviewProvider {
     static var previews: some View {
         
         // Init managers
+        let authManager = AuthorizationManager()
         let httpManager = HTTPRequestManager()
         let dataCoder = JSONDataCoder()
         
         // Init services
         let wrecksLoader = WrecksLoader(httpManager: httpManager, dataCoder: dataCoder)
-        let wrecksService = WrecksService(httpManager: httpManager, dataCoder: dataCoder)
+        let wrecksService = WrecksService(authManager: authManager, httpManager: httpManager, dataCoder: dataCoder)
         let coreDataService = CoreDataService(dataCoder: dataCoder)
         
         // Init View model
@@ -229,6 +238,18 @@ extension AddUpdateWreck {
             .padding(.horizontal)
     }
     
+    var dateOfLossPicker: some View {
+        VStack {
+            Toggle(isOn: $dateOfLossKnown) {
+                Text("Date of loss?")
+            }
+            if dateOfLossKnown {
+                DatePicker("Date of loss", selection: $dateOfLoss)
+                    .datePickerStyle(.graphical)
+            }
+        }
+    }
+    
     var formErrorText: some View {
         Text(error)
             .font(.callout)
@@ -280,6 +301,30 @@ extension AddUpdateWreck {
         }
     }
     
+    func updateView(withNewWreck wreck: Wreck?) {
+        if let newWreck = wreck {
+            wreckID = newWreck.id
+            wreckTitle = newWreck.title
+            north = newWreck.latitude >= 0 ? true : false
+            west = newWreck.longitude <= 0 ? true : false
+            wreckLatitude = String(abs(newWreck.latitude))
+            wreckLongitude = String(abs(newWreck.longitude))
+            if let depth = newWreck.depth {
+                wreckDepth = showFeets ? String(Int(depth.metersToFeets)) : String(depth)
+            }
+            feets = showFeets ? true : false
+            wreckInfo = newWreck.information ?? ""
+            wreckType = WreckTypesEnum.allCases.first(where: { $0.rawValue == newWreck.type }) ?? WreckTypesEnum.all
+            wreckCause = WreckCausesEnum.allCases.first(where: { $0.rawValue == newWreck.cause }) ?? WreckCausesEnum.other
+            wreckDive = newWreck.wreckDive
+            selectedImageData = newWreck.image
+            dateOfLossKnown = newWreck.dateOfLoss == nil ? false : true
+            dateOfLoss = newWreck.dateOfLoss == nil ? Date() : dateOfLoss
+        } else {
+            clearForm()
+        }
+    }
+    
     func createWreck() {
         let wreckType = wreckType == .all ? WreckTypesEnum.other.rawValue : wreckType.rawValue
         let latitudeValue = Double(wreckLatitude) ?? 0
@@ -288,10 +333,13 @@ extension AddUpdateWreck {
         let newWreck = Wreck(cause: wreckCause.rawValue,
                              type: wreckType,
                              title: wreckTitle,
+                             image: selectedImageData,
                              depth: feets ? depthValue.feetsToMeters : depthValue,
                              latitude: north ? latitudeValue : -latitudeValue,
                              longitude: west ? -longitudeValue : longitudeValue,
-                             wreckDive: wreckDive)
+                             wreckDive: wreckDive,
+                             dateOfLoss: dateOfLossKnown ? dateOfLoss : nil ,
+                             information: wreckInfo)
         Task {
             do {
                 try await mapVM.create(newWreck)

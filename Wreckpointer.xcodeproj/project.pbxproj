@@ -55,6 +55,9 @@
 		81BAF1842A65AF9E007C4F8A /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BAF1832A65AF9E007C4F8A /* Collection.swift */; };
 		81BAF1882A65AFB9007C4F8A /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BAF1872A65AFB9007C4F8A /* Block.swift */; };
 		81BAF18A2A65C6D8007C4F8A /* CollectionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BAF1892A65C6D8007C4F8A /* CollectionsViewModel.swift */; };
+		81BC909E2A81664E00147A23 /* MapPinSelecredView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BC909D2A81664E00147A23 /* MapPinSelecredView.swift */; };
+		81BC90A02A816A6900147A23 /* SelectedWreckPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BC909F2A816A6900147A23 /* SelectedWreckPanel.swift */; };
+		81BC90A22A81867D00147A23 /* WreckDetailedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BC90A12A81867D00147A23 /* WreckDetailedView.swift */; };
 		81C84FD82A5C6C78004D01B2 /* AuthorizationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C84FD52A5C6C78004D01B2 /* AuthorizationManager.swift */; };
 		81C84FD92A5C6C78004D01B2 /* JSONDataCoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C84FD62A5C6C78004D01B2 /* JSONDataCoder.swift */; };
 		81C84FDA2A5C6C78004D01B2 /* HTTPRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C84FD72A5C6C78004D01B2 /* HTTPRequestManager.swift */; };
@@ -119,6 +122,9 @@
 		81BAF1832A65AF9E007C4F8A /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		81BAF1872A65AFB9007C4F8A /* Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Block.swift; sourceTree = "<group>"; };
 		81BAF1892A65C6D8007C4F8A /* CollectionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionsViewModel.swift; sourceTree = "<group>"; };
+		81BC909D2A81664E00147A23 /* MapPinSelecredView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapPinSelecredView.swift; sourceTree = "<group>"; };
+		81BC909F2A816A6900147A23 /* SelectedWreckPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedWreckPanel.swift; sourceTree = "<group>"; };
+		81BC90A12A81867D00147A23 /* WreckDetailedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WreckDetailedView.swift; sourceTree = "<group>"; };
 		81C84FD52A5C6C78004D01B2 /* AuthorizationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthorizationManager.swift; sourceTree = "<group>"; };
 		81C84FD62A5C6C78004D01B2 /* JSONDataCoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONDataCoder.swift; sourceTree = "<group>"; };
 		81C84FD72A5C6C78004D01B2 /* HTTPRequestManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPRequestManager.swift; sourceTree = "<group>"; };
@@ -153,6 +159,7 @@
 				8103E7562A61476600FA53D0 /* MapFilter.swift */,
 				81899BC02A6302F10053F042 /* MapSettings.swift */,
 				81899BC22A6305220053F042 /* StoriesButton.swift */,
+				81BC909F2A816A6900147A23 /* SelectedWreckPanel.swift */,
 			);
 			name = MapOverlay;
 			sourceTree = "<group>";
@@ -352,6 +359,8 @@
 				812EDAAA2A7EDF30008903CA /* ImageView.swift */,
 				81E7102A29D9CB58008724FA /* PhotosPickerView.swift */,
 				81B6D0FD2A60A3DA00B5978F /* MapPinView.swift */,
+				81BC909D2A81664E00147A23 /* MapPinSelecredView.swift */,
+				81BC90A12A81867D00147A23 /* WreckDetailedView.swift */,
 			);
 			name = SupportViews;
 			sourceTree = "<group>";
@@ -451,6 +460,7 @@
 				81C84FDF2A5C6D6C004D01B2 /* URLRoutes.swift in Sources */,
 				8103E7572A61476600FA53D0 /* MapFilter.swift in Sources */,
 				81C84FD82A5C6C78004D01B2 /* AuthorizationManager.swift in Sources */,
+				81BC90A02A816A6900147A23 /* SelectedWreckPanel.swift in Sources */,
 				81E0E76B2A5D810300645AF0 /* WreckCausesEnum.swift in Sources */,
 				81AB027F2A5ED0A1006AAD5E /* WrecksCoreDataManager.swift in Sources */,
 				8103E7612A61AE6A00FA53D0 /* AccountMenu.swift in Sources */,
@@ -460,11 +470,13 @@
 				81C84FE12A5C6DA3004D01B2 /* UserService.swift in Sources */,
 				81BAF17F2A65A91F007C4F8A /* CollectionsView.swift in Sources */,
 				81BAF1882A65AFB9007C4F8A /* Block.swift in Sources */,
+				81BC909E2A81664E00147A23 /* MapPinSelecredView.swift in Sources */,
 				8152677E2A697E4D0074ED1A /* CollectionBlockView.swift in Sources */,
 				81E0E7672A5D7A7C00645AF0 /* Wreck.swift in Sources */,
 				81BAF1812A65AE49007C4F8A /* CollectionsService.swift in Sources */,
 				815267872A6AB2310074ED1A /* WreckView.swift in Sources */,
 				8103E75F2A61A1C300FA53D0 /* AccountView.swift in Sources */,
+				81BC90A22A81867D00147A23 /* WreckDetailedView.swift in Sources */,
 				815267852A6AB0AD0074ED1A /* WrecksListView.swift in Sources */,
 				8154A5F92A60038D00395076 /* GlassyFontModifier.swift in Sources */,
 				81AB02862A5EFBCE006AAD5E /* CoreDataService.swift in Sources */,

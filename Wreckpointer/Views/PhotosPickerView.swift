@@ -13,7 +13,6 @@ struct PhotosPickerView: View {
     @State var imageWeight: Double = 0
     
     @Binding var selectedImageData: Data?
-//    @Binding var imageURL: URL?
     
     
     var body: some View {
@@ -23,10 +22,6 @@ struct PhotosPickerView: View {
                 .onChange(of: selectedImage) { newItem in
                     updateImage(with: newItem)
                 }
-            Text("Image size must not exceed 1MB")
-                .font(.caption2)
-                .padding(.bottom, 5)
-                .foregroundColor(.red)
             imageWeightCounter
         }
         .foregroundColor(.accentColor)

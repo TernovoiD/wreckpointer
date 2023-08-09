@@ -11,6 +11,7 @@ struct MapSettings: View {
     
     @EnvironmentObject var mapVM: MapViewModel
     @AppStorage("saveWrecks") var saveWrecks: Bool = true
+    @AppStorage("showFeets") var showFeets: Bool = true
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -21,11 +22,21 @@ struct MapSettings: View {
                 Divider()
                 wrecksSaveToggle
                 Divider()
+                Toggle(isOn: $showFeets) {
+                    Text("Show depth in feets")
+                        .padding(.leading)
+                }
+                Divider()
             }
         }
         .font(.headline)
         .padding()
         .accentColorBorder()
+        .onChange(of: showFeets) { newValue in
+            DispatchQueue.main.async {
+                mapVM.wreckToEdit = nil
+            }
+        }
     }
     
     var openSettingsButton: some View {
@@ -71,7 +82,7 @@ struct MapSettings: View {
                 Text("Save wrecks in memory")
                     .padding(.leading)
             }
-            Text("Saving wrecks in memory allows to see them in offline mode.")
+            Text("Saving wrecks in memory allows to see them offline")
                 .font(.caption)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal)
@@ -83,12 +94,13 @@ struct MapSettings_Previews: PreviewProvider {
     static var previews: some View {
         
         // Init managers
+        let authManager = AuthorizationManager()
         let httpManager = HTTPRequestManager()
         let dataCoder = JSONDataCoder()
         
         // Init services
         let wreckLoader = WrecksLoader(httpManager: httpManager, dataCoder: dataCoder)
-        let wrecksService = WrecksService(httpManager: httpManager, dataCoder: dataCoder)
+        let wrecksService = WrecksService(authManager: authManager, httpManager: httpManager, dataCoder: dataCoder)
         let coreDataService = CoreDataService(dataCoder: dataCoder)
         
         // Init View model
