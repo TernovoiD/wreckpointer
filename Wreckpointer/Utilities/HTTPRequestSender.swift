@@ -1,40 +1,18 @@
 //
-//  HTTPManager.swift
-//  RememberX
+//  HTTPRequestSender.swift
+//  Wreckpointer
 //
-//  Created by Danylo Ternovoi on 01.06.2023.
+//  Created by Danylo Ternovoi on 11.08.2023.
 //
 
 import Foundation
 
-enum MIMEType: String {
-    case JSON = "application/json"
-}
-
-enum HTTPHeaders: String {
-    case contentType = "Content-Type"
-    case authorization = "Authorization"
-}
-
-enum HTTPMethods: String {
-    case POST, GET, PUT, PATCH, DELETE
-}
-
-enum HTTPError: Error {
-    case serverError
-    case clientError
-    case informationaResponse
-    case redirectionMessage
-    case unknownResponse
-    case badURL
-    case badResponse
-    case notFound
-    case notDecodable
-    case notAuthorized
-    case forbidden
-}
-
-class HTTPRequestManager {
+class HTTPRequestSender {
+    
+    static let shared = HTTPRequestSender()
+    
+    private init() { }
+    
     func sendRequest(toURL url: URL,
                      withData data: Data? = nil,
                      withHTTPMethod HTTPMethod: String,
@@ -65,7 +43,6 @@ class HTTPRequestManager {
         try verifyResponse(response)
         return data
     }
-    
     
     private func verifyResponse(_ response: URLResponse) throws {
         guard let httpResponse = response as? HTTPURLResponse else { return }

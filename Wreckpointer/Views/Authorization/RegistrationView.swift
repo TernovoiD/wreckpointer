@@ -1,49 +1,24 @@
 //
-//  CreateAccountView.swift
+//  RegistrationView.swift
 //  Wreckpointer
 //
-//  Created by Danylo Ternovoi on 13.07.2023.
+//  Created by Danylo Ternovoi on 11.08.2023.
 //
 
 import SwiftUI
 
-struct CreateAccountView: View {
+struct RegistrationView: View {
     
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject var authVM: AuthenticationViewModel
+    @StateObject var viewModel = RegistrationViewModel()
     @FocusState var selectedField: FocusText?
-    @State var username: String = ""
-    @State var email: String = ""
-    @State var password: String = ""
-    @State var passwordConfirmation: String = ""
-    @State var error: String = ""
+    @EnvironmentObject var state: AppState
     
     enum FocusText {
         case email
         case username
         case password
         case passwordConfirmation
-    }
-    
-    var isFormValid: Bool {
-        if email.isEmpty || username.isEmpty || password.isEmpty || passwordConfirmation.isEmpty {
-            showFormError(withText: "Fields cannot be empty.")
-            return false
-        } else if !email.isValidEmail {
-            showFormError(withText: "Email is not valid.")
-            return false
-        } else if !username.isValidName {
-            showFormError(withText: "username must contain at least 5 characters.")
-            return false
-        } else if !password.isValidPassword {
-            showFormError(withText: "Password must contain at least 8 characters.")
-            return false
-        } else if password != passwordConfirmation {
-            showFormError(withText: "Passwords do not match! Try again")
-            return false
-        } else {
-            return true
-        }
     }
     
     var body: some View {
@@ -58,7 +33,6 @@ struct CreateAccountView: View {
                     .glassyFont(textColor: .indigo)
                     .font(.largeTitle)
                     .bold()
-                formErrorText
                 emailField
                 usernameField
                 passwordField
@@ -66,19 +40,52 @@ struct CreateAccountView: View {
                 createAccountButton
                 createAccountLink
             }
-            closeButton
+        }
+        .alert(viewModel.errorMessage, isPresented: $viewModel.error) {
+            Button("OK", role: .cancel) { }
         }
         .background()
         .onTapGesture {
             selectedField = .none
         }
-        .navigationBarBackButtonHidden(true)
     }
     
-    // MARK: - Variables
+    private func createAccount() {
+        Task {
+            let result = await viewModel.register()
+            if result { await fetchUser() }
+        }
+    }
+    private func fetchUser() async {
+        let user = await viewModel.fetchUser()
+        if let user { authorize(user: user) }
+    }
+    
+    private func authorize(user: User) {
+        DispatchQueue.main.async {
+            withAnimation(.easeInOut) {
+                state.authorizedUser = user
+                dismiss()
+            }
+        }
+    }
+}
+
+struct RegistrationView_Previews: PreviewProvider {
+    static var previews: some View {
+        RegistrationView()
+            .environmentObject(RegistrationViewModel())
+            .environmentObject(AppState())
+    }
+}
+
+
+// MARK: - Variables
+
+extension RegistrationView {
     
     var emailField: some View {
-        TextField("Email", text: $email)
+        TextField("Email", text: $viewModel.email)
             .padding()
             .focused($selectedField, equals: .email)
             .neonField(light: selectedField == .email ? true : false)
@@ -96,7 +103,7 @@ struct CreateAccountView: View {
     }
     
     var usernameField: some View {
-        TextField("Username", text: $username)
+        TextField("Username", text: $viewModel.username)
             .padding()
             .focused($selectedField, equals: .username)
             .neonField(light: selectedField == .username ? true : false)
@@ -113,7 +120,7 @@ struct CreateAccountView: View {
     }
     
     var passwordField: some View {
-        SecureField("Password", text: $password)
+        SecureField("Password", text: $viewModel.password)
             .padding()
             .focused($selectedField, equals: .password)
             .neonField(light: selectedField == .password ? true : false)
@@ -130,7 +137,7 @@ struct CreateAccountView: View {
     }
     
     var passwordConfirmationField: some View {
-        SecureField("Password", text: $passwordConfirmation)
+        SecureField("Password", text: $viewModel.passwordConfirmation)
             .padding()
             .focused($selectedField, equals: .passwordConfirmation)
             .neonField(light: selectedField == .passwordConfirmation ? true : false)
@@ -141,15 +148,17 @@ struct CreateAccountView: View {
                 selectedField = .passwordConfirmation
             }
             .onSubmit {
-                createAccount()
+                if viewModel.validForm {
+                    createAccount()
+                }
             }
             .padding(.horizontal)
     }
     
     var createAccountButton: some View {
         Button {
-            selectedField = .none
-            if isFormValid {
+            if viewModel.validForm {
+                selectedField = .none
                 createAccount()
             }
         } label: {
@@ -171,12 +180,6 @@ struct CreateAccountView: View {
             .ignoresSafeArea(.keyboard)
     }
     
-    var formErrorText: some View {
-        Text(error)
-            .font(.callout)
-            .glassyFont(textColor: .red)
-    }
-    
     var createAccountLink: some View {
         HStack {
             Text("Already have an account?")
@@ -185,80 +188,10 @@ struct CreateAccountView: View {
             } label: {
                 Text("Sign In")
             }
-            
         }
         .padding(.vertical, 5)
         .padding(.horizontal, 10)
         .background()
         .mask(RoundedRectangle(cornerRadius: 25))
-    }
-    
-    var closeButton: some View {
-        VStack {
-            HStack {
-                Button {
-                    dismiss()
-                    selectedField = .none
-                } label: {
-                    Label("Back", systemImage: "chevron.left")
-                        .padding()
-                        .accentColorBorder()
-                        .padding()
-                }
-                Spacer()
-            }
-            Spacer()
-        }
-    }
-    
-    // MARK: - Functions
-    
-    func clearForm() {
-        email = ""
-        password = ""
-        error = ""
-    }
-    
-    func showFormError(withText text: String) {
-        withAnimation(.easeInOut) {
-            error = text
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
-            withAnimation(.easeInOut) {
-                error = ""
-            }
-        }
-    }
-    
-    func createAccount() {
-        Task {
-            do {
-                let newUser = User(username: username, email: email, password: password, confirmPassword: passwordConfirmation)
-                try await authVM.createAccount(forUser: newUser)
-                clearForm()
-                dismiss()
-            } catch let error {
-                print(error)
-            }
-        }
-    }
-}
-
-struct CreateAccountView_Previews: PreviewProvider {
-    static var previews: some View {
-        
-        // Init managers
-        let authManager = AuthorizationManager()
-        let httpManager = HTTPRequestManager()
-        let dataCoder = JSONDataCoder()
-        
-        // Init services
-        let userService = UserService(authManager: authManager, httpManager: httpManager, dataCoder: dataCoder)
-        
-        // Init View model
-        let authViewModel = AuthenticationViewModel(userService: userService)
-        
-        CreateAccountView()
-            .environmentObject(authViewModel)
     }
 }

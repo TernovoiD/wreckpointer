@@ -11,6 +11,10 @@ class JSONDataCoder {
     
     private let dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
     
+    static let shared = JSONDataCoder()
+    
+    private init() { }
+    
     func encodeItemToData<T: Codable>(item: T) throws -> Data {
         let encoder = JSONEncoder()
         let dateFormatter = DateFormatter()

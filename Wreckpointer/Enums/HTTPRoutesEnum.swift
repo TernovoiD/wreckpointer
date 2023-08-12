@@ -1,8 +1,8 @@
 //
-//  URLRoutes.swift
+//  HTTPRoutesEnum.swift
 //  Wreckpointer
 //
-//  Created by Danylo Ternovoi on 10.07.2023.
+//  Created by Danylo Ternovoi on 10.08.2023.
 //
 
 import Foundation

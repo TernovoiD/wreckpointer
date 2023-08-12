@@ -9,36 +9,70 @@ import SwiftUI
 
 struct SelectedWreckPanel: View {
     
-    @EnvironmentObject var mapVM: MapViewModel
-    @Binding var showWreck: Bool
-    @Binding var wreck: Wreck
+    @StateObject var viewModel = SelectedWreckViewModel()
+    @EnvironmentObject var wrecks: Wrecks
+    @EnvironmentObject var state: AppState
+    @State var wreck: Wreck
+    @State var showWreck: Wreck?
     
     var body: some View {
         VStack {
             HStack(alignment: .bottom) {
                 characteristics
                 Spacer()
-                buttons
+                VStack {
+                    moreButton
+                    editButton
+                        .disabled(state.authorizedUser == nil ? true : false)
+                }
             }
             .padding(.horizontal)
         }
-        .frame(maxHeight: 200)
+        .frame(maxHeight: 150)
         .frame(maxWidth: .infinity)
         .background(.ultraThinMaterial)
         .clipShape(RoundedRectangle(cornerRadius: 25, style: .continuous))
-        .overlay {
-            HStack {
-                ImageView(imageData: $wreck.image)
-                    .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
-                    .offset(y: -80)
-                    .shadow(radius: 10)
-                    .padding(.leading)
-                Spacer()
-            }
-            .padding()
-        }
+        .overlay { image }
+        .padding(.horizontal)
         .shadow(radius: 10)
+        .alert(viewModel.errorMessage, isPresented: $viewModel.error) {
+            Button("OK", role: .cancel) { }
+        }
+        .sheet(item: $showWreck, content: { wreck in
+            WreckDetailedView(wreck: wreck)
+        })
+        .onChange(of: wrecks.selectedWreck, perform: { newValue in
+            if let wreck = newValue {
+                withAnimation(.easeInOut) {
+                    self.wreck = wreck
+                }
+            }
+        })
     }
+    
+    private func deleteWreck() {
+        Task {
+            let result = await viewModel.delete(wreck: wreck)
+            if result {
+                wrecks.selectedWreck = nil
+            }
+        }
+    }
+}
+
+struct SelectedWreckPanel_Previews: PreviewProvider {
+    static var previews: some View {
+        let wreck = Wreck(cause: "other", type: "all", title: "Titanic", latitude: 41, longitude: -49, wreckDive: false)
+        SelectedWreckPanel(wreck: wreck)
+            .environmentObject(Wrecks())
+            .environmentObject(SelectedWreckViewModel())
+            .environmentObject(AppState())
+    }
+}
+
+// MARK: - Variables
+
+extension SelectedWreckPanel {
     
     var characteristics: some View {
         VStack(alignment: .leading) {
@@ -50,17 +84,21 @@ struct SelectedWreckPanel: View {
         .padding(.leading)
     }
     
-    var buttons: some View {
-        VStack {
-            moreButton
-            editButton
-            closeButton
+    var image: some View {
+        HStack {
+            ImageView(imageData: $wreck.image)
+                .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
+                .offset(y: -80)
+                .shadow(radius: 10)
+                .padding(.leading)
+            Spacer()
         }
+        .padding()
     }
     
     var moreButton: some View {
         Button {
-            showWreck = true
+            showWreck = wreck
         } label: {
             HStack {
                 Image(systemName: "magnifyingglass")
@@ -78,15 +116,8 @@ struct SelectedWreckPanel: View {
     }
     
     var editButton: some View {
-        Button {
-            if let wreck = mapVM.mapSelectedWreck {
-                DispatchQueue.main.async {
-                    withAnimation(.easeInOut) {
-                        mapVM.wreckToEdit = wreck
-                        mapVM.showAddWreckView = true
-                    }
-                }
-            }
+        NavigationLink {
+            AddUpdateWreck(wreck: wreck)
         } label: {
             HStack {
                 Image(systemName: "pencil")
@@ -97,77 +128,16 @@ struct SelectedWreckPanel: View {
             .font(.headline)
             .frame(maxWidth: 150)
             .foregroundColor(.white)
-            .background(Color.orange)
+            .background(state.authorizedUser == nil ? Color.gray : Color.orange)
             .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
             .shadow(radius: 5)
             .contextMenu {
                 Button(role: .destructive) {
-                    delete()
+                    deleteWreck()
                 } label: {
                     Label("Delete", systemImage: "trash.circle")
                 }
 
-            }
-        }
-    }
-    
-    var closeButton: some View {
-        Button {
-            withAnimation(.easeInOut) {
-                mapVM.changeSelectedWreck(withWreck: nil)
-            }
-        } label: {
-            HStack {
-                Image(systemName: "xmark")
-                    .frame(maxWidth: 10)
-                Text("Close")
-            }
-            .padding()
-            .font(.headline)
-            .frame(maxWidth: 150)
-            .foregroundColor(.white)
-            .background(Color.gray)
-            .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
-            .shadow(radius: 5)
-        }
-    }
-}
-
-struct SelectedWreckPanel_Previews: PreviewProvider {
-    static var previews: some View {
-        
-        // Init managers
-        let authManager = AuthorizationManager()
-        let httpManager = HTTPRequestManager()
-        let dataCoder = JSONDataCoder()
-        
-        // Init services
-        let wreckLoader = WrecksLoader(httpManager: httpManager, dataCoder: dataCoder)
-        let wrecksService = WrecksService(authManager: authManager, httpManager: httpManager, dataCoder: dataCoder)
-        let coreDataService = CoreDataService(dataCoder: dataCoder)
-        
-        // Init View model
-        let mapViewModel = MapViewModel(wreckLoader: wreckLoader, wrecksService: wrecksService, coreDataService: coreDataService)
-        
-        let wreck = Wreck(cause: "other", type: "all", title: "Titanic", latitude: 41, longitude: -49, wreckDive: false)
-        SelectedWreckPanel(showWreck: .constant(false), wreck: .constant(wreck))
-            .environmentObject(mapViewModel)
-    }
-}
-
-
-// MARK: - Functions
-
-extension SelectedWreckPanel {
-    
-    private func delete() {
-        if let wreck = mapVM.mapSelectedWreck {
-            Task {
-                do {
-                    try await mapVM.delete(wreck)
-                } catch let error {
-                    print(error)
-                }
             }
         }
     }

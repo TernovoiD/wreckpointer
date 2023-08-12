@@ -2,63 +2,63 @@
 //  MapSearchBar.swift
 //  Wreckpointer
 //
-//  Created by Danylo Ternovoi on 14.07.2023.
+//  Created by Danylo Ternovoi on 12.08.2023.
 //
 
 import SwiftUI
 
 struct MapSearchBar: View {
     
-    @FocusState var selectedField: FocusText?
-    @EnvironmentObject var mapVM: MapViewModel
-    
-    enum FocusText {
-        case searchField
-    }
+    @EnvironmentObject var wrecks: Wrecks
+    @EnvironmentObject var state: AppState
+    @FocusState var searchFieldSelected: Bool
     
     var body: some View {
         HStack {
             searchBar
-            if !mapVM.textToSearch.isEmpty {
+            if !wrecks.textToSearch.isEmpty {
                 searchBarClearButton
+            }
+        }
+        .padding(.horizontal)
+        .onChange(of: state.activeUIElement) { newValue in
+            withAnimation(.easeInOut) {
+                if newValue == .mapSearch {
+                    searchFieldSelected = true
+                } else {
+                    searchFieldSelected = false
+                }
             }
         }
     }
     
-    var searchBar: some View {
-        TextField("Search", text: $mapVM.textToSearch)
+    private var searchBar: some View {
+        TextField("Search", text: $wrecks.textToSearch.animation(.easeInOut))
             .padding()
-            .focused($selectedField, equals: .searchField)
-            .background(mapVM.wrecksFilterdBySearch().count == 0 && !mapVM.textToSearch.isEmpty ? Color.red.opacity(0.3) : Color.clear)
-            .neonField(light: selectedField == .searchField ? true : false)
+            .focused($searchFieldSelected)
+            .background(wrecks.filtered.count == 0 && !wrecks.textToSearch.isEmpty ? Color.red.opacity(0.3) : Color.clear)
+            .neonField(light: searchFieldSelected ? true : false)
             .submitLabel(.search)
             .autocorrectionDisabled(true)
             .onTapGesture {
-                selectedField = .searchField
+                withAnimation(.easeInOut) {
+                    state.activeUIElement = .mapSearch
+                }
             }
             .onSubmit {
-                selectedField = .none
-            }
-            .onChange(of: selectedField, perform: { newValue in
-                mapVM.searchIsActive = newValue == .searchField ? true : false
-            })
-            .onChange(of: mapVM.searchIsActive) { newValue in
-                if newValue == false {
-                    selectedField = .none
-                } else {
-                    withAnimation(.easeInOut) {
-                        mapVM.openFilter = false
-                        mapVM.openMenu = false
-                        mapVM.openSettings = false
-                    }
+                withAnimation(.easeInOut) {
+                    state.activeUIElement = .none
                 }
             }
     }
     
-    var searchBarClearButton: some View {
+    private var searchBarClearButton: some View {
         Button {
-            mapVM.textToSearch = ""
-            selectedField = .none
+            withAnimation(.easeInOut) {
+                state.activeUIElement = .none
+                wrecks.textToSearch = ""
+                searchFieldSelected = false
+            }
         } label: {
             Image(systemName: "xmark")
                 .font(.title2)
@@ -72,25 +72,8 @@ struct MapSearchBar: View {
 
 struct MapSearchBar_Previews: PreviewProvider {
     static var previews: some View {
-        
-        // Init managers
-        let authManager = AuthorizationManager()
-        let httpManager = HTTPRequestManager()
-        let dataCoder = JSONDataCoder()
-        
-        // Init services
-        let wreckLoader = WrecksLoader(httpManager: httpManager, dataCoder: dataCoder)
-        let wrecksService = WrecksService(authManager: authManager, httpManager: httpManager, dataCoder: dataCoder)
-        let coreDataService = CoreDataService(dataCoder: dataCoder)
-        
-        // Init View model
-        let mapViewModel = MapViewModel(wreckLoader: wreckLoader, wrecksService: wrecksService, coreDataService: coreDataService)
-        
-        ZStack {
-            Color.indigo
-                .ignoresSafeArea()
-            MapSearchBar()
-                .environmentObject(mapViewModel)
-        }
+        MapSearchBar()
+            .environmentObject(Wrecks())
+            .environmentObject(AppState())
     }
 }

@@ -8,8 +8,6 @@
 enum WreckTypesEnum: String, Codable, CaseIterable, Identifiable {
     var id: Self { self }
     
-    case all
-    
     // Cargo vessels
     case bulkerVessel
     case tankerVessel
@@ -44,6 +42,6 @@ enum WreckTypesEnum: String, Codable, CaseIterable, Identifiable {
     
     // Other
     case helicopter
+    case unknown
     case other
-    case ufo
 }

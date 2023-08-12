@@ -20,26 +20,15 @@ struct PhotosPickerView: View {
             photosPicker
                 .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
                 .onChange(of: selectedImage) { newItem in
-                    updateImage(with: newItem)
+                    withAnimation(.easeInOut) {
+                        updateImage(with: newItem)
+                    }
                 }
             imageWeightCounter
         }
         .foregroundColor(.accentColor)
         .padding()
     }
-}
-
-// MARK: Preview
-
-struct PhotosPickerView_Previews: PreviewProvider {
-    static var previews: some View {
-        PhotosPickerView(selectedImageData: .constant(nil))
-    }
-}
-
-// MARK: Functions
-
-extension PhotosPickerView {
     
     private func updateImage(with newItem: PhotosPickerItem?) {
         Task {
@@ -51,30 +40,47 @@ extension PhotosPickerView {
     }
 }
 
-// MARK: Content
+struct PhotosPickerView_Previews: PreviewProvider {
+    static var previews: some View {
+        PhotosPickerView(selectedImageData: .constant(nil))
+    }
+}
+
+
+// MARK: - Variables
 
 extension PhotosPickerView {
     
     private var photosPicker: some View {
         PhotosPicker(selection: $selectedImage, photoLibrary: .shared()) {
             if selectedImageData == nil {
-                Color.gray.opacity(0.2)
-                    .frame(height: 250)
-                    .overlay {
-                        Text("Add image")
-                            .font(.title)
-                            .foregroundColor(.white)
-                            .padding()
-                            .background(.ultraThinMaterial)
-                            .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
-                    }
+                placeholder
             } else {
-                if let selectedImageData,
-                   let uiImage = UIImage(data: selectedImageData) {
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                }
+                image
+            }
+        }
+    }
+    
+    private var placeholder: some View {
+        Color.gray.opacity(0.2)
+            .frame(height: 250)
+            .overlay {
+                Text("Add image")
+                    .font(.title)
+                    .foregroundColor(.white)
+                    .padding()
+                    .background(.ultraThinMaterial)
+                    .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
+            }
+    }
+    
+    private var image: some View {
+        VStack {
+            if let selectedImageData,
+               let uiImage = UIImage(data: selectedImageData) {
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
             }
         }
     }
@@ -85,39 +91,24 @@ extension PhotosPickerView {
             Text("\(imageWeight / 1000000, specifier: "%.2F") MB")
             Spacer()
             if selectedImageData != nil {
-                Button("Clear") {
-                    withAnimation(.easeInOut) {
-                        selectedImageData = nil
-                        imageWeight = 0
-                    }
-                }
-                .padding(.horizontal)
-                .padding(.vertical, 5)
-                .foregroundColor(.white)
-                .background(Color.accentColor)
-                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                clearButton
             }
         }
         .font(.headline)
         .padding(.horizontal)
     }
     
-//    private var loadedImage: some View {
-//        AsyncImage(url: imageURL) { image in
-//            image
-//                .resizable()
-//                .aspectRatio(contentMode: .fit)
-//        } placeholder: {
-//            Color.gray.opacity(0.2)
-//                .frame(height: 250)
-//                .overlay {
-//                    Text("Add image")
-//                        .font(.title)
-//                        .foregroundColor(.white)
-//                        .padding()
-//                        .background(.ultraThinMaterial)
-//                        .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
-//                }
-//        }
-//    }
+    private var clearButton: some View {
+        Button("Clear") {
+            withAnimation(.easeInOut) {
+                selectedImageData = nil
+                imageWeight = 0
+            }
+        }
+        .padding(.horizontal)
+        .padding(.vertical, 5)
+        .foregroundColor(.white)
+        .background(Color.accentColor)
+        .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+    }
 }

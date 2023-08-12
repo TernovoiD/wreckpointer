@@ -1,13 +1,17 @@
 //
-//  AuthorizationManager.swift
-//  RememberX
+//  TokenStorage.swift
+//  Wreckpointer
 //
-//  Created by Danylo Ternovoi on 01.06.2023.
+//  Created by Danylo Ternovoi on 11.08.2023.
 //
 
 import Foundation
 
-class AuthorizationManager {
+class TokenStorage {
+    
+    static let shared = TokenStorage()
+    
+    private init() { }
     
     func saveToken(_ token: String) {
         let userDefaults = UserDefaults.standard

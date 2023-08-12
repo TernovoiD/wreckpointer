@@ -9,10 +9,11 @@ import SwiftUI
 
 struct CollectionView: View {
     
-    let collection: Collection
+    @EnvironmentObject var collections: Collections
+    @State var collection: Collection
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 5) {
+        VStack(alignment: .leading, spacing: 3) {
             HStack(alignment: .center) {
                 collectionImage
                 collectionTitle
@@ -23,17 +24,32 @@ struct CollectionView: View {
                 collectionInfo
             }
         }
-        .padding(.horizontal)
-        .padding(.vertical, 10)
-        .background(Color.gray.opacity(0.1))
-        .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
-        .neonField(light: true)
+        .onChange(of: collections.all) { collections in
+            if let updatedCollection = collections.first(where: { $0.id == collection.id }) {
+                self.collection = updatedCollection
+            }
+        }
     }
+}
+
+struct CollectionView_Previews: PreviewProvider {
+    static var previews: some View {
+        CollectionView(collection: Collection.test)
+            .environmentObject(Collections())
+            .padding()
+            .background(Color.gray.opacity(0.15))
+    }
+}
+
+
+// MARK: - Variables
+
+extension CollectionView {
     
     var collectionImage: some View {
         ImageView(imageData: .constant(collection.image))
-            .clipShape(RoundedRectangle(cornerRadius: 7, style: .continuous))
-            .frame(maxWidth: 50, maxHeight: 50)
+            .clipShape(RoundedRectangle(cornerRadius: 5, style: .continuous))
+            .frame(maxWidth: 40)
     }
     
     var collectionTitle: some View {
@@ -41,7 +57,7 @@ struct CollectionView: View {
             Text(collection.title)
                 .font(.title3)
                 .bold()
-            Text("Created: \(collection.createdAt?.formatted(date: .abbreviated, time: .omitted) ?? "unknown")")
+            Text("Creator: \(collection.creator?.username ?? "unknown")")
                 .font(.subheadline)
         }
     }
@@ -57,14 +73,5 @@ struct CollectionView: View {
         Text(collection.description)
             .font(.caption2)
             .frame(maxHeight: 40)
-    }
-}
-
-struct CollectionView_Previews: PreviewProvider {
-    static var previews: some View {
-        
-        let collection: Collection = Collection(id: UUID(uuidString: "collection1"), title: "Aircraft carriers", description: "Collection abount aircraft carriers", image: nil, createdAt: Date(), updatedAt: Date(), blocks: [], approved: true)
-        
-        CollectionView(collection: collection)
     }
 }

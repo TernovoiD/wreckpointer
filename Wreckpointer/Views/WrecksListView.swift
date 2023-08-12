@@ -10,35 +10,34 @@ import SwiftUI
 struct WrecksListView: View {
     
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject var mapVM: MapViewModel
     @Binding var selectedWreck: Wreck?
     
     @State var searchText: String = ""
     
     var body: some View {
         List {
-            ForEach(searchResults) { wreck in
-                WreckView(wreck: wreck)
-                    .listRowSeparator(.hidden)
-                    .listRowBackground(Color.clear)
-                    .onTapGesture {
-                        selectedWreck = wreck
-                        dismiss()
-                    }
-            }
-            .listStyle(.plain)
+//            ForEach(searchResults) { wreck in
+//                WreckView(wreck: wreck)
+//                    .listRowSeparator(.hidden)
+//                    .listRowBackground(Color.clear)
+//                    .onTapGesture {
+//                        selectedWreck = wreck
+//                        dismiss()
+//                    }
+//            }
+//            .listStyle(.plain)
         }
         .searchable(text: $searchText)
         .navigationBarTitleDisplayMode(.inline)
     }
     
-    var searchResults: [Wreck] {
-        if searchText.isEmpty {
-            return mapVM.mapWrecks
-        } else {
-            return mapVM.mapWrecks.filter { $0.title.contains(searchText) }
-        }
-    }
+//    var searchResults: [Wreck] {
+//        if searchText.isEmpty {
+//            return mapVM.mapWrecks
+//        } else {
+//            return mapVM.mapWrecks.filter { $0.title.contains(searchText) }
+//        }
+//    }
 }
 
 //struct WrecksListView_Previews: PreviewProvider {
