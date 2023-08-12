@@ -9,48 +9,70 @@ import SwiftUI
 
 struct MapFilter: View {
     
-    @EnvironmentObject var mapVM: MapViewModel
+    @StateObject var viewModel = MapFilterViewModel()
+    @EnvironmentObject var wrecks: Wrecks
+    @EnvironmentObject var state: AppState
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             openFilterMenuButton
-            if mapVM.openFilter {
+            if state.activeUIElement == .mapFilter {
                 Divider()
-                minimumDate
-                maximumDate
-                Divider()
-                wreckTypePicker
-                Divider()
-                Toggle("Wreck dives only", isOn: $mapVM.showWreckDivesOnly)
-                if mapVM.showWreckDivesOnly == true || mapVM.minimumDate != mapVM.minimumDateOfLossDate() || mapVM.maximumDate != mapVM.maximumDateOfLossDate() || mapVM.wreckType != .all {
+                Toggle("Filter by date", isOn: $wrecks.filterByDate.animation(.easeInOut))
+                Toggle("Filter by type", isOn: $wrecks.filterByType.animation(.easeInOut))
+                Toggle("Filter by cause", isOn: $wrecks.filterByCause.animation(.easeInOut))
+                Toggle("Wreck dives only", isOn: $wrecks.showWreckDivesOnly)
+                if wrecks.filterByType || wrecks.filterByCause || wrecks.filterByDate {
                     Divider()
-                    clearButton
+                }
+                if wrecks.filterByDate {
+                    HStack {
+                        minimumDatePicker
+                        maximumDatePicker
+                    }
+                }
+                if wrecks.filterByType {
+                    wreckTypePicker
+                }
+                if wrecks.filterByCause {
+                    wreckCausePicker
                 }
             }
         }
+        .onChange(of: wrecks.filterByDate, perform: { newValue in setMinimumDate(newValue: newValue) })
         .font(.headline)
         .padding()
         .accentColorBorder()
-        .onTapGesture {
-            withAnimation(.easeInOut) {
-                mapVM.openFilter = true
-                mapVM.openSettings = false
-                mapVM.openMenu = false
-                mapVM.searchIsActive = false
-            }
+    }
+    
+    func setMinimumDate(newValue: Bool) {
+        if newValue {
+            wrecks.minimumDate = viewModel.minimumDateOfLossDate(forWrecks: wrecks.all)
         }
     }
+}
+
+struct MapFilter_Previews: PreviewProvider {
+    static var previews: some View {
+        MapFilter()
+            .environmentObject(Wrecks())
+            .environmentObject(AppState())
+            .environmentObject(MapFilterViewModel())
+    }
+}
+
+
+// MARK: - Variables
+
+extension MapFilter {
     
     var openFilterMenuButton: some View {
         Button {
             withAnimation(.easeInOut) {
-                mapVM.openFilter.toggle()
-                mapVM.openSettings = false
-                mapVM.openMenu = false
-                mapVM.searchIsActive = false
+                state.activeUIElement = state.activeUIElement == .mapFilter ? .none : .mapFilter
             }
         } label: {
-            if mapVM.openFilter {
+            if state.activeUIElement == .mapFilter {
                 Label("Filter", systemImage: "xmark")
             } else {
                 Image(systemName: "slider.horizontal.3")
@@ -63,11 +85,11 @@ struct MapFilter: View {
     
     var wreckTypePicker: some View {
         HStack {
-            Text("Type of wreck")
+            Text("Type")
             Spacer()
-            Picker("Wreck type", selection: $mapVM.wreckType) {
+            Picker("Wreck type", selection: $wrecks.wreckType) {
                 ForEach(WreckTypesEnum.allCases) { option in
-                    Text(String(describing: option))
+                    Text(String(describing: option).capitalized)
                 }
             }
             .pickerStyle(.menu)
@@ -76,57 +98,28 @@ struct MapFilter: View {
         }
     }
     
-    var minimumDate: some View {
-        DatePicker("From", selection: $mapVM.minimumDate, in: mapVM.minimumDate...mapVM.maximumDate, displayedComponents: .date)
-            .datePickerStyle(.compact)
-    }
-    
-    var maximumDate: some View {
-        DatePicker("To", selection: $mapVM.maximumDate, in: mapVM.minimumDate...Date(), displayedComponents: .date)
-            .datePickerStyle(.compact)
-    }
-    
-    var clearButton: some View {
-        Button {
-            withAnimation(.easeInOut) {
-                mapVM.showWreckDivesOnly = false
-                mapVM.minimumDate = mapVM.minimumDateOfLossDate()
-                mapVM.maximumDate = mapVM.maximumDateOfLossDate()
-                mapVM.wreckType = .all
-                mapVM.openFilter = false
+    var wreckCausePicker: some View {
+        HStack {
+            Text("Cause")
+            Spacer()
+            Picker("Wreck type", selection: $wrecks.wreckCause) {
+                ForEach(WreckCausesEnum.allCases) { option in
+                    Text(String(describing: option).capitalized)
+                }
             }
-        } label: {
-            Text("Clear")
-                .frame(maxWidth: .infinity, alignment: .center)
-                .padding()
-                .foregroundColor(.white)
-                .background(Color.accentColor)
-                .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
+            .pickerStyle(.menu)
+            .background(Color.gray.opacity(0.15))
+            .clipShape(RoundedRectangle(cornerRadius: 8))
         }
     }
-}
-
-struct MapFilter_Previews: PreviewProvider {
-    static var previews: some View {
-        
-        // Init managers
-        let authManager = AuthorizationManager()
-        let httpManager = HTTPRequestManager()
-        let dataCoder = JSONDataCoder()
-        
-        // Init services
-        let wreckLoader = WrecksLoader(httpManager: httpManager, dataCoder: dataCoder)
-        let wrecksService = WrecksService(authManager: authManager, httpManager: httpManager, dataCoder: dataCoder)
-        let coreDataService = CoreDataService(dataCoder: dataCoder)
-        
-        // Init View model
-        let mapViewModel = MapViewModel(wreckLoader: wreckLoader, wrecksService: wrecksService, coreDataService: coreDataService)
-        
-        ZStack {
-            Color.clear
-                .ignoresSafeArea()
-            MapFilter()
-                .environmentObject(mapViewModel)
-        }
+    
+    var minimumDatePicker: some View {
+        DatePicker("From", selection: $wrecks.minimumDate, displayedComponents: .date)
+            .datePickerStyle(.compact)
+    }
+    
+    var maximumDatePicker: some View {
+        DatePicker("To", selection: $wrecks.maximumDate, displayedComponents: .date)
+            .datePickerStyle(.compact)
     }
 }

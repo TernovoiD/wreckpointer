@@ -2,69 +2,72 @@
 //  MapOverlayView.swift
 //  Wreckpointer
 //
-//  Created by Danylo Ternovoi on 13.07.2023.
+//  Created by Danylo Ternovoi on 11.08.2023.
 //
 
 import SwiftUI
 
 struct MapOverlayView: View {
     
-    @EnvironmentObject var mapVM: MapViewModel
-    @State var showWreck: Bool = false
-    @State var wreckToShow: Wreck = Wreck(cause: "unknown", type: "unknown", title: "unknown", latitude: 0, longitude: 0, wreckDive: false)
-    
-    enum FocusText {
-        case searchField
-    }
+    @AppStorage("visitedCollections") var visitedCollections: Bool = false
+    @EnvironmentObject var wrecks: Wrecks
+    @EnvironmentObject var state: AppState
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
+        VStack {
             MapSearchBar()
-            HStack(alignment: .top, spacing: 10) {
-                MapMenu()
-                StoriesButton()
+            ZStack {
+                VStack(alignment: .leading) {
+                    HStack(alignment: .top) {
+                        MapMenu()
+                        collectionsButton
+                        Spacer()
+                    }
+                    MapSettings()
+                    MapFilter()
+                }
+                .offset(x: !wrecks.textToSearch.isEmpty ? -1000 : 0)
+                SearchList()
+                    .offset(x: !wrecks.textToSearch.isEmpty ? 0 : 1000)
             }
-            MapSettings()
-            MapFilter()
+            .padding(.horizontal)
             Spacer()
-            SelectedWreckPanel(showWreck: $showWreck, wreck: $wreckToShow)
-                .offset(y: mapVM.mapSelectedWreck == nil ? 1000 : -20)
+            if let wreck = wrecks.selectedWreck {
+                SelectedWreckPanel(wreck: wreck)
+                    .offset(y: -40)
+            }
         }
-        .onChange(of: mapVM.mapSelectedWreck, perform: { newValue in
-            if let wreck = newValue {
-                wreckToShow = wreck
-            }
-        })
-        .sheet(isPresented: $showWreck, content: {
-            if let wreck = mapVM.mapSelectedWreck {
-                WreckDetailedView(wreck: wreck)
-            } else {
-                let wreck = Wreck(cause: "unknown", type: "unknown", title: "unknown", latitude: 0, longitude: 0, wreckDive: false)
-                WreckDetailedView(wreck: wreck)
-            }
-        })
-        .padding()
+    }
+    
+    private var collectionsButton: some View {
+        NavigationLink {
+            CollectionsView()
+        } label: {
+            Text("Collections")
+                .frame(height: 35)
+                .font(.headline)
+                .padding()
+                .accentColorBorder()
+                .overlay(alignment: .topTrailing) {
+                    if !visitedCollections {
+                        Text("New!")
+                            .font(.caption2)
+                            .bold()
+                            .padding(3)
+                            .foregroundColor(.white)
+                            .background(Color.red)
+                            .clipShape(RoundedRectangle(cornerRadius: 5, style: .continuous))
+                            .offset(x: 5, y: -5)
+                    }
+                }
+        }
     }
 }
 
 struct MapOverlayView_Previews: PreviewProvider {
     static var previews: some View {
-        
-        // Init managers
-        let authManager = AuthorizationManager()
-        let httpManager = HTTPRequestManager()
-        let dataCoder = JSONDataCoder()
-        
-        // Init services
-        let wreckLoader = WrecksLoader(httpManager: httpManager, dataCoder: dataCoder)
-        let wrecksService = WrecksService(authManager: authManager, httpManager: httpManager, dataCoder: dataCoder)
-        let coreDataService = CoreDataService(dataCoder: dataCoder)
-        
-        // Init View model
-        let mapViewModel = MapViewModel(wreckLoader: wreckLoader, wrecksService: wrecksService, coreDataService: coreDataService)
-        
         MapOverlayView()
-            .background(Color.green)
-            .environmentObject(mapViewModel)
+            .environmentObject(Wrecks())
+            .environmentObject(AppState())
     }
 }

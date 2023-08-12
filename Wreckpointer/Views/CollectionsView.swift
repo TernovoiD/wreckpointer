@@ -9,118 +9,67 @@ import SwiftUI
 
 struct CollectionsView: View {
     
-    @EnvironmentObject var mapVM: MapViewModel
-    @EnvironmentObject var collectionsVM: CollectionsViewModel
-    @State var blankCollection: Collection = Collection(title: "", description: "", blocks: [])
-
-    var body: some View {
-        NavigationView {
-            collectionsList
-                .navigationTitle("Collections")
-                .toolbar {
-                    ToolbarItem(placement: .cancellationAction) {
-                        mapButton
-                    }
-                    ToolbarItem {
-                        createCollectionButton
-                    }
-                }
-        }
-        .task {
-            do {
-                try await collectionsVM.fetch()
-            } catch let error {
-                print(error)
-            }
-        }
-    }
+    @AppStorage("visitedCollections") var visitedCollections: Bool = false
+    @StateObject var viewModel: CollectionsViewModel = CollectionsViewModel()
+    @EnvironmentObject var collections: Collections
+    @EnvironmentObject var state: AppState
     
-    var collectionsList: some View {
+    
+    var body: some View {
         List {
-            ForEach(collectionsVM.collections) { collection in
+            ForEach(collections.all) { collection in
                 NavigationLink {
                     CollectionDetailedView(collection: collection)
                 } label: {
                     CollectionView(collection: collection)
                 }
-                .contextMenu {
-                    Button(role: .destructive) {
-                        delete(collection: collection)
-                    } label: {
-                        Label("Delete", systemImage: "trash.circle")
-                    }
-                }
+                .contextMenu { Button("Delete", role: .destructive) {
+                    Task { await viewModel.delete(collection: collection) }
+                } }
             }
-            .listRowSeparator(.hidden)
-            .listRowBackground(Color.clear)
         }
-        .listStyle(.plain)
-    }
-    
-    var mapButton: some View {
-        Button {
-            withAnimation(.easeInOut) {
-                mapVM.showCollectionsView = false
-            }
-        } label: {
-            HStack {
-                Image(systemName: "globe.europe.africa.fill")
-                Text("Back to Map")
-            }
-            .font(.headline)
+        .onAppear{ visitedCollections = true }
+        .navigationTitle("Collections")
+        .toolbar { Button("Add") { collections.all.append(Collection()) } }
+        .toolbar { if state.authorizedUser != nil { ToolbarItem { createCollectionButton } } }
+        .task { await loadCollections() }
+        .alert(viewModel.errorMessage, isPresented: $viewModel.error) {
+            Button("OK", role: .cancel) { }
         }
     }
     
-    var createCollectionButton: some View {
-        NavigationLink {
-            AddUpdateCollection(originalCollection: $blankCollection, collection: blankCollection)
-        } label: {
-            HStack {
-                Text("Create")
-                Image(systemName: "plus.circle")
-            }
-            .font(.headline)
+    private func loadCollections() async {
+        if let collections = await viewModel.fetchCollections() {
+            self.collections.all = collections
         }
     }
 }
 
 struct CollectionsView_Previews: PreviewProvider {
     static var previews: some View {
-        
-        // Init managers
-        let authManager = AuthorizationManager()
-        let httpManager = HTTPRequestManager()
-        let dataCoder = JSONDataCoder()
-        
-        // Init services
-        let wreckLoader = WrecksLoader(httpManager: httpManager, dataCoder: dataCoder)
-        let wrecksService = WrecksService(authManager: authManager, httpManager: httpManager, dataCoder: dataCoder)
-        let coreDataService = CoreDataService(dataCoder: dataCoder)
-        let collectionsService = CollectionsService(authManager: authManager, httpManager: httpManager, dataCoder: dataCoder)
- 
-        // Init View model
-        let mapViewModel = MapViewModel(wreckLoader: wreckLoader, wrecksService: wrecksService, coreDataService: coreDataService)
-        let collectionsViewModel = CollectionsViewModel(collectionsService: collectionsService)
-        
-        CollectionsView()
-            .environmentObject(mapViewModel)
-            .environmentObject(collectionsViewModel)
+        NavigationView {
+            CollectionsView()
+                .environmentObject(CollectionsViewModel())
+                .environmentObject(Collections())
+                .environmentObject(AppState())
+        }
     }
 }
 
 
-// MARK: - Functions
+// MARK: - Variables
 
 extension CollectionsView {
     
-    private func delete(collection: Collection) {
-        Task {
-            do {
-                try await collectionsVM.delete(collection: collection)
-                collectionsVM.collections.removeAll(where: { $0.id == collection.id })
-            } catch let error {
-                print(error)
+    var createCollectionButton: some View {
+        NavigationLink {
+            AddUpdateCollection(collection: Collection())
+        } label: {
+            HStack {
+                Text("Create")
+                Image(systemName: "plus.circle")
             }
+            .font(.headline)
         }
     }
 }

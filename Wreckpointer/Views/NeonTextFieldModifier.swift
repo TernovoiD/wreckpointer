@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct NeonTextFieldModifier: ViewModifier {
+    
     var light: Bool
     
     func body(content: Content) -> some View {

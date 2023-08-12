@@ -16,6 +16,6 @@ enum WreckCausesEnum: String, Codable, CaseIterable, Identifiable {
     case weather
     case unknown
     case battle
-    case fire
     case other
+    case fire
 }

@@ -9,12 +9,12 @@ import SwiftUI
 
 struct MapMenu: View {
     
-    @EnvironmentObject var mapVM: MapViewModel
+    @EnvironmentObject var state: AppState
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             openCloseMenuButton
-            if mapVM.openMenu {
+            if state.activeUIElement == .mapMenu {
                 Divider()
                     .frame(maxWidth: 120)
                 accountButton
@@ -24,26 +24,15 @@ struct MapMenu: View {
         .font(.headline)
         .padding()
         .accentColorBorder()
-        .onTapGesture {
-            withAnimation(.easeInOut) {
-                mapVM.openMenu = true
-                mapVM.openFilter = false
-                mapVM.openSettings = false
-                mapVM.searchIsActive = false
-            }
-        }
     }
     
     var openCloseMenuButton: some View {
         Button {
             withAnimation(.easeInOut) {
-                mapVM.openMenu.toggle()
-                mapVM.openFilter = false
-                mapVM.openSettings = false
-                mapVM.searchIsActive = false
+                state.activeUIElement = state.activeUIElement == .mapMenu ? .none : .mapMenu
             }
         } label: {
-            if mapVM.openMenu {
+            if state.activeUIElement == .mapMenu {
                 Label("Menu", systemImage: "xmark")
             } else {
                 Image(systemName: "text.justify")
@@ -55,26 +44,9 @@ struct MapMenu: View {
         }
     }
     
-    var settingsButton: some View {
-        Button {
-            withAnimation(.easeInOut) {
-                mapVM.openMenu = false
-            }
-        } label: {
-            HStack {
-                Image(systemName: "gear")
-                    .frame(maxWidth: 20)
-                Text("Settings")
-            }
-        }
-    }
-    
     var accountButton: some View {
-        Button {
-            withAnimation(.easeInOut) {
-                mapVM.showLoginView = true
-                mapVM.openMenu = false
-            }
+        NavigationLink {
+            AccountView()
         } label: {
             HStack {
                 Image(systemName: "person.crop.rectangle")
@@ -85,12 +57,8 @@ struct MapMenu: View {
     }
     
     var addWreckButton: some View {
-        Button {
-            withAnimation(.easeInOut) {
-                mapVM.wreckToEdit = nil
-                mapVM.openMenu = false
-                mapVM.showAddWreckView = true
-            }
+        NavigationLink {
+            AddUpdateWreck(wreck: Wreck())
         } label: {
             HStack {
                 Image(systemName: "plus.rectangle")
@@ -99,30 +67,13 @@ struct MapMenu: View {
             }
             .frame(maxWidth: 140, alignment: .leading)
         }
+        .disabled(state.authorizedUser == nil ? true : false)
     }
 }
 
 struct MapMenu_Previews: PreviewProvider {
     static var previews: some View {
-        
-        // Init managers
-        let authManager = AuthorizationManager()
-        let httpManager = HTTPRequestManager()
-        let dataCoder = JSONDataCoder()
-        
-        // Init services
-        let wreckLoader = WrecksLoader(httpManager: httpManager, dataCoder: dataCoder)
-        let wrecksService = WrecksService(authManager: authManager, httpManager: httpManager, dataCoder: dataCoder)
-        let coreDataService = CoreDataService(dataCoder: dataCoder)
-        
-        // Init View model
-        let mapViewModel = MapViewModel(wreckLoader: wreckLoader, wrecksService: wrecksService, coreDataService: coreDataService)
-        
-        ZStack {
-            Color.indigo
-                .ignoresSafeArea()
-            MapMenu()
-                .environmentObject(mapViewModel)
-        }
+        MapMenu()
+            .environmentObject(AppState())
     }
 }

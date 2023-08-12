@@ -9,21 +9,19 @@ import SwiftUI
 
 struct MapSettings: View {
     
-    @EnvironmentObject var mapVM: MapViewModel
-    @AppStorage("saveWrecks") var saveWrecks: Bool = true
-    @AppStorage("showFeets") var showFeets: Bool = true
+    @AppStorage("saveWrecksInMemory") private var saveWrecksInMemory: Bool = true
+    @AppStorage("showFeetUnits") var showFeetUnits: Bool = true
+    @EnvironmentObject var state: AppState
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             openSettingsButton
-            if mapVM.openSettings {
-                Divider()
-                mapSpanPicker
+            if state.activeUIElement == .mapSettings {
                 Divider()
                 wrecksSaveToggle
                 Divider()
-                Toggle(isOn: $showFeets) {
-                    Text("Show depth in feets")
+                Toggle(isOn: $showFeetUnits) {
+                    Text("Show depth in feet")
                         .padding(.leading)
                 }
                 Divider()
@@ -32,23 +30,15 @@ struct MapSettings: View {
         .font(.headline)
         .padding()
         .accentColorBorder()
-        .onChange(of: showFeets) { newValue in
-            DispatchQueue.main.async {
-                mapVM.wreckToEdit = nil
-            }
-        }
     }
     
     var openSettingsButton: some View {
         Button {
             withAnimation(.easeInOut) {
-                mapVM.openSettings.toggle()
-                mapVM.openMenu = false
-                mapVM.openFilter = false
-                mapVM.searchIsActive = false
+                state.activeUIElement = state.activeUIElement == .mapSettings ? .none : .mapSettings
             }
         } label: {
-            if mapVM.openSettings {
+            if state.activeUIElement == .mapSettings {
                 Label("Settings", systemImage: "xmark")
             } else {
                 Image(systemName: "gear")
@@ -60,29 +50,13 @@ struct MapSettings: View {
         }
     }
     
-    var mapSpanPicker: some View {
-        VStack {
-            Text("Map scale")
-            Picker("Map scale", selection: $mapVM.mapScale) {
-                ForEach(mapScales.allCases) { option in
-                    Text(String(describing: option).capitalized)
-                }
-            }
-            .pickerStyle(.segmented)
-            Text("This scale will be used to present selected wreck on map.")
-                .font(.caption)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal)
-        }
-    }
-    
     var wrecksSaveToggle: some View {
         VStack {
-            Toggle(isOn: $saveWrecks) {
+            Toggle(isOn: $saveWrecksInMemory) {
                 Text("Save wrecks in memory")
                     .padding(.leading)
             }
-            Text("Saving wrecks in memory allows to see them offline")
+            Text("Saved wrecks will be available in offline mode")
                 .font(.caption)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal)
@@ -92,21 +66,7 @@ struct MapSettings: View {
 
 struct MapSettings_Previews: PreviewProvider {
     static var previews: some View {
-        
-        // Init managers
-        let authManager = AuthorizationManager()
-        let httpManager = HTTPRequestManager()
-        let dataCoder = JSONDataCoder()
-        
-        // Init services
-        let wreckLoader = WrecksLoader(httpManager: httpManager, dataCoder: dataCoder)
-        let wrecksService = WrecksService(authManager: authManager, httpManager: httpManager, dataCoder: dataCoder)
-        let coreDataService = CoreDataService(dataCoder: dataCoder)
-        
-        // Init View model
-        let mapViewModel = MapViewModel(wreckLoader: wreckLoader, wrecksService: wrecksService, coreDataService: coreDataService)
-        
         MapSettings()
-            .environmentObject(mapViewModel)
+            .environmentObject(AppState())
     }
 }

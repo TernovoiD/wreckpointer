@@ -10,11 +10,10 @@ import SwiftUI
 struct AddUpdateCollection: View {
     
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject var collectionsVM: CollectionsViewModel
+    @StateObject var viewModel = AddUpdateCollectionViewModel()
+    @EnvironmentObject var collections: Collections
     @FocusState var selectedField: FocusText?
-    @Binding var originalCollection: Collection
     @State var collection: Collection
-    @State var error: String = ""
     
     enum FocusText {
         case title
@@ -34,16 +33,48 @@ struct AddUpdateCollection: View {
                 .padding(.top, 20)
             descriptionTextEditor
         }
-        .onTapGesture {
-            selectedField = .none
+        .navigationTitle("Collection")
+        .onTapGesture { selectedField = .none }
+        .toolbar { ToolbarItem { saveButton } }
+        .alert(viewModel.errorMessage, isPresented: $viewModel.error) {
+            Button("OK", role: .cancel) { }
         }
-        .navigationTitle(collection.id == nil ? "Create collection" : "Update collection")
-        .toolbar {
-            ToolbarItem {
-                saveButton
+    }
+    
+    func addUpdate() async {
+        if collection.id == nil {
+            let createdCollection = await viewModel.create(collection: collection)
+            if let createdCollection {
+                collections.updateCollection(createdCollection)
+                dismiss()
+            }
+        } else {
+            var collectionToUpdate = collection
+            let blocks = collectionToUpdate.blocks
+            collectionToUpdate.blocks = [ ]
+            let updatedCollection = await viewModel.update(collection: collectionToUpdate)
+            if var updatedCollection {
+                updatedCollection.blocks = blocks
+                collections.updateCollection(updatedCollection)
+                dismiss()
             }
         }
     }
+}
+
+struct AddUpdateCollection_Previews: PreviewProvider {
+    static var previews: some View {
+        NavigationView {
+            AddUpdateCollection(collection: Collection.test)
+                .environmentObject(Collections())
+                .environmentObject(AddUpdateCollectionViewModel())
+        }
+    }
+}
+
+// MARK: - Variables
+
+extension AddUpdateCollection {
     
     var titleTextField: some View {
         TextField("Collection name", text: $collection.title)
@@ -73,77 +104,10 @@ struct AddUpdateCollection: View {
     
     var saveButton: some View {
         Button {
-            if !collection.title.isEmpty && !collection.description.isEmpty {
-                if collection.id == nil {
-                    create(collection: collection)
-                } else {
-                    update(collection: collection)
-                }
-            }
+            Task { await addUpdate() }
         } label: {
             Text("Save")
                 .bold()
-        }
-    }
-}
-
-struct AddUpdateCollection_Previews: PreviewProvider {
-    static var previews: some View {
-        
-        // Init managers
-        let authManager = AuthorizationManager()
-        let httpManager = HTTPRequestManager()
-        let dataCoder = JSONDataCoder()
-        
-        // Init services
-        let collectionsService = CollectionsService(authManager: authManager, httpManager: httpManager, dataCoder: dataCoder)
- 
-        // Init View model
-        let collectionsViewModel = CollectionsViewModel(collectionsService: collectionsService)
-        
-        let collection = Collection(title: "Blank", description: " ", blocks: [])
-        
-        AddUpdateCollection(originalCollection: .constant(collection), collection: collection)
-            .environmentObject(collectionsViewModel)
-    }
-}
-
-    // MARK: - Functions
-
-extension AddUpdateCollection {
-    
-    func create(collection: Collection) {
-        Task {
-            do {
-                try await collectionsVM.create(collection: collection)
-                DispatchQueue.main.async {
-                    originalCollection.title = ""
-                    originalCollection.description = ""
-                    originalCollection.image = nil
-                    originalCollection.blocks = [ ]
-                }
-                dismiss()
-            } catch let error {
-                print(error)
-            }
-        }
-    }
-    
-    func update(collection: Collection) {
-        Task {
-            do {
-                var collectionToUpdate = collection
-                collectionToUpdate.blocks = [ ]
-                try await collectionsVM.update(collection: collectionToUpdate)
-                DispatchQueue.main.async {
-                    originalCollection.title = collection.title
-                    originalCollection.description = collection.description
-                    originalCollection.image = collection.image
-                }
-                dismiss()
-            } catch let error {
-                print(error)
-            }
         }
     }
 }
