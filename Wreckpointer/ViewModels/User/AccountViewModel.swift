@@ -28,8 +28,11 @@ class AccountViewModel: ObservableObject {
         do {
             try await UserManager.shared.deleteAccount(forUser: user)
             return true
+        } catch let httpError as HTTPError {
+            showError(withMessage: httpError.errorDescription)
+            return false
         } catch let error {
-            showError(withMessage: "Unable to delete account: \(error.localizedDescription)")
+            showError(withMessage: error.localizedDescription)
             return false
         }
     }

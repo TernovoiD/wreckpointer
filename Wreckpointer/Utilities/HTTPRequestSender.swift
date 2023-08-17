@@ -39,33 +39,43 @@ class HTTPRequestSender {
             request.addValue("Bearer \(loginToken)", forHTTPHeaderField: HTTPHeaders.authorization.rawValue)
         }
         
-        let (data, response) = try await URLSession.shared.data(for: request)
-        try verifyResponse(response)
-        return data
+        let serverResponse = try await URLSession.shared.data(for: request)
+        return try verify(serverResponse: serverResponse)
     }
     
-    private func verifyResponse(_ response: URLResponse) throws {
-        guard let httpResponse = response as? HTTPURLResponse else { return }
+    private func verify(serverResponse: (Data, URLResponse)) throws -> Data {
+        let (data, response) = serverResponse
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw HTTPError.notDecodable((String(data: data, encoding: .utf8) ?? "HTTP response not decoded"))
+        }
         
         switch httpResponse.statusCode {
         case 100...199:
-            throw HTTPError.informationaResponse
+            throw HTTPError.informationaResponse(decodeError(fromData: data))
         case 200...299:
-            return
+            return data
         case 300...399:
-            throw HTTPError.redirectionMessage
+            throw HTTPError.redirectionMessage(decodeError(fromData: data))
+        case 400, 402...499:
+            throw HTTPError.clientError(decodeError(fromData: data))
         case 401:
-            throw HTTPError.notAuthorized
-        case 403:
-            throw HTTPError.forbidden
-        case 404:
-            throw HTTPError.notFound
-        case 400, 402, 405...499:
-            throw HTTPError.clientError
+            throw HTTPError.unauthorized
         case 500...599:
-            throw HTTPError.serverError
+            throw HTTPError.serverError(decodeError(fromData: data))
         default:
-            throw HTTPError.unknownResponse
+            throw HTTPError.unknownResponse(decodeError(fromData: data))
+        }
+    }
+    
+    private func decodeError(fromData data: Data) -> String {
+        let object = try? JSONSerialization.jsonObject(with: data, options: [])
+        
+        if let response = object as? [String: Any],
+           let error = response["reason"] as? String {
+            return error
+        } else {
+            print((String(data: data, encoding: .utf8)))
+            return "Unknown error"
         }
     }
 }

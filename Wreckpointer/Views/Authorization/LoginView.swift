@@ -9,9 +9,27 @@ import SwiftUI
 
 struct LoginView: View {
     
-    @StateObject var viewModel = LoginViewModel()
-    @FocusState var selectedField: FocusText?
+    @StateObject private var viewModel = LoginViewModel()
+    @FocusState private var selectedField: FocusText?
     @EnvironmentObject var state: AppState
+    
+    @State private var email: String = ""
+    @State private var password: String = ""
+    
+    var validForm: Bool {
+        if email.isEmpty || password.isEmpty {
+            viewModel.showError(withMessage: "Fields cannot be empty.")
+            return false
+        } else if !email.isValidEmail {
+            viewModel.showError(withMessage: "Email is not valid.")
+            return false
+        } else if !password.isValidPassword {
+            viewModel.showError(withMessage: "Password must contain at least 6 characters.")
+            return false
+        } else {
+            return true
+        }
+    }
     
     enum FocusText {
         case email
@@ -49,15 +67,14 @@ struct LoginView: View {
         }
     }
     
-    func signIn() {
-        Task {
-            await viewModel.login()
-            let user = await viewModel.fetchUser()
-            if let user {
-                withAnimation(.easeInOut) {
-                    state.authorizedUser = user
-                }
-            }
+    private func clearForm() {
+        email = ""
+        password = ""
+    }
+    
+    private func login() async {
+        if let user = await viewModel.login(withEmail: email, andPassword: password) {
+            state.authorizedUser = user
         }
     }
 }
@@ -78,7 +95,7 @@ struct LoginView_Previews: PreviewProvider {
 extension LoginView {
     
     var emailField: some View {
-        TextField("Email", text: $viewModel.email)
+        TextField("Email", text: $email)
             .padding()
             .focused($selectedField, equals: .email)
             .neonField(light: selectedField == .email ? true : false)
@@ -96,7 +113,7 @@ extension LoginView {
     }
     
     var passwordField: some View {
-        SecureField("Password", text: $viewModel.password)
+        SecureField("Password", text: $password)
             .padding()
             .focused($selectedField, equals: .password)
             .neonField(light: selectedField == .password ? true : false)
@@ -107,8 +124,8 @@ extension LoginView {
                 selectedField = .password
             }
             .onSubmit {
-                if viewModel.validForm {
-                    signIn()
+                if validForm {
+                    Task { await login() }
                 }
             }
             .padding(.horizontal)
@@ -116,9 +133,8 @@ extension LoginView {
     
     var signInButton: some View {
         Button {
-            if viewModel.validForm {
-                selectedField = .none
-                signIn()
+            if validForm {
+                Task { await login() }
             }
         } label: {
             Text("Sign In")

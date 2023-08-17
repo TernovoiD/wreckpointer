@@ -9,9 +9,25 @@ import SwiftUI
 
 struct ChangePasswordView: View {
     
-    @FocusState var selectedField: FocusText?
-    @StateObject var viewModel = ChangePasswordViewModel()
+    @FocusState private var selectedField: FocusText?
+    @StateObject private var viewModel = ChangePasswordViewModel()
     @Environment(\.dismiss) private var dismiss
+    
+    @State private var oldPassword: String = ""
+    @State private var newPassword: String = ""
+    @State private var newPasswordConfirmation: String = ""
+    
+    var validForm: Bool {
+        if oldPassword.isEmpty || newPassword.isEmpty || newPasswordConfirmation.isEmpty {
+            viewModel.showError(withMessage: "Fields cannot be empty.")
+            return false
+        } else if !newPassword.isValidPassword || !newPasswordConfirmation.isValidPassword {
+            viewModel.showError(withMessage: "New password must contain at least 6 characters.")
+            return false
+        } else {
+            return true
+        }
+    }
     
     enum FocusText {
         case oldPassword
@@ -26,6 +42,7 @@ struct ChangePasswordView: View {
                 newPasswordField
                 newPasswordConfirmationField
             }
+            .padding(.top, 100)
         }
         .toolbar{ saveButton }
         .navigationTitle("Change password")
@@ -37,10 +54,19 @@ struct ChangePasswordView: View {
         }
     }
     
-    private func changePassword() {
+    private func getPassChange() -> User? {
+        if validForm {
+            return User(password: oldPassword,
+                        newPassword: newPassword,
+                        newPasswordConfirm: newPasswordConfirmation)
+        } else { return nil }
+    }
+    
+    private func changePassword(forUser user: User) {
         Task {
-            await viewModel.changePassword()
-            dismiss()
+            if await viewModel.changePassword(forUser: user) {
+                dismiss()
+            }
         }
     }
 }
@@ -60,7 +86,7 @@ struct ChangePasswordView_Previews: PreviewProvider {
 extension ChangePasswordView {
     
     var oldPasswordField: some View {
-        SecureField("Password", text: $viewModel.oldPassword)
+        SecureField("Password", text: $oldPassword)
             .padding()
             .focused($selectedField, equals: .oldPassword)
             .neonField(light: selectedField == .oldPassword ? true : false)
@@ -77,7 +103,7 @@ extension ChangePasswordView {
     }
     
     var newPasswordField: some View {
-        SecureField("New password", text: $viewModel.newPassword)
+        SecureField("New password", text: $newPassword)
             .padding()
             .focused($selectedField, equals: .newPassword)
             .neonField(light: selectedField == .newPassword ? true : false)
@@ -94,7 +120,7 @@ extension ChangePasswordView {
     }
     
     var newPasswordConfirmationField: some View {
-        SecureField("Confirm new password", text: $viewModel.newPasswordConfirmation)
+        SecureField("Confirm new password", text: $newPasswordConfirmation)
             .padding()
             .focused($selectedField, equals: .newPasswordConfirmation)
             .neonField(light: selectedField == .newPasswordConfirmation ? true : false)
@@ -112,8 +138,8 @@ extension ChangePasswordView {
     
     var saveButton: some View {
         Button {
-            if viewModel.validForm {
-                changePassword()
+            if let user = getPassChange() {
+                Task { await changePassword(forUser: user)}
             }
         } label: {
             Text("Save")

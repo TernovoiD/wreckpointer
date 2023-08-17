@@ -62,31 +62,31 @@ class CollectionManager {
 
 extension CollectionManager {
     
-        func addBlock(_ block: Block, toCollection collection: Collection) async throws -> Block {
-            let collectionID = collection.id?.uuidString ?? "error"
+        func addBlock(_ block: Block, toCollectionWithID collectionID: UUID?) async throws -> Block {
+            let id = collectionID?.uuidString ?? ""
             let encodedBlockData = try coder.encodeItemToData(item: block)
-            guard let url = URL(string: BaseRoutes.baseURL + Endpoints.collections + "/" + collectionID + "/" + "blocks") else {
+            guard let url = URL(string: BaseRoutes.baseURL + Endpoints.collections + "/" + id + "/" + "blocks") else {
                 throw HTTPError.badURL
             }
             let data = try await http.sendRequest(toURL: url, withData: encodedBlockData, withHTTPMethod: HTTPMethods.POST.rawValue, withloginToken: token.getToken())
             return try coder.decodeItemFromData(data: data) as Block
         }
     
-        func updateBlock(_ block: Block, inCollection collection: Collection) async throws -> Block {
-            let collectionID = collection.id?.uuidString ?? "error"
+        func updateBlock(_ block: Block, inCollectionWithID collectionID: UUID?) async throws -> Block {
+            let id = collectionID?.uuidString ?? ""
             let blockID = block.id?.uuidString ?? "error"
             let encodedBlockData = try coder.encodeItemToData(item: block)
-            guard let url = URL(string: BaseRoutes.baseURL + Endpoints.collections + "/" + collectionID + "/" + "blocks" + "/" + blockID) else {
+            guard let url = URL(string: BaseRoutes.baseURL + Endpoints.collections + "/" + id + "/" + "blocks" + "/" + blockID) else {
                 throw HTTPError.badURL
             }
             let data = try await http.sendRequest(toURL: url, withData: encodedBlockData, withHTTPMethod: HTTPMethods.PATCH.rawValue, withloginToken: token.getToken())
             return try coder.decodeItemFromData(data: data) as Block
         }
     
-        func removeBlock(_ block: Block, fromCollection collection: Collection) async throws {
-            let collectionID = collection.id?.uuidString ?? "error"
+        func removeBlock(_ block: Block, fromCollectionWithID collectionID: UUID?) async throws {
+            let id = collectionID?.uuidString ?? ""
             let blockID = block.id?.uuidString ?? "error"
-            guard let url = URL(string: BaseRoutes.baseURL + Endpoints.collections + "/" + collectionID + "/" + "blocks" + "/" + blockID) else {
+            guard let url = URL(string: BaseRoutes.baseURL + Endpoints.collections + "/" + id + "/" + "blocks" + "/" + blockID) else {
                 throw HTTPError.badURL
             }
             let _ = try await http.sendRequest(toURL: url, withHTTPMethod: HTTPMethods.DELETE.rawValue, withloginToken: token.getToken())

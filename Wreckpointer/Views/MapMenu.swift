@@ -9,30 +9,46 @@ import SwiftUI
 
 struct MapMenu: View {
     
-    @EnvironmentObject var state: AppState
+    @EnvironmentObject private var appState: AppState
+    @EnvironmentObject private var appData: AppData
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             openCloseMenuButton
-            if state.activeUIElement == .mapMenu {
+            if appState.activeUIElement == .mapMenu {
                 Divider()
                     .frame(maxWidth: 120)
                 accountButton
                 addWreckButton
+                    .disabled(appState.authorizedUser == nil ? true : false)
             }
         }
         .font(.headline)
         .padding()
         .accentColorBorder()
     }
+}
+
+struct MapMenu_Previews: PreviewProvider {
+    static var previews: some View {
+        MapMenu()
+            .environmentObject(AppState())
+            .environmentObject(AppData())
+    }
+}
+
+
+// MARK: - Variables
+
+extension MapMenu {
     
-    var openCloseMenuButton: some View {
+    private var openCloseMenuButton: some View {
         Button {
             withAnimation(.easeInOut) {
-                state.activeUIElement = state.activeUIElement == .mapMenu ? .none : .mapMenu
+                appState.activate(element: appState.activeUIElement == .mapMenu ? .none : .mapMenu)
             }
         } label: {
-            if state.activeUIElement == .mapMenu {
+            if appState.activeUIElement == .mapMenu {
                 Label("Menu", systemImage: "xmark")
             } else {
                 Image(systemName: "text.justify")
@@ -44,7 +60,7 @@ struct MapMenu: View {
         }
     }
     
-    var accountButton: some View {
+    private var accountButton: some View {
         NavigationLink {
             AccountView()
         } label: {
@@ -56,9 +72,9 @@ struct MapMenu: View {
         }
     }
     
-    var addWreckButton: some View {
+    private var addWreckButton: some View {
         NavigationLink {
-            AddUpdateWreck(wreck: Wreck())
+            AddUpdateWreck(wreck: nil)
         } label: {
             HStack {
                 Image(systemName: "plus.rectangle")
@@ -67,13 +83,6 @@ struct MapMenu: View {
             }
             .frame(maxWidth: 140, alignment: .leading)
         }
-        .disabled(state.authorizedUser == nil ? true : false)
-    }
-}
-
-struct MapMenu_Previews: PreviewProvider {
-    static var previews: some View {
-        MapMenu()
-            .environmentObject(AppState())
+        .disabled(appState.activeUIElement == nil ? true : false)
     }
 }

@@ -9,7 +9,7 @@ import Foundation
 
 enum BaseRoutes {
     static let baseURL = "http://127.0.0.1:8080/"
-//    static let baseURL = "https://cdc6-151-251-99-138.ngrok.io/"
+//    static let baseURL = "https://7d7c-151-251-99-138.ngrok.io/"
 
 }
 

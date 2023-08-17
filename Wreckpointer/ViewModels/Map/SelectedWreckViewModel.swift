@@ -23,10 +23,13 @@ class SelectedWreckViewModel: ObservableObject {
     func delete(wreck: Wreck) async -> Bool {
         do {
             try await WreckManager.shared.delete(wreck: wreck)
+            try CDManager.shared.deleteWreck(wreck: wreck)
             return true
+        } catch let httpError as HTTPError {
+            showError(withMessage: httpError.errorDescription)
+            return false
         } catch let error {
-            showError(withMessage: "Unable to delete wreck: \(error.localizedDescription)")
-            self.error = true
+            showError(withMessage: error.localizedDescription)
             return false
         }
     }

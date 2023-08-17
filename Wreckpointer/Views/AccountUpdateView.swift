@@ -9,12 +9,12 @@ import SwiftUI
 
 struct AccountUpdateView: View {
     
-    @State var bio: String
-    @State var image: Data?
-    @FocusState var selectedField: FocusText?
-    @EnvironmentObject var state: AppState
-    @StateObject var viewModel = AccountUpdateViewModel()
     @Environment(\.dismiss) private var dismiss
+    @FocusState private var selectedField: FocusText?
+    @StateObject private var viewModel = AccountUpdateViewModel()
+    @Binding var user: User?
+    @State var bio: String = ""
+    @State var image: Data?
     
     enum FocusText {
         case info
@@ -53,15 +53,22 @@ struct AccountUpdateView: View {
         }
     }
     
-    var saveButton: some View {
-        Button {
-            if let user = state.authorizedUser {
-                Task {
-                    let updatedUser = await viewModel.update(user: user)
-                    state.authorizedUser = updatedUser
-                }
+    private func update() async {
+        if var userToUpdate = user {
+            userToUpdate.image = image
+            userToUpdate.bio = bio
+            
+            let updatedUser = await viewModel.update(user: userToUpdate)
+            if let updatedUser {
+                user = updatedUser
                 dismiss()
             }
+        }
+    }
+    
+    var saveButton: some View {
+        Button {
+            Task { await update() }
         } label: {
             Text("Save")
                 .font(.headline)
@@ -72,7 +79,7 @@ struct AccountUpdateView: View {
 struct AccountUpdateView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            AccountUpdateView(bio: "", image: nil)
+            AccountUpdateView(user: .constant(User()))
                 .environmentObject(AppState())
                 .environmentObject(AccountUpdateViewModel())
         }

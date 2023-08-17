@@ -1,8 +1,8 @@
 //
-//  DoubleExtensions.swift
+//  DoubleExtension.swift
 //  Wreckpointer
 //
-//  Created by Danylo Ternovoi on 16.07.2023.
+//  Created by Danylo Ternovoi on 16.08.2023.
 //
 
 import Foundation

@@ -23,9 +23,11 @@ class AddUpdateCollectionViewModel: ObservableObject {
     func create(collection: Collection) async -> Collection? {
         do {
             return try await CollectionManager.shared.create(collection: collection)
+        } catch let httpError as HTTPError {
+            showError(withMessage: httpError.errorDescription)
+            return nil
         } catch let error {
-            showError(withMessage: "Failed: \(error.localizedDescription)")
-            self.error = true
+            showError(withMessage: error.localizedDescription)
             return nil
         }
     }
@@ -33,10 +35,12 @@ class AddUpdateCollectionViewModel: ObservableObject {
     func update(collection: Collection) async -> Collection? {
         do {
             return try await CollectionManager.shared.update(collection: collection)
+        } catch let httpError as HTTPError {
+            showError(withMessage: httpError.errorDescription)
+            return nil
         } catch let error {
-            showError(withMessage: "Failed: \(error.localizedDescription)")
+            showError(withMessage: error.localizedDescription)
             return nil
         }
-        
     }
 }

@@ -9,45 +9,60 @@ import SwiftUI
 
 struct MapSearchBar: View {
     
-    @EnvironmentObject var wrecks: Wrecks
-    @EnvironmentObject var state: AppState
-    @FocusState var searchFieldSelected: Bool
+    @FocusState private var searchFieldSelected: Bool
+    @EnvironmentObject var appState: AppState
+    @EnvironmentObject var appData: AppData
     
     var body: some View {
         HStack {
             searchBar
-            if !wrecks.textToSearch.isEmpty {
+            if !appData.textToSearch.isEmpty {
                 searchBarClearButton
             }
         }
         .padding(.horizontal)
-        .onChange(of: state.activeUIElement) { newValue in
+        .onChange(of: appState.selectedWreck, perform: { _ in searchFieldSelected = false })
+        .onChange(of: appState.activeUIElement) { activeUIElement in
             withAnimation(.easeInOut) {
-                if newValue == .mapSearch {
+                if activeUIElement == .mapSearch {
                     searchFieldSelected = true
+                    appState.select(wreck: nil)
                 } else {
                     searchFieldSelected = false
                 }
             }
         }
     }
+}
+
+struct MapSearchBar_Previews: PreviewProvider {
+    static var previews: some View {
+        MapSearchBar()
+            .environmentObject(AppState())
+            .environmentObject(AppData())
+    }
+}
+
+
+// MARK: - Variables
+
+extension MapSearchBar {
     
     private var searchBar: some View {
-        TextField("Search", text: $wrecks.textToSearch.animation(.easeInOut))
+        TextField("Search", text: $appData.textToSearch.animation(.easeInOut))
             .padding()
             .focused($searchFieldSelected)
-            .background(wrecks.filtered.count == 0 && !wrecks.textToSearch.isEmpty ? Color.red.opacity(0.3) : Color.clear)
             .neonField(light: searchFieldSelected ? true : false)
             .submitLabel(.search)
             .autocorrectionDisabled(true)
             .onTapGesture {
                 withAnimation(.easeInOut) {
-                    state.activeUIElement = .mapSearch
+                    appState.activate(element: .mapSearch)
                 }
             }
             .onSubmit {
                 withAnimation(.easeInOut) {
-                    state.activeUIElement = .none
+                    appState.activate(element: .none)
                 }
             }
     }
@@ -55,8 +70,8 @@ struct MapSearchBar: View {
     private var searchBarClearButton: some View {
         Button {
             withAnimation(.easeInOut) {
-                state.activeUIElement = .none
-                wrecks.textToSearch = ""
+                appState.activate(element: .none)
+                appData.textToSearch = ""
                 searchFieldSelected = false
             }
         } label: {
@@ -67,13 +82,5 @@ struct MapSearchBar: View {
                 .mask(RoundedRectangle(cornerRadius: 50, style: .continuous))
                 .shadow(color: .green, radius: 7)
         }
-    }
-}
-
-struct MapSearchBar_Previews: PreviewProvider {
-    static var previews: some View {
-        MapSearchBar()
-            .environmentObject(Wrecks())
-            .environmentObject(AppState())
     }
 }

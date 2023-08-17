@@ -9,16 +9,15 @@ import SwiftUI
 
 struct SearchList: View {
     
-    @EnvironmentObject var wrecks: Wrecks
-    @EnvironmentObject var state: AppState
-    
+    @EnvironmentObject private var appState: AppState
+    @EnvironmentObject private var appData: AppData
+    @State private var searchText: String = ""
+     
     var body: some View {
         List {
-            ForEach(wrecks.filteredByText) { wreck in
+            ForEach(filteredWrecks) { wreck in
                 Button {
-                    withAnimation(.easeInOut) {
-                        wrecks.selectedWreck = wreck
-                    }
+                    select(wreck: wreck)
                 } label: {
                     SearchListRow(wreck: wreck)
                 }
@@ -27,8 +26,20 @@ struct SearchList: View {
         }
         .listStyle(.plain)
         .background(.ultraThinMaterial)
-        .frame(maxHeight: 200)
+        .frame(maxHeight: appData.textToSearch.isEmpty || appData.wrecksFiltered.count == 0 ? 0 : 200)
         .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
+        .padding(.horizontal)
+    }
+    
+    private func select(wreck: Wreck) {
+        withAnimation(.easeInOut) {
+            appState.select(wreck: wreck)
+            appData.textToSearch = ""
+        }
+    }
+    
+    private var filteredWrecks: [Wreck] {
+        return appData.wrecks.filter({ $0.title.lowercased().contains(appData.textToSearch.lowercased()) })
     }
 }
 
@@ -39,7 +50,7 @@ struct SearchListRow: View {
     var body: some View {
         HStack {
             ImageView(imageData: $wreck.image)
-                .frame(maxWidth: 40)
+                .frame(maxWidth: 40, maxHeight: 40)
                 .clipShape(RoundedRectangle(cornerRadius: 5, style: .continuous))
             VStack(alignment: .leading, spacing: 0) {
                 Text(wreck.title)
@@ -57,10 +68,9 @@ struct SearchListRow: View {
 
 struct SearchList_Previews: PreviewProvider {
     static var previews: some View {
-        let wreck = Wreck(cause: "", type: "", title: "Bismarck", latitude: 0, longitude: 0, wreckDive: false, dateOfLoss: Date())
-        SearchListRow(wreck: wreck)
-            .environmentObject(Wrecks())
+        SearchListRow(wreck: Wreck.test)
             .environmentObject(AppState())
+            .environmentObject(AppData())
             .padding()
             .background(Color.gray.opacity(0.15))
     }
