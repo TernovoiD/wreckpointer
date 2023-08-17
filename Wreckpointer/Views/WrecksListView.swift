@@ -10,52 +10,38 @@ import SwiftUI
 struct WrecksListView: View {
     
     @Environment(\.dismiss) private var dismiss
-    @Binding var selectedWreck: Wreck?
-    
+    @EnvironmentObject private var appData: AppData
     @State var searchText: String = ""
+    @Binding var wreck: Wreck?
     
     var body: some View {
         List {
-//            ForEach(searchResults) { wreck in
-//                WreckView(wreck: wreck)
-//                    .listRowSeparator(.hidden)
-//                    .listRowBackground(Color.clear)
-//                    .onTapGesture {
-//                        selectedWreck = wreck
-//                        dismiss()
-//                    }
-//            }
-//            .listStyle(.plain)
+            ForEach(searchResults) { wreck in
+                SearchListRow(wreck: wreck)
+                    .onTapGesture {
+                        self.wreck = wreck
+                        dismiss()
+                    }
+            }
         }
         .searchable(text: $searchText)
-        .navigationBarTitleDisplayMode(.inline)
+        .navigationTitle("Wrecks")
     }
     
-//    var searchResults: [Wreck] {
-//        if searchText.isEmpty {
-//            return mapVM.mapWrecks
-//        } else {
-//            return mapVM.mapWrecks.filter { $0.title.contains(searchText) }
-//        }
-//    }
+    var searchResults: [Wreck] {
+        if searchText.isEmpty {
+            return appData.wrecks
+        } else {
+            return appData.wrecks.filter({ $0.title.lowercased().contains(searchText.lowercased()) })
+        }
+    }
 }
 
-//struct WrecksListView_Previews: PreviewProvider {
-//    static var previews: some View {
-//
-//        // Init managers
-//        let httpManager = HTTPRequestManager()
-//        let dataCoder = JSONDataCoder()
-//
-//        // Init services
-//        let wreckLoader = WrecksLoader(httpManager: httpManager, dataCoder: dataCoder)
-//        let wrecksService = WrecksService(httpManager: httpManager, dataCoder: dataCoder)
-//        let coreDataService = CoreDataService(dataCoder: dataCoder)
-//
-//        // Init View model
-//        let mapViewModel = MapViewModel(wreckLoader: wreckLoader, wrecksService: wrecksService, coreDataService: coreDataService)
-//
-//        WrecksListView(selectedWreck: .constant(nil))
-//            .environmentObject(mapViewModel)
-//    }
-//}
+struct WrecksListView_Previews: PreviewProvider {
+    static var previews: some View {
+        NavigationView {
+            WrecksListView(wreck: .constant(nil))
+                .environmentObject(AppData())
+        }
+    }
+}

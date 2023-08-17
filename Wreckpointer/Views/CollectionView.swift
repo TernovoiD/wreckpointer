@@ -9,69 +9,62 @@ import SwiftUI
 
 struct CollectionView: View {
     
-    @EnvironmentObject var collections: Collections
-    @State var collection: Collection
+    @Binding var collection: Collection
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 3) {
-            HStack(alignment: .center) {
-                collectionImage
-                collectionTitle
-                Spacer()
-                numberOfWrecks
-            }
-            if collection.description != "" {
-                collectionInfo
-            }
-        }
-        .onChange(of: collections.all) { collections in
-            if let updatedCollection = collections.first(where: { $0.id == collection.id }) {
-                self.collection = updatedCollection
-            }
-        }
+        collectionImage
+            .overlay { collectionOverlay }
+            .mask(RoundedRectangle(cornerRadius: 15, style: .continuous))
     }
 }
 
 struct CollectionView_Previews: PreviewProvider {
     static var previews: some View {
-        CollectionView(collection: Collection.test)
-            .environmentObject(Collections())
-            .padding()
-            .background(Color.gray.opacity(0.15))
+        CollectionView(collection: .constant(Collection.test))
+            .padding(.horizontal)
     }
 }
+
 
 
 // MARK: - Variables
 
 extension CollectionView {
     
+    var collectionOverlay: some View {
+        VStack {
+            collectionBlocks
+                .frame(maxWidth: .infinity, alignment: .trailing)
+            Spacer()
+            collectionTitle
+        }
+        .foregroundColor(.white)
+        .shadow(color: .black, radius: 6)
+        .padding(.horizontal)
+        .padding(.top, 5)
+        .padding(.bottom, 10)
+    }
+    
     var collectionImage: some View {
-        ImageView(imageData: .constant(collection.image))
-            .clipShape(RoundedRectangle(cornerRadius: 5, style: .continuous))
-            .frame(maxWidth: 40)
+        ImageView(imageData: .constant(collection.image), placehoder: "warship.armada1")
+            .frame(width: .infinity, height: 120)
+            .clipped()
+    }
+    
+    var collectionBlocks: some View {
+        Text("\(collection.blocks.count)")
+            .font(.system(size: 50, weight: .black))
     }
     
     var collectionTitle: some View {
-        VStack(alignment: .leading, spacing: 0) {
+        HStack(spacing: 0) {
             Text(collection.title)
-                .font(.title3)
-                .bold()
-            Text("Creator: \(collection.creator?.username ?? "unknown")")
-                .font(.subheadline)
+                .font(.title2.weight(.black))
+            if collection.approved == true {
+                Image(systemName: "checkmark.seal.fill")
+                    .foregroundColor(.green)
+            }
+            Spacer()
         }
-    }
-    
-    var numberOfWrecks: some View {
-        Text("\(collection.blocks.count)")
-            .font(.largeTitle.weight(.bold))
-            .foregroundColor(.accentColor)
-            .padding(.horizontal)
-    }
-    
-    var collectionInfo: some View {
-        Text(collection.description)
-            .font(.caption2)
-            .frame(maxHeight: 40)
     }
 }

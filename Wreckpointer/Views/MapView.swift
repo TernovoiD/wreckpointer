@@ -9,53 +9,47 @@ import SwiftUI
 import MapKit
 
 struct MapView: View {
-
-    @AppStorage("saveWrecksInMemory") private var saveWrecksInMemory: Bool = true
-    @StateObject var viewModel = MapViewModel()
-    @EnvironmentObject var wrecks: Wrecks
-    @EnvironmentObject var state: AppState
+    
+    @AppStorage("saveWrecksInMemory") private var saveWrecksInMemory: Bool = false
+    @StateObject private var viewModel = MapViewModel()
+    @EnvironmentObject var appState: AppState
+    @EnvironmentObject var appData: AppData
     
     var body: some View {
-        Map(coordinateRegion: $viewModel.mapRegion, annotationItems: wrecks.filtered) { wreck in
+        Map(coordinateRegion: $viewModel.mapRegion, annotationItems: appData.wrecksFiltered) { wreck in
             MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: wreck.latitude,
                                                              longitude: wreck.longitude)) {
-                MapPinView(wreck: wreck)
-                    .environmentObject(wrecks)
+                Image(systemName: "smallcircle.filled.circle.fill")
+                    .font(.caption2)
+                    .onTapGesture { select(wreck: wreck) }
+                    .scaleEffect(appState.selectedWreck != nil && appState.selectedWreck != wreck ? 1 : 1.5)
             }
         }
         .ignoresSafeArea()
         .navigationTitle("Map")
         .toolbar(.hidden)
-        .onTapGesture { deselectAll() }
-        .task { await loadWrecks() }
+//        .onTapGesture { deselectAll() }
         .alert(viewModel.errorMessage, isPresented: $viewModel.error) {
             Button("OK", role: .cancel) { }
         }
-        .onChange(of: wrecks.selectedWreck, perform: { newValue in moveMap(newPosition: newValue) })
-        .onChange(of: saveWrecksInMemory) { newValue in memorySave(newRule: newValue)}
+        .onChange(of: appState.selectedWreck, perform: { newValue in moveMap(newPosition: newValue) })
+        .task {
+            await loadWrecks()
+        }
     }
-}
-
-struct MapView_Previews: PreviewProvider {
-    static var previews: some View {
-        MapView()
-            .environmentObject(MapViewModel())
-            .environmentObject(Wrecks())
-            .environmentObject(AppState())
-    }
-}
-
-
-// MARK: - Functions
-
-extension MapView {
     
-    private func memorySave(newRule: Bool) {
-        print("we are here")
-        if newRule {
-            viewModel.saveInMemory(wrecks: wrecks.all)
-        } else {
-            viewModel.deleteWrecksFromMemory()
+    private func select(wreck: Wreck?) {
+        withAnimation(.easeInOut) {
+            appState.select(wreck: wreck)
+        }
+    }
+    
+    private func loadWrecks() async {
+        if saveWrecksInMemory && appData.coreData != .uploaded {
+            appData.loadWrecksFromCoreData()
+        }
+        if appData.serverData != .ready {
+            await appData.loadWrecksFromServer()
         }
     }
     
@@ -69,23 +63,19 @@ extension MapView {
     
     private func deselectAll() {
         withAnimation(.easeInOut) {
-            state.activeUIElement = .none
-            wrecks.selectedWreck = nil
+            if appState.selectedWreck != nil {
+                appState.select(wreck: nil)
+            }
+            appState.activate(element: .none)
         }
     }
-    
-    private func loadWrecks() async {
-        if wrecks.all.isEmpty {
-            if saveWrecksInMemory,
-               let memoryWrecks = viewModel.loadWrecksFromCoreData() {
-                wrecks.all = memoryWrecks
-            }
-            if let loadedWrecks = await viewModel.loadWrecksFromServer() {
-                wrecks.all = loadedWrecks
-                if saveWrecksInMemory {
-                    viewModel.saveInMemory(wrecks: loadedWrecks)
-                }
-            }
-        }
+}
+
+struct MapView_Previews: PreviewProvider {
+    static var previews: some View {
+        MapView()
+            .environmentObject(MapViewModel())
+            .environmentObject(AppState())
+            .environmentObject(AppData())
     }
 }

@@ -9,13 +9,17 @@ import SwiftUI
 
 struct AddUpdateWreck: View {
     
+    @AppStorage("showFeetUnits") private var showFeetUnits: Bool = true
+    @StateObject private var viewModel = AddUpdateWreckViewModel()
+    @EnvironmentObject private var appData: AppData
+    @EnvironmentObject private var appState: AppState
+    @FocusState private var selectedField: FocusText?
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject var wrecks: Wrecks
-    @StateObject var viewModel: AddUpdateWreckViewModel = AddUpdateWreckViewModel()
-    @AppStorage("showFeetUnits") var showFeetUnits: Bool = true
-    @FocusState var selectedField: FocusText?
-    @State var wreck: Wreck
+    let wreck: Wreck?
     
+    @State var wreckDive: Bool = false
+    @State var image: Data?
+    @State var title: String = ""
     @State var latitude: String = ""
     @State var longitude: String = ""
     @State var northLatitude: Bool = true
@@ -26,32 +30,7 @@ struct AddUpdateWreck: View {
     @State var cause: WreckCausesEnum = .unknown
     @State var dateOfLoss: Date = Date()
     @State var dateOfLossKnown: Bool = false
-    @State var additionalInformation: String = ""
-    
-    init(wreck: Wreck) {
-        _wreck = State(initialValue: wreck)
-        _latitude = State(initialValue: String(abs(wreck.latitude)))
-        _longitude = State(initialValue: String(abs(wreck.longitude)))
-        _northLatitude = State(initialValue: wreck.latitude >= 0 ? true : false)
-        _eastLongitude = State(initialValue: wreck.longitude >= 0 ? true : false)
-        _type = State(initialValue: WreckTypesEnum.allCases.first(where: { $0.rawValue == wreck.type }) ?? WreckTypesEnum.unknown)
-        _cause = State(initialValue: WreckCausesEnum.allCases.first(where: { $0.rawValue == wreck.cause }) ?? WreckCausesEnum.unknown)
-        _additionalInformation = State(initialValue: wreck.information ?? "")
-
-        if let depth = wreck.depth {
-            _depth = State(initialValue: String(depth))
-        } else {
-            _depth = State(initialValue: "")
-        }
-
-        if let date = wreck.dateOfLoss {
-            _dateOfLossKnown = State(initialValue: true)
-            _dateOfLoss = State(initialValue: date)
-        } else {
-            _dateOfLossKnown = State(initialValue: false)
-            _dateOfLoss = State(initialValue: Date())
-        }
-    }
+    @State var description: String = ""
     
     enum FocusText {
         case title
@@ -61,27 +40,9 @@ struct AddUpdateWreck: View {
         case info
     }
     
-    var isFormValid: Bool {
-        if !wreck.title.isValidWreckName {
-            viewModel.showError(withMessage: "The name must include at least 3 symbols.")
-            return false
-        } else if !latitude.isValidLatitude {
-            viewModel.showError(withMessage: "Latitude error! Latitude ranges between 0 and 90 degrees (North or South).")
-            return false
-        } else if !longitude.isValidLongitude {
-            viewModel.showError(withMessage: "Longitude error! Latitude ranges between 0 and 180 degrees (West or East).")
-            return false
-        } else if !depth.isValidDepth {
-            viewModel.showError(withMessage: "Depth is incorrect.")
-            return false
-        } else {
-            return true
-        }
-    }
-    
     var body: some View {
         ScrollView(showsIndicators: false) {
-            PhotosPickerView(selectedImageData: $wreck.image)
+            PhotosPickerView(selectedImageData: $image)
                 .background()
                 .onTapGesture {
                     selectedField = .none
@@ -97,33 +58,33 @@ struct AddUpdateWreck: View {
             }
             .padding(.top, 20)
             .background()
-            .onTapGesture {
-                selectedField = .none
-            }
+            .onTapGesture { selectedField = .none }
             .padding(.horizontal)
-            VStack {
-                Toggle(isOn: $wreck.wreckDive) {
-                    Text("Wreck dive?")
-                }
-                dateOfLossPicker
-            }
-            .padding(.horizontal)
+            datePicker
         }
         .toolbar { ToolbarItem { saveButton }}
+        .navigationTitle("Wreck")
+        .foregroundColor(.purple)
         .alert(viewModel.errorMessage, isPresented: $viewModel.error) {
             Button("OK", role: .cancel) { }
         }
-        .navigationTitle(wreck.id == nil ? "Add wreck" : "Update wreck")
-        .foregroundColor(.purple)
+    }
+    
+    var datePicker: some View {
+        VStack {
+            Toggle(isOn: $wreckDive) { Text("Wreck dive?") }
+            dateOfLossPicker
+        }
+        .padding(.horizontal)
     }
 }
 
 struct AddUpdateWreck_Previews: PreviewProvider {
     static var previews: some View {
-        let testWreck = Wreck(cause: "other", type: "all", title: "Wreck", latitude: 30, longitude: 30, wreckDive: false)
-        AddUpdateWreck(wreck: testWreck)
+        AddUpdateWreck(wreck: Wreck.test)
             .environmentObject(AddUpdateWreckViewModel())
-            .environmentObject(Wrecks())
+            .environmentObject(AppData())
+            .environmentObject(AppState())
     }
 }
 
@@ -132,7 +93,7 @@ struct AddUpdateWreck_Previews: PreviewProvider {
 extension AddUpdateWreck {
 
     var titleTextField: some View {
-        TextField("Name of wreck", text: $wreck.title)
+        TextField("Name of wreck", text: $title)
             .padding()
             .focused($selectedField, equals: .title)
             .neonField(light: selectedField == .title ? true : false)
@@ -251,16 +212,16 @@ extension AddUpdateWreck {
                 .padding()
                 .padding(.horizontal)
                 .padding(.top, 20)
-            TextEditor(text: $additionalInformation)
+            TextEditor(text: $description)
                 .frame(height: 200)
                 .focused($selectedField, equals: .info)
                 .mask(RoundedRectangle(cornerRadius: 15, style: .continuous))
                 .neonField(light: selectedField == .info ? true : false)
+                .shadow(radius: 1)
                 .onTapGesture {
                     selectedField = .info
                 }
         }
-        .shadow(radius: 1)
     }
 
     var dateOfLossPicker: some View {
@@ -277,7 +238,9 @@ extension AddUpdateWreck {
     
     var saveButton: some View {
         Button {
-            Task { await createUpdate(wreck: getWreck()) }
+            if viewModel.validForm(title: title, latitude: latitude, longitude: longitude, depth: depth) {
+                Task { await save() }
+            }
         } label: {
             Text("Save")
                 .font(.headline)
@@ -290,18 +253,21 @@ extension AddUpdateWreck {
 
 extension AddUpdateWreck {
     
-    private func createUpdate(wreck: Wreck) async {
-        if wreck.id == nil {
-            let createdWreck = await viewModel.create(wreck: wreck)
-            if let createdWreck {
-                wrecks.all.append(createdWreck)
+    private func save() async {
+        let wreckToSave = getWreck()
+        
+        if let _ = wreck {
+            let updatedWreck = await viewModel.update(wreck: wreckToSave)
+            if let updatedWreck {
+                appData.wrecks.removeAll(where: { $0.id == updatedWreck.id })
+                appData.wrecks.append(updatedWreck)
+                appState.select(wreck: updatedWreck)
                 dismiss()
             }
         } else {
-            let updatedWreck = await viewModel.update(wreck: wreck)
-            if let updatedWreck {
-                wrecks.all.removeAll(where: { $0.id == updatedWreck.id })
-                wrecks.all.append(updatedWreck)
+            let createdWreck = await viewModel.create(wreck: wreckToSave)
+            if let createdWreck {
+                appData.wrecks.append(createdWreck)
                 dismiss()
             }
         }
@@ -312,27 +278,30 @@ extension AddUpdateWreck {
         let longitudeValue = Double(longitude) ?? 0
         let depthValue = Double(depth) ?? 0
         
-        if wreck.id == nil {
+        if var wreckToUpdate = wreck {
+            wreckToUpdate.title = title
+            wreckToUpdate.image = image
+            wreckToUpdate.wreckDive = wreckDive
+            wreckToUpdate.cause = cause.rawValue
+            wreckToUpdate.type = type.rawValue
+            wreckToUpdate.depth = feetUnits ? depthValue.feetToMeters : depthValue
+            wreckToUpdate.latitude = northLatitude ? latitudeValue : -latitudeValue
+            wreckToUpdate.longitude = eastLongitude ? longitudeValue : -longitudeValue
+            wreckToUpdate.dateOfLoss = dateOfLossKnown ? dateOfLoss : nil
+            wreckToUpdate.information = description
+            
+            return wreckToUpdate
+        } else {
             return Wreck(cause: cause.rawValue,
                          type: type.rawValue,
-                         title: wreck.title,
-                         image: wreck.image,
+                         title: title,
+                         image: image,
                          depth: feetUnits ? depthValue.feetToMeters : depthValue,
                          latitude: northLatitude ? latitudeValue : -latitudeValue,
                          longitude: eastLongitude ? longitudeValue : -longitudeValue,
-                         wreckDive: wreck.wreckDive,
+                         wreckDive: wreckDive,
                          dateOfLoss: dateOfLossKnown ? dateOfLoss : nil ,
-                         information: additionalInformation)
-        } else {
-            wreck.cause = cause.rawValue
-            wreck.type = type.rawValue
-            wreck.depth = feetUnits ? depthValue.feetToMeters : depthValue
-            wreck.latitude = northLatitude ? latitudeValue : -latitudeValue
-            wreck.longitude = eastLongitude ? longitudeValue : -longitudeValue
-            wreck.dateOfLoss = dateOfLossKnown ? dateOfLoss : nil
-            wreck.information = additionalInformation
-            
-            return wreck
+                         information: description)
         }
     }
 }

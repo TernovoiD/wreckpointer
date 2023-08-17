@@ -16,10 +16,10 @@ struct Collection: Codable, Identifiable, Equatable {
     var createdAt: Date?
     var updatedAt: Date?
     var blocks: [Block]
-    var approved: Bool
+    var approved: Bool?
     var creator: User?
     
-    init(id: UUID? = nil, title: String, description: String, image: Data? = nil, createdAt: Date? = nil, updatedAt: Date? = nil, blocks: [Block], approved: Bool = false, creator: User? = nil) {
+    init(id: UUID? = nil, title: String, description: String, image: Data? = nil, createdAt: Date? = nil, updatedAt: Date? = nil, blocks: [Block], approved: Bool? = nil, creator: User? = nil) {
         self.id = id
         self.title = title
         self.description = description
@@ -31,6 +31,18 @@ struct Collection: Codable, Identifiable, Equatable {
         self.creator = creator
     }
     
+    init(title: String, description: String, image: Data? = nil) {
+        self.id = nil
+        self.title = title
+        self.description = description
+        self.image = image
+        self.createdAt = nil
+        self.updatedAt = nil
+        self.blocks = [ ]
+        self.approved = nil
+        self.creator = nil
+    }
+    
     init() {
         self.id = nil
         self.title = ""
@@ -39,20 +51,8 @@ struct Collection: Codable, Identifiable, Equatable {
         self.createdAt = nil
         self.updatedAt = nil
         self.blocks = [ ]
-        self.approved = false
+        self.approved = nil
         self.creator = nil
-    }
-    
-    func updated(remove: Block? = nil, add: Block? = nil) -> Collection {
-        var collection = self
-        
-        if let remove {
-            collection.blocks.removeAll(where: { $0.id == remove.id })
-        }
-        if let add {
-            collection.blocks.append(add)
-        }
-        return collection
     }
     
     static let test = Collection(id: UUID(uuidString: "634528709"),

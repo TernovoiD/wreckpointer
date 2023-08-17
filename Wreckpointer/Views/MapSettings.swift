@@ -9,14 +9,16 @@ import SwiftUI
 
 struct MapSettings: View {
     
-    @AppStorage("saveWrecksInMemory") private var saveWrecksInMemory: Bool = true
-    @AppStorage("showFeetUnits") var showFeetUnits: Bool = true
-    @EnvironmentObject var state: AppState
+    @EnvironmentObject private var appState: AppState
+    @EnvironmentObject private var appData: AppData
+    @StateObject private var viewModel = MapSettingsViewModel()
+    @AppStorage("saveWrecksInMemory") private var saveWrecksInMemory: Bool = false
+    @AppStorage("showFeetUnits") private var showFeetUnits: Bool = true
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             openSettingsButton
-            if state.activeUIElement == .mapSettings {
+            if appState.activeUIElement == .mapSettings {
                 Divider()
                 wrecksSaveToggle
                 Divider()
@@ -30,15 +32,46 @@ struct MapSettings: View {
         .font(.headline)
         .padding()
         .accentColorBorder()
+        .onChange(of: saveWrecksInMemory) { newValue in memorySave(newRule: newValue) }
+        .onChange(of: appData.serverData, perform: { state in
+            if state == .ready {viewModel.saveInMemory(wrecks: appData.wrecks)
+            }
+        })
+        .alert(viewModel.errorMessage, isPresented: $viewModel.error) {
+            Button("OK", role: .cancel) { }
+        }
     }
     
-    var openSettingsButton: some View {
+    private func memorySave(newRule: Bool) {
+        if newRule {
+            viewModel.saveInMemory(wrecks: appData.wrecks)
+        } else {
+            viewModel.deleteWrecksFromMemory()
+        }
+    }
+}
+
+struct MapSettings_Previews: PreviewProvider {
+    static var previews: some View {
+        MapSettings()
+            .environmentObject(MapSettingsViewModel())
+            .environmentObject(AppState())
+            .environmentObject(AppData())
+    }
+}
+
+
+// MARK: - Variables
+
+extension MapSettings {
+    
+    private var openSettingsButton: some View {
         Button {
             withAnimation(.easeInOut) {
-                state.activeUIElement = state.activeUIElement == .mapSettings ? .none : .mapSettings
+                appState.activate(element: appState.activeUIElement == .mapSettings ? .none : .mapSettings)
             }
         } label: {
-            if state.activeUIElement == .mapSettings {
+            if appState.activeUIElement == .mapSettings {
                 Label("Settings", systemImage: "xmark")
             } else {
                 Image(systemName: "gear")
@@ -50,7 +83,7 @@ struct MapSettings: View {
         }
     }
     
-    var wrecksSaveToggle: some View {
+    private var wrecksSaveToggle: some View {
         VStack {
             Toggle(isOn: $saveWrecksInMemory) {
                 Text("Save wrecks in memory")
@@ -61,12 +94,5 @@ struct MapSettings: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal)
         }
-    }
-}
-
-struct MapSettings_Previews: PreviewProvider {
-    static var previews: some View {
-        MapSettings()
-            .environmentObject(AppState())
     }
 }

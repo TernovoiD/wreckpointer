@@ -9,66 +9,60 @@ import SwiftUI
 
 struct SelectedWreckPanel: View {
     
-    @StateObject var viewModel = SelectedWreckViewModel()
-    @EnvironmentObject var wrecks: Wrecks
-    @EnvironmentObject var state: AppState
-    @State var wreck: Wreck
-    @State var showWreck: Wreck?
+    @EnvironmentObject private var appState: AppState
+    @EnvironmentObject private var appData: AppData
+    @StateObject private var viewModel = SelectedWreckViewModel()
+    @State private var wreckToShow: Wreck?
     
     var body: some View {
         VStack {
             HStack(alignment: .bottom) {
-                characteristics
+                image
                 Spacer()
                 VStack {
+                    if appState.authorizedUser == appState.selectedWreck?.creator || appState.authorizedUser?.role == "moderator" {
+                        editButton
+                        deleteButton
+                    }
                     moreButton
-                    editButton
-                        .disabled(state.authorizedUser == nil ? true : false)
+                    hideButton
                 }
+                .padding(10)
             }
-            .padding(.horizontal)
         }
-        .frame(maxHeight: 150)
-        .frame(maxWidth: .infinity)
+        .frame(maxHeight: 200)
+        .background(RoundedRectangle(cornerRadius: 15, style: .continuous).stroke(lineWidth: 5))
         .background(.ultraThinMaterial)
-        .clipShape(RoundedRectangle(cornerRadius: 25, style: .continuous))
-        .overlay { image }
+        .mask(RoundedRectangle(cornerRadius: 15, style: .continuous))
         .padding(.horizontal)
-        .shadow(radius: 10)
         .alert(viewModel.errorMessage, isPresented: $viewModel.error) {
             Button("OK", role: .cancel) { }
         }
-        .sheet(item: $showWreck, content: { wreck in
+        .sheet(item: $wreckToShow, content: { wreck in
             WreckDetailedView(wreck: wreck)
-        })
-        .onChange(of: wrecks.selectedWreck, perform: { newValue in
-            if let wreck = newValue {
-                withAnimation(.easeInOut) {
-                    self.wreck = wreck
-                }
-            }
         })
     }
     
-    private func deleteWreck() {
-        Task {
-            let result = await viewModel.delete(wreck: wreck)
-            if result {
-                wrecks.selectedWreck = nil
-            }
+    private func delete(wreck: Wreck) async {
+        let result = await viewModel.delete(wreck: wreck)
+        if result {
+            appData.wrecks.removeAll(where: { $0 == wreck })
+            appState.activate(element: .none)
+            appState.select(wreck: nil)
         }
     }
 }
 
 struct SelectedWreckPanel_Previews: PreviewProvider {
     static var previews: some View {
-        let wreck = Wreck(cause: "other", type: "all", title: "Titanic", latitude: 41, longitude: -49, wreckDive: false)
-        SelectedWreckPanel(wreck: wreck)
-            .environmentObject(Wrecks())
+        SelectedWreckPanel()
             .environmentObject(SelectedWreckViewModel())
             .environmentObject(AppState())
+            .environmentObject(AppData())
     }
 }
+
+
 
 // MARK: - Variables
 
@@ -76,69 +70,127 @@ extension SelectedWreckPanel {
     
     var characteristics: some View {
         VStack(alignment: .leading) {
-            Text("Name: \(wreck.title)")
-            Text("Latitude: \(abs(wreck.latitude), specifier: "%.2F") \(wreck.latitude >= 0 ? "N" : "S")")
-            Text("Longitude: \(abs(wreck.longitude), specifier: "%.2F") \(wreck.longitude >= 0 ? "E" : "W")")
+            if let wreck = appState.selectedWreck {
+                Spacer()
+                Text("Name: \(wreck.title)")
+                Text("Latitude: \(abs(wreck.latitude), specifier: "%.2F") \(wreck.latitude >= 0 ? "N" : "S")")
+                Text("Longitude: \(abs(wreck.longitude), specifier: "%.2F") \(wreck.longitude >= 0 ? "E" : "W")")
+            }
         }
-        .font(.headline)
-        .padding(.leading)
+        .foregroundColor(.white)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .font(.subheadline.weight(.bold))
+        .shadow(color: .black, radius: 3)
+        .padding(10)
     }
     
     var image: some View {
-        HStack {
-            ImageView(imageData: $wreck.image)
-                .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
-                .offset(y: -80)
-                .shadow(radius: 10)
-                .padding(.leading)
-            Spacer()
-        }
-        .padding()
+        ImageView(imageData: .constant(appState.selectedWreck?.image))
+            .frame(maxWidth: 250)
+            .frame(maxHeight: 200)
+            .overlay(content: { characteristics })
+            .clipped()
+            
     }
     
     var moreButton: some View {
         Button {
-            showWreck = wreck
+            wreckToShow = appState.selectedWreck
         } label: {
             HStack {
                 Image(systemName: "magnifyingglass")
                     .frame(maxWidth: 10)
                 Text("More")
             }
-            .padding()
+            .padding(.horizontal)
             .font(.headline)
-            .frame(maxWidth: 150)
+            .frame(minWidth: 120, maxHeight: .infinity)
             .foregroundColor(.white)
             .background(Color.accentColor)
-            .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
-            .shadow(radius: 5)
+            .mask(RoundedRectangle(cornerRadius: 8, style: .continuous))
         }
     }
     
     var editButton: some View {
         NavigationLink {
-            AddUpdateWreck(wreck: wreck)
+            if let wreck = appState.selectedWreck {
+                AddUpdateWreck(wreck: wreck,
+                               wreckDive: wreck.wreckDive,
+                               image: wreck.image,
+                               title: wreck.title,
+                               latitude: String(abs(wreck.latitude)),
+                               longitude: String(abs(wreck.longitude)),
+                               northLatitude: wreck.latitude >= 0 ? true : false,
+                               eastLongitude: wreck.longitude >= 0 ? true : false,
+                               feetUnits: true,
+                               depth: String(wreck.depth ?? 0),
+                               type: WreckTypesEnum.allCases.first(where: { $0.rawValue == wreck.type }) ?? WreckTypesEnum.unknown,
+                               cause: WreckCausesEnum.allCases.first(where: { $0.rawValue == wreck.cause }) ?? WreckCausesEnum.unknown,
+                               dateOfLoss: wreck.dateOfLoss ?? Date(),
+                               dateOfLossKnown: wreck.dateOfLoss == nil ? false : true,
+                               description: wreck.information ?? "")
+            }
         } label: {
             HStack {
                 Image(systemName: "pencil")
                     .frame(maxWidth: 10)
                 Text("Edit")
             }
-            .padding()
+            .padding(.horizontal)
             .font(.headline)
-            .frame(maxWidth: 150)
+            .frame(minWidth: 120, maxHeight: .infinity)
             .foregroundColor(.white)
-            .background(state.authorizedUser == nil ? Color.gray : Color.orange)
-            .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
-            .shadow(radius: 5)
+            .background(Color.orange)
+            .mask(RoundedRectangle(cornerRadius: 8, style: .continuous))
             .contextMenu {
                 Button(role: .destructive) {
-                    deleteWreck()
+                    if let wreck = appState.selectedWreck {
+                        Task { await delete(wreck: wreck) }
+                    }
                 } label: {
                     Label("Delete", systemImage: "trash.circle")
                 }
 
             }
+        }
+    }
+    
+    var deleteButton: some View {
+        Button {
+            wreckToShow = appState.selectedWreck
+        } label: {
+            HStack {
+                Image(systemName: "trash")
+                    .frame(maxWidth: 10)
+                Text("Delete")
+            }
+            .padding(.horizontal)
+            .font(.headline)
+            .frame(minWidth: 120, maxHeight: .infinity)
+            .foregroundColor(.white)
+            .background(Color.red)
+            .mask(RoundedRectangle(cornerRadius: 8, style: .continuous))
+        }
+    }
+    
+    var hideButton: some View {
+        Button {
+            withAnimation(.easeInOut) {
+                appState.select(wreck: nil)
+                appState.activate(element: .none)
+            }
+        } label: {
+            HStack {
+                Image(systemName: "xmark")
+                    .frame(maxWidth: 10)
+                Text("Hide")
+            }
+            .padding(.horizontal)
+            .font(.headline)
+            .frame(minWidth: 120, maxHeight: .infinity)
+            .foregroundColor(.white)
+            .background(Color.indigo)
+            .mask(RoundedRectangle(cornerRadius: 8, style: .continuous))
         }
     }
 }

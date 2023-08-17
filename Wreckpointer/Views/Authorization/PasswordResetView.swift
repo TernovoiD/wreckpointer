@@ -10,9 +10,23 @@ import SwiftUI
 struct PasswordResetView: View {
     
     @Environment(\.dismiss) private var dismiss
-    @StateObject var viewModel = PasswordResetViewModel()
-    @FocusState var selectedField: FocusText?
-    @EnvironmentObject var state: AppState
+    @StateObject private var viewModel = PasswordResetViewModel()
+    @FocusState private var selectedField: FocusText?
+    @EnvironmentObject private var state: AppState
+    
+    @State private var email: String = ""
+    
+    var validForm: Bool {
+        if email.isEmpty {
+            viewModel.showError(withMessage: "Email field is empty!")
+            return false
+        } else if !email.isValidEmail {
+            viewModel.showError(withMessage: "Email is not valid.")
+            return false
+        } else {
+            return true
+        }
+    }
     
     enum FocusText {
         case email
@@ -47,9 +61,15 @@ struct PasswordResetView: View {
     
     func resetPassword() {
         Task {
-            await viewModel.reset()
-            dismiss()
+            if await viewModel.resetPassword(onEmail: email) {
+                clearForm()
+                dismiss()
+            }
         }
+    }
+    
+    private func clearForm() {
+        email = ""
     }
 }
 
@@ -65,7 +85,7 @@ struct PasswordResetView_Previews: PreviewProvider {
 extension PasswordResetView {
     
     var emailField: some View {
-        TextField("Email", text: $viewModel.email)
+        TextField("Email", text: $email)
             .padding()
             .focused($selectedField, equals: .email)
             .neonField(light: selectedField == .email ? true : false)
@@ -77,7 +97,7 @@ extension PasswordResetView {
                 selectedField = .email
             }
             .onSubmit {
-                if viewModel.validForm {
+                if validForm {
                     resetPassword()
                 }
             }
@@ -86,7 +106,7 @@ extension PasswordResetView {
     
     var requesPasswordResetButton: some View {
         Button {
-            if viewModel.validForm {
+            if validForm {
                 resetPassword()
             }
         } label: {

@@ -14,15 +14,16 @@ struct WreckDetailedView: View {
     var body: some View {
         ScrollView {
             wreckImage
+            if let info = wreck.information {
+                Text(info)
+                    .font(.headline)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal)
+            }
             infoPlate
-            Text("Information:")
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.leading)
-                .font(.title.weight(.bold))
-            Text(wreck.information ?? "")
-                .font(.headline)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal)
+            if let creator = wreck.creator {
+                CreatorView(creator: creator)
+            }
         }
     }
     
@@ -73,7 +74,6 @@ struct WreckDetailedView: View {
 
 struct WreckDetailedView_Previews: PreviewProvider {
     static var previews: some View {
-        let wreck = Wreck(cause: "Other", type: "all", title: "Titanic", latitude: 41, longitude: 49, wreckDive: false)
-        WreckDetailedView(wreck: wreck)
+        WreckDetailedView(wreck: Wreck.test)
     }
 }

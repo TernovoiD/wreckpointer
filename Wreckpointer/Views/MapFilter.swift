@@ -9,45 +9,43 @@ import SwiftUI
 
 struct MapFilter: View {
     
-    @StateObject var viewModel = MapFilterViewModel()
-    @EnvironmentObject var wrecks: Wrecks
-    @EnvironmentObject var state: AppState
+    @StateObject private var viewModel = MapFilterViewModel()
+    @EnvironmentObject private var appState: AppState
+    @EnvironmentObject private var appData: AppData
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
+        VStack(alignment: .leading, spacing: 5) {
             openFilterMenuButton
-            if state.activeUIElement == .mapFilter {
+            if appState.activeUIElement == .mapFilter {
                 Divider()
-                Toggle("Filter by date", isOn: $wrecks.filterByDate.animation(.easeInOut))
-                Toggle("Filter by type", isOn: $wrecks.filterByType.animation(.easeInOut))
-                Toggle("Filter by cause", isOn: $wrecks.filterByCause.animation(.easeInOut))
-                Toggle("Wreck dives only", isOn: $wrecks.showWreckDivesOnly)
-                if wrecks.filterByType || wrecks.filterByCause || wrecks.filterByDate {
+                Toggle("Filter by date", isOn: $appData.filterByDate.animation(.easeInOut))
+                Toggle("Filter by type", isOn: $appData.filterByType.animation(.easeInOut))
+                Toggle("Filter by cause", isOn: $appData.filterByCause.animation(.easeInOut))
+                Toggle("Wreck dives only", isOn: $appData.showWreckDivesOnly)
+                if appData.filterByType || appData.filterByCause || appData.filterByDate {
                     Divider()
                 }
-                if wrecks.filterByDate {
-                    HStack {
-                        minimumDatePicker
-                        maximumDatePicker
-                    }
+                if appData.filterByDate {
+                    minimumDatePicker
+                    maximumDatePicker
                 }
-                if wrecks.filterByType {
+                if appData.filterByType {
                     wreckTypePicker
                 }
-                if wrecks.filterByCause {
+                if appData.filterByCause {
                     wreckCausePicker
                 }
             }
         }
-        .onChange(of: wrecks.filterByDate, perform: { newValue in setMinimumDate(newValue: newValue) })
+        .onChange(of: appData.filterByDate, perform: { newValue in setMinimumDate(newValue: newValue) })
         .font(.headline)
         .padding()
         .accentColorBorder()
     }
     
-    func setMinimumDate(newValue: Bool) {
+    private func setMinimumDate(newValue: Bool) {
         if newValue {
-            wrecks.minimumDate = viewModel.minimumDateOfLossDate(forWrecks: wrecks.all)
+            appData.minimumDate = viewModel.minimumDateOfLossDate(forWrecks: appData.wrecks)
         }
     }
 }
@@ -55,9 +53,9 @@ struct MapFilter: View {
 struct MapFilter_Previews: PreviewProvider {
     static var previews: some View {
         MapFilter()
-            .environmentObject(Wrecks())
-            .environmentObject(AppState())
             .environmentObject(MapFilterViewModel())
+            .environmentObject(AppState())
+            .environmentObject(AppData())
     }
 }
 
@@ -66,13 +64,13 @@ struct MapFilter_Previews: PreviewProvider {
 
 extension MapFilter {
     
-    var openFilterMenuButton: some View {
+    private var openFilterMenuButton: some View {
         Button {
             withAnimation(.easeInOut) {
-                state.activeUIElement = state.activeUIElement == .mapFilter ? .none : .mapFilter
+                appState.activate(element: appState.activeUIElement == .mapFilter ? .none : .mapFilter)
             }
         } label: {
-            if state.activeUIElement == .mapFilter {
+            if appState.activeUIElement == .mapFilter {
                 Label("Filter", systemImage: "xmark")
             } else {
                 Image(systemName: "slider.horizontal.3")
@@ -83,11 +81,11 @@ extension MapFilter {
         }
     }
     
-    var wreckTypePicker: some View {
+    private var wreckTypePicker: some View {
         HStack {
             Text("Type")
             Spacer()
-            Picker("Wreck type", selection: $wrecks.wreckType) {
+            Picker("Wreck type", selection: $appData.wreckType) {
                 ForEach(WreckTypesEnum.allCases) { option in
                     Text(String(describing: option).capitalized)
                 }
@@ -98,11 +96,11 @@ extension MapFilter {
         }
     }
     
-    var wreckCausePicker: some View {
+    private var wreckCausePicker: some View {
         HStack {
             Text("Cause")
             Spacer()
-            Picker("Wreck type", selection: $wrecks.wreckCause) {
+            Picker("Wreck type", selection: $appData.wreckCause) {
                 ForEach(WreckCausesEnum.allCases) { option in
                     Text(String(describing: option).capitalized)
                 }
@@ -113,13 +111,13 @@ extension MapFilter {
         }
     }
     
-    var minimumDatePicker: some View {
-        DatePicker("From", selection: $wrecks.minimumDate, displayedComponents: .date)
+    private var minimumDatePicker: some View {
+        DatePicker("From", selection: $appData.minimumDate, displayedComponents: .date)
             .datePickerStyle(.compact)
     }
     
-    var maximumDatePicker: some View {
-        DatePicker("To", selection: $wrecks.maximumDate, displayedComponents: .date)
+    private var maximumDatePicker: some View {
+        DatePicker("To", selection: $appData.maximumDate, displayedComponents: .date)
             .datePickerStyle(.compact)
     }
 }

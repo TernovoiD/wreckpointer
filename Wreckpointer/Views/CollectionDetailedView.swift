@@ -9,48 +9,59 @@ import SwiftUI
 
 struct CollectionDetailedView: View {
     
-    @EnvironmentObject var collections: Collections
-    @EnvironmentObject var state: AppState
+    @StateObject private var viewModel = CollectionDetailViewModel()
+    @EnvironmentObject private var appData: AppData
+    @EnvironmentObject private var appState: AppState
+    @Binding var user: User?
     @State var collection: Collection
     
     var body: some View {
         ScrollView(showsIndicators: false) {
-            collectionImage
-            collectionTitle
             Text(collection.description)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal)
-            ForEach($collection.blocks) { $block in
-                CollectionBlockView(collection: $collection, block: $block)
-            }
-            if state.authorizedUser != nil {
+                .padding(.leading, 5)
+            if appState.authorizedUser == collection.creator || appState.authorizedUser?.role == "moderator" {
                 addBlockButton
+                    .padding(.leading, 5)
+            }
+            collectionBlocks
+            if let creator = collection.creator {
+                CreatorView(creator: creator)
+                    .padding(.vertical)
             }
         }
+        .navigationTitle(collection.title)
         .onAppear { sortBlocks() }
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            if state.authorizedUser != nil {
-                ToolbarItem(placement: .confirmationAction) { updateCollectionButton }
-            }
-        }
-        .onChange(of: collections.all) { collections in
-            if let updatedCollection = collections.first(where: { $0.id == collection.id }) {
-                self.collection = updatedCollection
-            }
+        .alert(viewModel.errorMessage, isPresented: $viewModel.error) {
+            Button("OK", role: .cancel) { }
         }
     }
     
-    func sortBlocks() {
+    private func sortBlocks() {
         collection.blocks.sort(by: { $0.number < $1.number })
+    }
+    
+    func delete(block: Block) async {
+        let result = await viewModel.delete(block: block, collectionID: collection.id)
+        if result {
+            collection.blocks.removeAll(where: { $0.id == block.id })
+            
+            if let index = appData.collections.firstIndex(where: { $0.id == collection.id }) {
+                appData.collections[index].blocks.removeAll(where: { $0.id == block.id })
+            }
+        }
     }
 }
 
 struct CollectionDetailedView_Previews: PreviewProvider {
     static var previews: some View {
-        CollectionDetailedView(collection: Collection.test)
-            .environmentObject(Collections())
-            .environmentObject(AppState())
+        NavigationView {
+            CollectionDetailedView(user: .constant(nil), collection: Collection.test)
+                .environmentObject(CollectionDetailViewModel())
+                .environmentObject(AppData())
+                .environmentObject(AppState())
+        }
     }
 }
 
@@ -59,52 +70,67 @@ struct CollectionDetailedView_Previews: PreviewProvider {
 
 extension CollectionDetailedView {
     
-    var collectionImage: some View {
-        ImageView(imageData: $collection.image)
-            .frame(maxHeight: 450)
-            .background(Color.gray.opacity(0.4))
-    }
-    
-    var collectionTitle: some View {
-        HStack {
-            Text(collection.title)
-                .font(.title)
-                .bold()
-                .glassyFont(textColor: .accentColor)
-            Spacer()
-            Button {
-                
-            } label: {
-                Label("Report", systemImage: "flag.fill")
-                .padding()
-                .font(.headline)
-                .background(Color.gray.opacity(0.33))
-                .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-                .foregroundColor(.white)
+    private var collectionBlocks: some View {
+        ForEach($collection.blocks) { $block in
+            let wreck = appData.wrecks.first(where: { $0.id == UUID(uuidString: block.wreckID ?? "") })
+            BlockView(block: $block)
+                .padding(.top)
+            if appState.authorizedUser == collection.creator || appState.authorizedUser?.role == "moderator" {
+                HStack(spacing: 5) {
+                    Button(role: .destructive) {
+                        Task { await delete(block: block) }
+                    } label: { deleteBlockButton }
+                    Color.primary.frame(width: 2, height: 50)
+                    NavigationLink {
+                        AddUpdateBlockView(collection: $collection,
+                                           block: $block,
+                                           blockName: block.title,
+                                           blockNumber: block.number,
+                                           blockWreck: wreck,
+                                           blockDescription: block.description)
+                    } label: { editBlockButton }
+                }
+                .background(RoundedRectangle(cornerRadius: 25, style: .continuous).stroke(lineWidth: 2))
+                .padding(.horizontal)
             }
         }
-        .frame(maxWidth: .infinity, maxHeight: 40, alignment: .leading)
+    }
+    
+    private var addBlockButton: some View {
+        NavigationLink {
+            AddUpdateBlockView(collection: $collection, block: .constant(Block()))
+        } label: {
+            HStack {
+                Text("Create block")
+                Spacer()
+                Image(systemName: "chevron.right")
+            }
+            .padding()
+            .font(.headline.weight(.bold))
+            .foregroundColor(.accentColor)
+            .background(RoundedRectangle(cornerRadius: 15, style: .continuous).stroke(lineWidth: 2))
+            .foregroundColor(.primary)
+            .padding()
+        }
+    }
+    
+    private var deleteBlockButton: some View {
+        HStack {
+            Image(systemName: "trash")
+            Spacer()
+            Text("Delete")
+        }
         .padding()
+        .font(.headline)
     }
     
-    var addBlockButton: some View {
-        NavigationLink {
-            AddUpdateBlockView(originalCollection: $collection, block: Block())
-        } label: {
-            Label("Add block", systemImage: "plus")
-                .font(.headline)
-                .padding()
-                .foregroundColor(.accentColor)
-                .background(RoundedRectangle(cornerRadius: 15, style: .continuous).stroke())
+    private var editBlockButton: some View {
+        HStack {
+            Text("Edit")
+            Spacer()
+            Image(systemName: "chevron.right")
         }
-    }
-    
-    var updateCollectionButton: some View {
-        NavigationLink {
-            AddUpdateCollection(collection: collection)
-        } label: {
-            Text("Update")
-                .bold()
-        }
+        .padding()
+        .font(.headline)
     }
 }

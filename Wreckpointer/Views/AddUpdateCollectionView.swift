@@ -9,20 +9,24 @@ import SwiftUI
 
 struct AddUpdateCollection: View {
     
+    @StateObject private var viewModel = AddUpdateCollectionViewModel()
+    @EnvironmentObject private var appData: AppData
+    @FocusState private var selectedField: FocusText?
     @Environment(\.dismiss) private var dismiss
-    @StateObject var viewModel = AddUpdateCollectionViewModel()
-    @EnvironmentObject var collections: Collections
-    @FocusState var selectedField: FocusText?
-    @State var collection: Collection
+    @Binding var collection: Collection
     
-    enum FocusText {
+    @State var collectionImage: Data?
+    @State var collectionName: String = ""
+    @State var collectionDescription: String = ""
+    
+    private enum FocusText {
         case title
         case description
     }
     
     var body: some View {
         ScrollView {
-            PhotosPickerView(selectedImageData: $collection.image)
+            PhotosPickerView(selectedImageData: $collectionImage)
             titleTextField
                 .padding(.horizontal)
             Text("Description:")
@@ -41,33 +45,46 @@ struct AddUpdateCollection: View {
         }
     }
     
-    func addUpdate() async {
+    private func getCollection() -> Collection {
         if collection.id == nil {
-            let createdCollection = await viewModel.create(collection: collection)
+            return Collection(title: collectionName,
+                              description: collectionDescription,
+                              image: collectionImage)
+        } else {
+            var updatedCollection = collection
+            updatedCollection.title = collectionName
+            updatedCollection.description = collectionDescription
+            updatedCollection.image = collectionImage
+            return updatedCollection
+        }
+    }
+    
+    func save() async {
+        let collectionToSave = getCollection()
+        
+        if collectionToSave.id == nil {
+            let createdCollection = await viewModel.create(collection: getCollection())
             if let createdCollection {
-                collections.updateCollection(createdCollection)
+                appData.collections.append(createdCollection)
                 dismiss()
             }
         } else {
-            var collectionToUpdate = collection
-            let blocks = collectionToUpdate.blocks
-            collectionToUpdate.blocks = [ ]
-            let updatedCollection = await viewModel.update(collection: collectionToUpdate)
-            if var updatedCollection {
-                updatedCollection.blocks = blocks
-                collections.updateCollection(updatedCollection)
+            let updatedCollection = await viewModel.update(collection: getCollection())
+            if let updatedCollection {
+                collection = updatedCollection
                 dismiss()
             }
         }
+        
     }
 }
 
 struct AddUpdateCollection_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            AddUpdateCollection(collection: Collection.test)
-                .environmentObject(Collections())
+            AddUpdateCollection(collection: .constant(Collection.test))
                 .environmentObject(AddUpdateCollectionViewModel())
+                .environmentObject(AppData())
         }
     }
 }
@@ -77,7 +94,7 @@ struct AddUpdateCollection_Previews: PreviewProvider {
 extension AddUpdateCollection {
     
     var titleTextField: some View {
-        TextField("Collection name", text: $collection.title)
+        TextField("Collection name", text: $collectionName)
             .padding()
             .focused($selectedField, equals: .title)
             .neonField(light: selectedField == .title ? true : false)
@@ -90,7 +107,7 @@ extension AddUpdateCollection {
     }
     
     var descriptionTextEditor: some View {
-        TextEditor(text: $collection.description)
+        TextEditor(text: $collectionDescription)
             .frame(height: 200)
             .mask(RoundedRectangle(cornerRadius: 15, style: .continuous))
             .padding(3)
@@ -104,7 +121,7 @@ extension AddUpdateCollection {
     
     var saveButton: some View {
         Button {
-            Task { await addUpdate() }
+            Task { await save() }
         } label: {
             Text("Save")
                 .bold()

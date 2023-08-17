@@ -20,21 +20,26 @@ class AddUpdateBlockViewModel: ObservableObject {
         }
     }
     
-    func create(block: Block, inCollection collection: Collection) async -> Block? {
+    func create(block: Block, collectionID: UUID?) async -> Block? {
         do {
-            return try await CollectionManager.shared.addBlock(block, toCollection: collection)
+            return try await CollectionManager.shared.addBlock(block, toCollectionWithID: collectionID)
+        } catch let httpError as HTTPError {
+            showError(withMessage: httpError.errorDescription)
+            return nil
         } catch let error {
-            showError(withMessage: "Failed: \(error.localizedDescription)")
-            self.error = true
+            showError(withMessage: error.localizedDescription)
             return nil
         }
     }
     
-    func update(block: Block, inCollection collection: Collection) async -> Block? {
+    func update(block: Block, collectionID: UUID?) async -> Block? {
         do {
-            return try await CollectionManager.shared.updateBlock(block, inCollection: collection)
+            return try await CollectionManager.shared.updateBlock(block, inCollectionWithID: collectionID)
+        } catch let httpError as HTTPError {
+            showError(withMessage: httpError.errorDescription)
+            return nil
         } catch let error {
-            showError(withMessage: "Failed: \(error.localizedDescription)")
+            showError(withMessage: error.localizedDescription)
             return nil
         }
     }

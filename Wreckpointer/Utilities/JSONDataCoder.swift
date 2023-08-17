@@ -42,7 +42,7 @@ class JSONDataCoder {
         decoder.dateDecodingStrategy = .formatted(dateFormatter)
         
         guard let item = try? decoder.decode(T.self, from: data) else {
-            throw HTTPError.notDecodable
+            throw HTTPError.notDecodable("Recieved JSON items are not decodable")
         }
         return item
     }
@@ -54,7 +54,7 @@ class JSONDataCoder {
         decoder.dateDecodingStrategy = .formatted(dateFormatter)
         
         guard let items = try? decoder.decode([T].self, from: data) else {
-            throw HTTPError.notDecodable
+            throw HTTPError.notDecodable("Recieved JSON items are not decodable")
         }
         return items
     }

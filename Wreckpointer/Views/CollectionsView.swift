@@ -10,37 +10,32 @@ import SwiftUI
 struct CollectionsView: View {
     
     @AppStorage("visitedCollections") var visitedCollections: Bool = false
-    @StateObject var viewModel: CollectionsViewModel = CollectionsViewModel()
-    @EnvironmentObject var collections: Collections
-    @EnvironmentObject var state: AppState
-    
+    @StateObject var viewModel = CollectionsViewModel()
+    @EnvironmentObject private var appData: AppData
+    @EnvironmentObject private var appState: AppState
     
     var body: some View {
-        List {
-            ForEach(collections.all) { collection in
-                NavigationLink {
-                    CollectionDetailedView(collection: collection)
-                } label: {
-                    CollectionView(collection: collection)
-                }
-                .contextMenu { Button("Delete", role: .destructive) {
-                    Task { await viewModel.delete(collection: collection) }
-                } }
+        ScrollView {
+            LazyVStack(alignment: .leading, spacing: 10) {
+                collections
             }
+            .padding(.horizontal)
         }
         .onAppear{ visitedCollections = true }
         .navigationTitle("Collections")
-        .toolbar { Button("Add") { collections.all.append(Collection()) } }
-        .toolbar { if state.authorizedUser != nil { ToolbarItem { createCollectionButton } } }
-        .task { await loadCollections() }
+        .task { if appData.collections.isEmpty { await appData.loadCollections() }}
+        .toolbar { if appState.authorizedUser != nil { ToolbarItem { createCollectionButton } } }
         .alert(viewModel.errorMessage, isPresented: $viewModel.error) {
             Button("OK", role: .cancel) { }
         }
     }
     
-    private func loadCollections() async {
-        if let collections = await viewModel.fetchCollections() {
-            self.collections.all = collections
+    private func deleteCollection(collection: Collection) async {
+        let result = await viewModel.delete(collection: collection)
+        if result {
+            withAnimation(.easeInOut) {
+                appData.collections.removeAll(where: { $0.id == collection.id })
+            }
         }
     }
 }
@@ -50,7 +45,7 @@ struct CollectionsView_Previews: PreviewProvider {
         NavigationView {
             CollectionsView()
                 .environmentObject(CollectionsViewModel())
-                .environmentObject(Collections())
+                .environmentObject(AppData())
                 .environmentObject(AppState())
         }
     }
@@ -61,15 +56,74 @@ struct CollectionsView_Previews: PreviewProvider {
 
 extension CollectionsView {
     
-    var createCollectionButton: some View {
+    private var collections: some View {
+        ForEach($appData.collections) { $collection in
+            HStack {
+                NavigationLink {
+                    CollectionDetailedView(user: $appState.authorizedUser, collection: collection)
+                } label: {
+                    CollectionView(collection: $collection)
+                        .contextMenu { Button("Delete", role: .destructive) {
+                            Task { await deleteCollection(collection: collection) } }
+                        }
+                }
+                if appState.authorizedUser == collection.creator || appState.authorizedUser?.role == "moderator" {
+                    VStack {
+                        NavigationLink {
+                            AddUpdateCollection(collection: $collection, collectionImage: collection.image, collectionName: collection.title, collectionDescription: collection.description)
+                        } label: { updateCollectionButton }
+                        Spacer()
+                        Button {
+                            Task { await deleteCollection(collection: collection) }
+                        } label: { deleteCollectionButton }
+                    }
+                    .frame(maxHeight: 120)
+                }
+            }
+        }
+    }
+    
+    private var createCollectionButton: some View {
         NavigationLink {
-            AddUpdateCollection(collection: Collection())
+            AddUpdateCollection(collection: .constant(Collection()))
         } label: {
             HStack {
                 Text("Create")
-                Image(systemName: "plus.circle")
+                Image(systemName: "plus.rectangle")
             }
             .font(.headline)
         }
+    }
+    
+    private var updateCollectionButton: some View {
+            HStack {
+                Image(systemName: "pencil.circle")
+                    .frame(maxWidth: 10)
+                Text("Edit")
+            }
+            .padding()
+            .bold()
+            .frame(maxHeight: .infinity)
+            .frame(maxWidth: 120)
+            .foregroundColor(.white)
+            .background(Color.accentColor)
+            .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+            .shadow(radius: 5)
+    }
+    
+    private var deleteCollectionButton: some View {
+        HStack {
+            Image(systemName: "trash.circle")
+                .frame(maxWidth: 10)
+            Text("Delete")
+        }
+        .padding()
+        .bold()
+        .frame(maxHeight: .infinity)
+        .frame(maxWidth: 120)
+        .foregroundColor(.white)
+        .background(Color.red)
+        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .shadow(radius: 5)
     }
 }

@@ -20,21 +20,15 @@ class CollectionsViewModel: ObservableObject {
         }
     }
     
-    func fetchCollections() async -> [Collection]? {
-        do {
-            return try await CollectionManager.shared.fetchCollections()
-        } catch let error {
-            showError(withMessage: "Error while loading collections from the server: \(error.localizedDescription)")
-            return nil
-        }
-    }
-    
     func delete(collection: Collection) async -> Bool {
         do {
             try await CollectionManager.shared.delete(collection: collection)
             return true
+        } catch let httpError as HTTPError {
+            showError(withMessage: httpError.errorDescription)
+            return false
         } catch let error {
-            showError(withMessage: "Unable to delete collection: \(error.localizedDescription)")
+            showError(withMessage: error.localizedDescription)
             return false
         }
     }

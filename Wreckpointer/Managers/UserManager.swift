@@ -21,9 +21,8 @@ class UserManager {
         self.token = TokenStorage.shared
     }
     
-    func changePassword(userPassword: String, newPassword: String, newPasswordConfirm: String) async throws {
-        let passChange = User(password: userPassword, newPassword: newPassword, newPasswordConfirm: newPasswordConfirm)
-        let passChangeData = try coder.encodeItemToData(item: passChange)
+    func changePassword(forUser user: User) async throws {
+        let passChangeData = try coder.encodeItemToData(item: user)
         guard let url = URL(string: BaseRoutes.baseURL + Endpoints.passwordChange) else { throw HTTPError.badURL }
         let _ = try await http.sendRequest(toURL: url, withData: passChangeData , withHTTPMethod: HTTPMethods.POST.rawValue, withloginToken: token.getToken())
     }
@@ -42,14 +41,13 @@ class UserManager {
         let data = try await http.sendRequest(toURL: url, withData: encodedUserData, withHTTPMethod: HTTPMethods.POST.rawValue)
         
         let userToken = String(decoding: data, as: UTF8.self)
-//        let userToken = try coder.decodeItemFromData(data: data) as String
-//        print(userToken)
         token.saveToken(userToken)
     }
     
     func update(user: User) async throws -> User {
         let encodedUserData = try coder.encodeItemToData(item: user)
-        guard let url = URL(string: BaseRoutes.baseURL + Endpoints.user) else {
+        let userID = user.id?.uuidString ?? "error"
+        guard let url = URL(string: BaseRoutes.baseURL + Endpoints.user + "/" + userID) else {
             throw HTTPError.badURL
         }
         let data = try await http.sendRequest(toURL: url, withData: encodedUserData, withHTTPMethod: HTTPMethods.PATCH.rawValue, withloginToken: token.getToken())

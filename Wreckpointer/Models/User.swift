@@ -19,6 +19,7 @@ struct User: Codable, Equatable {
     var confirmPassword: String?
     var newPassword: String?
     var newPasswordConfirm: String?
+    var role: String?
     
     init(id: UUID? = nil,
          username: String? = nil,

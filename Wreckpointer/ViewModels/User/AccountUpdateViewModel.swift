@@ -22,10 +22,13 @@ class AccountUpdateViewModel: ObservableObject {
     
     func update(user: User) async -> User? {
         do {
-            return try await UserManager.shared.update(user: user)
+            let updatedUser = try await UserManager.shared.update(user: user)
+            return updatedUser
+        } catch let httpError as HTTPError {
+            showError(withMessage: httpError.errorDescription)
+            return nil
         } catch let error {
-            showError(withMessage: "Unable to update user info: \(error.localizedDescription)")
-            self.error = true
+            showError(withMessage: error.localizedDescription)
             return nil
         }
     }

@@ -22,18 +22,4 @@ class MapFilterViewModel: ObservableObject {
             return datesArray.min() ?? Date()
         }
     }
-    
-//    func maximumDateOfLossDate(forWrecks allWrecks: [Wreck]) -> Date {
-//        var datesArray: [Date] = [ ]
-//        let wrecks = allWrecks.filter({ $0.dateOfLoss != nil })
-//
-//        if wrecks.isEmpty {
-//            return maximumDate
-//        } else {
-//            for wreck in wrecks {
-//                datesArray.append(wreck.dateOfLoss ?? Date())
-//            }
-//            return datesArray.min() ?? maximumDate
-//        }
-//    }
 }

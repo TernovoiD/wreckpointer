@@ -43,10 +43,28 @@ struct Wreck: Codable, Identifiable, Equatable {
         self.creator = creator
     }
     
+    init(cause: String, type: String, title: String, image: Data? = nil, depth: Double? = nil, latitude: Double, longitude: Double, wreckDive: Bool, dateOfLoss: Date? = nil, information: String? = nil) {
+        self.id = nil
+        self.cause = cause
+        self.type = type
+        self.title = title
+        self.image = image
+        self.depth = depth
+        self.approved = nil
+        self.latitude = latitude
+        self.longitude = longitude
+        self.wreckDive = wreckDive
+        self.dateOfLoss = dateOfLoss
+        self.information = information
+        self.createdAt = nil
+        self.updatedAt = nil
+        self.creator = nil
+    }
+    
     init() {
         self.id = nil
         self.cause = WreckCausesEnum.unknown.rawValue
-        self.type = WreckTypesEnum.other.rawValue
+        self.type = WreckTypesEnum.unknown.rawValue
         self.title = ""
         self.image = nil
         self.depth = nil
@@ -69,7 +87,7 @@ struct Wreck: Codable, Identifiable, Equatable {
                             depth: 3400,
                             approved: true,
                             latitude: 30,
-                            longitude: 15,
+                            longitude: -15,
                             wreckDive: false,
                             dateOfLoss: Date(),
                             information: "A submarine is destroyed near the North Pole by a mysterious undersea light. The loss of this and several other ships in the Arctic alarms the world. Governments temporarily close the polar route and convene an emergency meeting at the Pentagon. Present is Commander Dan Wendover (Dick Foran), the captain of the atomic submarine Tigershark, and Nobel Prize-winning scientist Sir Ian Hunt (Tom Conway). The United States Secretary of Defense (Jack Mulhall) leads the meeting; he explains all that is known about the Arctic disasters, and then describes the high-tech capabilities of Tigershark. These include a special hull and a minisub (Lungfish) that can be stored inside the submarine. The secretary finishes by telling Wendover that he is to take Hunt, Tigershark, and her crew to resolve the ship sinkings, and if possible, eliminate their cause.",
