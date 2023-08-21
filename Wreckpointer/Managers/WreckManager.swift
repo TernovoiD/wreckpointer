@@ -13,12 +13,12 @@ class WreckManager {
     
     private let http: HTTPRequestSender
     private let coder: JSONDataCoder
-    private let token: TokenStorage
+    private let token: AccessTokenHelper
     
     private init() {
         self.http = HTTPRequestSender.shared
         self.coder = JSONDataCoder.shared
-        self.token = TokenStorage.shared
+        self.token = AccessTokenHelper.shared
     }
     
     func fetchWrecks() async throws -> [Wreck] {

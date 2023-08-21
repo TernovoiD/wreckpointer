@@ -9,9 +9,10 @@ import Foundation
 
 extension Double {
     var metersToFeet: Double {
-        self * 3.2808399
+        self / 0.3048
     }
+    
     var feetToMeters: Double {
-        self / 3.2808399
+        self * 0.3048
     }
 }

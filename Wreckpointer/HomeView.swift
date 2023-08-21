@@ -9,10 +9,10 @@ import SwiftUI
 
 struct HomeView: View {
     
-    @EnvironmentObject var appState: AppState
-    @EnvironmentObject var appData: AppData
-    @State var loading: Bool = true
-    @State var overlay: Bool = false
+    @EnvironmentObject private var appState: AppState
+    @EnvironmentObject private var appData: AppData
+    @State private var loading: Bool = true
+    @State private var overlay: Bool = false
     
     var body: some View {
         NavigationStack {

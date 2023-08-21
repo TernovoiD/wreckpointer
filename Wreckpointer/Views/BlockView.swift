@@ -9,7 +9,8 @@ import SwiftUI
 
 struct BlockView: View {
     
-    @Binding var block: Block
+    let block: Block
+    let wreck: Wreck?
     
     var body: some View {
         VStack(spacing: 10) {
@@ -20,7 +21,9 @@ struct BlockView: View {
             }
             .font(.system(size: 30, weight: .heavy))
             .padding(.horizontal)
-            MiniMapWreckView(wreckID: $block.wreckID)
+            if let wreck {
+                MiniMapWreckView(wreck: wreck)
+            }
             Text(block.description)
                 .padding(.horizontal)
         }
@@ -30,7 +33,7 @@ struct BlockView: View {
 
 struct BlockView_Previews: PreviewProvider {
     static var previews: some View {
-        BlockView(block: .constant(Block.test))
+        BlockView(block: Block.test, wreck: Wreck.test)
             .environmentObject(AppData())
     }
 }

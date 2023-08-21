@@ -12,7 +12,6 @@ struct CollectionDetailedView: View {
     @StateObject private var viewModel = CollectionDetailViewModel()
     @EnvironmentObject private var appData: AppData
     @EnvironmentObject private var appState: AppState
-    @Binding var user: User?
     @State var collection: Collection
     
     var body: some View {
@@ -36,6 +35,11 @@ struct CollectionDetailedView: View {
         .alert(viewModel.errorMessage, isPresented: $viewModel.error) {
             Button("OK", role: .cancel) { }
         }
+        .onChange(of: appData.collections, perform: { collections in
+            if let index = collections.firstIndex(where: { $0.id == collection.id }) {
+                collection = collections[index]
+            }
+        })
     }
     
     private func sortBlocks() {
@@ -57,7 +61,7 @@ struct CollectionDetailedView: View {
 struct CollectionDetailedView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            CollectionDetailedView(user: .constant(nil), collection: Collection.test)
+            CollectionDetailedView(collection: Collection.test)
                 .environmentObject(CollectionDetailViewModel())
                 .environmentObject(AppData())
                 .environmentObject(AppState())
@@ -73,7 +77,7 @@ extension CollectionDetailedView {
     private var collectionBlocks: some View {
         ForEach($collection.blocks) { $block in
             let wreck = appData.wrecks.first(where: { $0.id == UUID(uuidString: block.wreckID ?? "") })
-            BlockView(block: $block)
+            BlockView(block: block, wreck: wreck)
                 .padding(.top)
             if appState.authorizedUser == collection.creator || appState.authorizedUser?.role == "moderator" {
                 HStack(spacing: 5) {
@@ -82,8 +86,8 @@ extension CollectionDetailedView {
                     } label: { deleteBlockButton }
                     Color.primary.frame(width: 2, height: 50)
                     NavigationLink {
-                        AddUpdateBlockView(collection: $collection,
-                                           block: $block,
+                        AddUpdateBlockView(collection: collection,
+                                           block: block,
                                            blockName: block.title,
                                            blockNumber: block.number,
                                            blockWreck: wreck,
@@ -98,7 +102,7 @@ extension CollectionDetailedView {
     
     private var addBlockButton: some View {
         NavigationLink {
-            AddUpdateBlockView(collection: $collection, block: .constant(Block()))
+            AddUpdateBlockView(collection: collection, block: nil)
         } label: {
             HStack {
                 Text("Create block")

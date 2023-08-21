@@ -13,8 +13,8 @@ struct AddUpdateBlockView: View {
     @EnvironmentObject private var appData: AppData
     @StateObject private var viewModel = AddUpdateBlockViewModel()
     @FocusState private var selectedField: FocusText?
-    @Binding var collection: Collection
-    @Binding var block: Block
+    let collection: Collection
+    let block: Block?
     
     @State var blockName: String = ""
     @State var blockNumber: Int = 1
@@ -46,18 +46,19 @@ struct AddUpdateBlockView: View {
     }
     
     private func getBlock() -> Block {
-        if block.id == nil {
-            return Block(title: blockName,
-                         number: blockNumber,
-                         wreckID: blockWreck?.id?.uuidString,
-                         description: blockDescription)
-        } else {
+        
+        if let block {
             var updatedBlock = block
             updatedBlock.title = blockName
             updatedBlock.number = blockNumber
             updatedBlock.wreckID = blockWreck?.id?.uuidString
             updatedBlock.description = blockDescription
             return updatedBlock
+        } else {
+            return Block(title: blockName,
+                         number: blockNumber,
+                         wreckID: blockWreck?.id?.uuidString,
+                         description: blockDescription)
         }
     }
     
@@ -67,7 +68,6 @@ struct AddUpdateBlockView: View {
         if blockToSave.id == nil {
             let createdBlock = await viewModel.create(block: blockToSave, collectionID: collection.id)
             if let createdBlock {
-                collection.blocks.append(createdBlock)
                 if let index = appData.collections.firstIndex(where: { $0.id == collection.id }) {
                     appData.collections[index].blocks.append(createdBlock)
                 }
@@ -76,9 +76,8 @@ struct AddUpdateBlockView: View {
         } else {
             let updatedBlock = await viewModel.update(block: blockToSave, collectionID: collection.id)
             if let updatedBlock {
-                block = updatedBlock
                 if let index = appData.collections.firstIndex(where: { $0.id == collection.id }) {
-                    appData.collections[index].blocks.removeAll(where: { $0.id == block.id })
+                    appData.collections[index].blocks.removeAll(where: { $0.id == updatedBlock.id })
                     appData.collections[index].blocks.append(updatedBlock)
                 }
                 dismiss()
@@ -90,7 +89,7 @@ struct AddUpdateBlockView: View {
 struct AddUpdateBlockView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            AddUpdateBlockView(collection: .constant(Collection.test), block: .constant(Block.test))
+            AddUpdateBlockView(collection: Collection.test, block: Block.test)
                 .environmentObject(AddUpdateBlockViewModel())
                 .environmentObject(AppData())
         }

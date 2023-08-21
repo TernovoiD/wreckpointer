@@ -139,7 +139,7 @@ extension ChangePasswordView {
     var saveButton: some View {
         Button {
             if let user = getPassChange() {
-                Task { await changePassword(forUser: user)}
+                Task { changePassword(forUser: user)}
             }
         } label: {
             Text("Save")

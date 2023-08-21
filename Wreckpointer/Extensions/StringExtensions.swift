@@ -15,8 +15,16 @@ extension String {
         return emailPred.evaluate(with: self)
     }
     
+    
+    var isValidUsername: Bool {
+        let usernameRegEx = "^[a-z0-9_-]{3,13}$"
+
+        let usernamePred = NSPredicate(format:"SELF MATCHES %@", usernameRegEx)
+        return usernamePred.evaluate(with: self)
+    }
+    
     var isValidPassword: Bool {
-        return self.count >= 8 ? true : false
+        return self.count >= 6 ? true : false
     }
     
     var isValidName: Bool {

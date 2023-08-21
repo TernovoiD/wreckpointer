@@ -60,7 +60,7 @@ extension CollectionsView {
         ForEach($appData.collections) { $collection in
             HStack {
                 NavigationLink {
-                    CollectionDetailedView(user: $appState.authorizedUser, collection: collection)
+                    CollectionDetailedView(collection: collection)
                 } label: {
                     CollectionView(collection: $collection)
                         .contextMenu { Button("Delete", role: .destructive) {

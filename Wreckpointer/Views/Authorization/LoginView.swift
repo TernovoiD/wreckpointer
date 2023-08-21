@@ -46,7 +46,7 @@ struct LoginView: View {
             .background()
             VStack(spacing: 15) {
                 Text("Login")
-                    .glassyFont(textColor: .indigo)
+                    .glassyFont(textColor: .accentColor)
                     .font(.largeTitle)
                     .bold()
                 emailField
@@ -74,6 +74,8 @@ struct LoginView: View {
     
     private func login() async {
         if let user = await viewModel.login(withEmail: email, andPassword: password) {
+            selectedField = .none
+            clearForm()
             state.authorizedUser = user
         }
     }
@@ -140,7 +142,7 @@ extension LoginView {
             Text("Sign In")
                 .frame(maxWidth: .infinity)
                 .padding()
-                .background(Color.indigo)
+                .background(Color.accentColor)
                 .foregroundColor(.white)
                 .mask(RoundedRectangle(cornerRadius: 15))
                 .padding(.horizontal)
@@ -160,15 +162,15 @@ extension LoginView {
             Text("Don't have an account?")
             NavigationLink("Create", destination: RegistrationView())
         }
-        .padding(.vertical, 5)
-        .padding(.horizontal, 10)
+        .padding(.horizontal, 5)
         .background()
+        .mask(RoundedRectangle(cornerRadius: 7))
     }
     
     var forgotPasswordLink: some View {
         NavigationLink("Forgot passsword?", destination: PasswordResetView())
-            .padding(.vertical, 5)
-            .padding(.horizontal, 10)
+            .padding(.horizontal, 5)
             .background()
+            .mask(RoundedRectangle(cornerRadius: 7))
     }
 }

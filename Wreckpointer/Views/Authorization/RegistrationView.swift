@@ -23,14 +23,14 @@ struct RegistrationView: View {
         if email.isEmpty || username.isEmpty || password.isEmpty || passwordConfirmation.isEmpty {
             viewModel.showError(withMessage: "Fields cannot be empty.")
             return false
-        } else if !email.isValidEmail {
+        }else if !email.isValidEmail {
             viewModel.showError(withMessage: "Email is not valid.")
             return false
-        } else if !username.isValidName {
-            viewModel.showError(withMessage: "username must contain at least 5 characters.")
+        } else if !username.isValidUsername {
+            viewModel.showError(withMessage: "Username must be 3 to 13 characters. Only chars, numbers and underscore allowed")
             return false
         } else if !password.isValidPassword {
-            viewModel.showError(withMessage: "Password must contain at least 8 characters.")
+            viewModel.showError(withMessage: "Password must contain at least 6 characters.")
             return false
         } else if password != passwordConfirmation {
             viewModel.showError(withMessage: "Passwords do not match! Try again")
@@ -56,7 +56,7 @@ struct RegistrationView: View {
             .ignoresSafeArea()
             VStack(spacing: 15) {
                 Text("New account")
-                    .glassyFont(textColor: .indigo)
+                    .glassyFont(textColor: .accentColor)
                     .font(.largeTitle)
                     .bold()
                 emailField
@@ -91,7 +91,7 @@ struct RegistrationView: View {
         Task {
             if let createdUser = await viewModel.register(user: user) {
                 clearForm()
-                state.authorizedUser = createdUser
+                authorize(user: createdUser)
             }
         }
     }
@@ -200,7 +200,7 @@ extension RegistrationView {
             Text("Create")
                 .frame(maxWidth: .infinity)
                 .padding()
-                .background(Color.indigo)
+                .background(Color.accentColor)
                 .foregroundColor(.white)
                 .mask(RoundedRectangle(cornerRadius: 15))
                 .padding(.horizontal)
@@ -224,9 +224,8 @@ extension RegistrationView {
                 Text("Sign In")
             }
         }
-        .padding(.vertical, 5)
-        .padding(.horizontal, 10)
+        .padding(.horizontal, 5)
         .background()
-        .mask(RoundedRectangle(cornerRadius: 25))
+        .mask(RoundedRectangle(cornerRadius: 7))
     }
 }

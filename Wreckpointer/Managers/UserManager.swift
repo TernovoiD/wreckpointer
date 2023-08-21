@@ -13,23 +13,23 @@ class UserManager {
     
     private let http: HTTPRequestSender
     private let coder: JSONDataCoder
-    private let token: TokenStorage
+    private let token: AccessTokenHelper
     
     private init() {
         self.http = HTTPRequestSender.shared
         self.coder = JSONDataCoder.shared
-        self.token = TokenStorage.shared
+        self.token = AccessTokenHelper.shared
     }
     
     func changePassword(forUser user: User) async throws {
         let passChangeData = try coder.encodeItemToData(item: user)
-        guard let url = URL(string: BaseRoutes.baseURL + Endpoints.passwordChange) else { throw HTTPError.badURL }
+        guard let url = URL(string: BaseRoutes.baseURL + Endpoints.password + "/change") else { throw HTTPError.badURL }
         let _ = try await http.sendRequest(toURL: url, withData: passChangeData , withHTTPMethod: HTTPMethods.POST.rawValue, withloginToken: token.getToken())
     }
     
     func resetPassword(onEmail email: String) async throws {
         let emailData = try coder.encodeItemToData(item: email)
-        guard let url = URL(string: BaseRoutes.baseURL + Endpoints.passwordReset) else { throw HTTPError.badURL }
+        guard let url = URL(string: BaseRoutes.baseURL + Endpoints.password + "/reset") else { throw HTTPError.badURL }
         let _ = try await http.sendRequest(toURL: url, withData: emailData , withHTTPMethod: HTTPMethods.POST.rawValue)
     }
     
@@ -41,7 +41,7 @@ class UserManager {
         let data = try await http.sendRequest(toURL: url, withData: encodedUserData, withHTTPMethod: HTTPMethods.POST.rawValue)
         
         let userToken = String(decoding: data, as: UTF8.self)
-        token.saveToken(userToken)
+        let _ = token.saveAccessToken(userToken)
     }
     
     func update(user: User) async throws -> User {
@@ -63,11 +63,11 @@ class UserManager {
         let basicAuth = createBasicAuthorization(login: login, password: password)
         let data = try await http.sendRequest(toURL: url, withHTTPMethod: HTTPMethods.POST.rawValue, withbasicAuthorization: basicAuth)
         let userToken = String(decoding: data, as: UTF8.self)
-        token.saveToken(userToken)
+        let _ = token.saveAccessToken(userToken)
     }
     
     func signOut() {
-        token.deleteToken()
+        let _ = token.deleteAccessToken()
     }
     
     func deleteAccount(forUser user: User) async throws {

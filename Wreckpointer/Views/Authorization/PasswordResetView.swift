@@ -41,7 +41,7 @@ struct PasswordResetView: View {
             .ignoresSafeArea()
             VStack(spacing: 15) {
                 Text("Reset password")
-                    .glassyFont(textColor: .indigo)
+                    .glassyFont(textColor: .accentColor)
                     .font(.largeTitle)
                     .bold()
                 Text("Instructions will be send on your email.")
@@ -107,13 +107,14 @@ extension PasswordResetView {
     var requesPasswordResetButton: some View {
         Button {
             if validForm {
+                selectedField = .none
                 resetPassword()
             }
         } label: {
             Text("Send request")
                 .frame(maxWidth: .infinity)
                 .padding()
-                .background(Color.indigo)
+                .background(Color.accentColor)
                 .foregroundColor(.white)
                 .mask(RoundedRectangle(cornerRadius: 15))
                 .padding(.horizontal)
@@ -137,9 +138,8 @@ extension PasswordResetView {
                 Text("Sign In")
             }
         }
-        .padding(.vertical, 5)
-        .padding(.horizontal, 10)
+        .padding(.horizontal, 5)
         .background()
-        .mask(RoundedRectangle(cornerRadius: 15))
+        .mask(RoundedRectangle(cornerRadius: 7))
     }
 }
