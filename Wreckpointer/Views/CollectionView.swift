@@ -47,7 +47,7 @@ extension CollectionView {
     
     var collectionImage: some View {
         ImageView(imageData: .constant(collection.image), placehoder: "warship.armada1")
-            .frame(width: .infinity, height: 120)
+            .frame(maxHeight: 120)
             .clipped()
     }
     
@@ -59,7 +59,7 @@ extension CollectionView {
     var collectionTitle: some View {
         HStack(spacing: 0) {
             Text(collection.title)
-                .font(.title2.weight(.black))
+                .font(.title3.weight(.black))
             if collection.approved == true {
                 Image(systemName: "checkmark.seal.fill")
                     .foregroundColor(.green)

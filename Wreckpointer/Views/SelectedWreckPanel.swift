@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SelectedWreckPanel: View {
     
+    @AppStorage("showFeetUnits") private var showFeetUnits: Bool = true
     @EnvironmentObject private var appState: AppState
     @EnvironmentObject private var appData: AppData
     @StateObject private var viewModel = SelectedWreckViewModel()
@@ -114,6 +115,7 @@ extension SelectedWreckPanel {
     var editButton: some View {
         NavigationLink {
             if let wreck = appState.selectedWreck {
+                let depth = showFeetUnits ? wreck.depth?.metersToFeet ?? 0 : wreck.depth ?? 0
                 AddUpdateWreck(wreck: wreck,
                                wreckDive: wreck.wreckDive,
                                image: wreck.image,
@@ -122,8 +124,8 @@ extension SelectedWreckPanel {
                                longitude: String(abs(wreck.longitude)),
                                northLatitude: wreck.latitude >= 0 ? true : false,
                                eastLongitude: wreck.longitude >= 0 ? true : false,
-                               feetUnits: true,
-                               depth: String(wreck.depth ?? 0),
+                               feetUnits: showFeetUnits ? true : false,
+                               depth: String(format: "%.2f", depth),
                                type: WreckTypesEnum.allCases.first(where: { $0.rawValue == wreck.type }) ?? WreckTypesEnum.unknown,
                                cause: WreckCausesEnum.allCases.first(where: { $0.rawValue == wreck.cause }) ?? WreckCausesEnum.unknown,
                                dateOfLoss: wreck.dateOfLoss ?? Date(),

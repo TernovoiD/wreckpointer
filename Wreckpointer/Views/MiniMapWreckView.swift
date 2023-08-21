@@ -10,10 +10,8 @@ import MapKit
 
 struct MiniMapWreckView: View {
     
-    @StateObject var viewModel = MiniMapWreckViewModel()
-    @EnvironmentObject private var appData: AppData
-    @State private var wreck: Wreck = Wreck()
-    @Binding var wreckID: String?
+    @StateObject private var viewModel = MiniMapWreckViewModel()
+    let wreck: Wreck
     
     var body: some View {
         VStack(spacing: 10) {
@@ -31,25 +29,16 @@ struct MiniMapWreckView: View {
             .background(Color.gray.opacity(0.15))
             .mask(RoundedRectangle(cornerRadius: 15, style: .continuous))
         }
-        .onAppear { updateWreck() }
-        .onChange(of: wreckID) { _ in updateWreck() }
         .padding()
         .background(RoundedRectangle(cornerRadius: 25, style: .continuous).stroke(lineWidth: 2))
         .padding()
-    }
-    
-    private func updateWreck() {
-        if let wreck = appData.wrecks.first(where: { $0.id == UUID(uuidString: wreckID ?? "") }) {
-            self.wreck = wreck
-        }
     }
 }
 
 struct MiniMapWreckView_Previews: PreviewProvider {
     static var previews: some View {
-        MiniMapWreckView(wreckID: .constant(nil))
+        MiniMapWreckView(wreck: Wreck.test)
             .environmentObject(MiniMapWreckViewModel())
-            .environmentObject(AppData())
     }
 }
 
@@ -66,7 +55,6 @@ extension MiniMapWreckView {
                     .foregroundColor(.red)
             }
         }
-        .frame(width: .infinity)
         .onAppear{ viewModel.changeMapRegion(latitude: wreck.latitude, longitude: wreck.longitude) }
         .disabled(true)
     }
@@ -79,7 +67,7 @@ extension MiniMapWreckView {
     }
     
     private var wreckImage: some View {
-        ImageView(imageData: $wreck.image, placehoder: "warship.sunk")
+        ImageView(imageData: .constant(wreck.image), placehoder: "warship.sunk")
             .frame(maxWidth: 150, maxHeight: 150)
             .mask(RoundedRectangle(cornerRadius: 15, style: .continuous))
             .clipped()

@@ -22,7 +22,7 @@ struct CreatorView: View {
             HStack {
                 Spacer()
                 Text(creator.username ?? "unknown")
-                    .font(.system(size: 40, weight: .black, design: .serif))
+                    .font(.system(size: 30, weight: .black, design: .serif))
                 accountImage
             }
             .padding(.horizontal)
@@ -57,7 +57,7 @@ extension CreatorView {
                     .aspectRatio(1, contentMode: .fit)
             }
         }
-        .frame(width: 35)
+        .frame(width: 25)
         .clipShape(Circle())
         .background(Circle().stroke(lineWidth: 3).foregroundColor(.accentColor))
     }

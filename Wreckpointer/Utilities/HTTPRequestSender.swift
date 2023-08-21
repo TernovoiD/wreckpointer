@@ -74,8 +74,8 @@ class HTTPRequestSender {
            let error = response["reason"] as? String {
             return error
         } else {
-            print((String(data: data, encoding: .utf8)))
-            return "Unknown error"
+            let error = String(data: data, encoding: .utf8)
+            return error ?? "Unknown error"
         }
     }
 }

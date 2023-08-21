@@ -17,7 +17,9 @@ struct UserAccountView: View {
         List {
             Section {
                 NavigationLink {
-                    AccountUpdateView(user: $state.authorizedUser)
+                    AccountUpdateView(user: $state.authorizedUser,
+                                      bio: state.authorizedUser?.bio ?? "",
+                                      image: state.authorizedUser?.image)
                 } label: {
                     header
                 }
@@ -28,9 +30,9 @@ struct UserAccountView: View {
                 }
             }
             Section("Settings") {
-                changePasswordButton
+                if isNotModerator { changePasswordButton }
                 signOutButton
-                deleteAccountButton
+                if isNotModerator { deleteAccountButton }
             }
         }
         .alert(viewModel.errorMessage, isPresented: $viewModel.error) {
@@ -42,6 +44,10 @@ struct UserAccountView: View {
             Text("You cannot undo this action")
         }
 
+    }
+    
+    var isNotModerator: Bool {
+        state.authorizedUser?.role != "moderator"
     }
     
     private func deleteAccount() async {
@@ -78,6 +84,8 @@ extension UserAccountView {
                 Text(state.authorizedUser?.username ?? "Unknown")
                     .font(.title.weight(.bold))
                 Text("Created: \(state.authorizedUser?.createdAt?.formatted(date: .numeric, time: .omitted) ?? Date().formatted(date: .long, time: .omitted))")
+                    .font(.headline)
+                Text(state.authorizedUser?.email ?? "")
                     .font(.headline)
             }
             Spacer()

@@ -17,8 +17,8 @@ class MapViewModel: ObservableObject {
     @Published var errorMessage: String = ""
     
     init() {
-        let mapCoordinateCenter = CLLocationCoordinate2D(latitude: 30.5, longitude: 0)
-        let mapCoordinateSpan = MKCoordinateSpan(latitudeDelta: 50, longitudeDelta: 50)
+        let mapCoordinateCenter = CLLocationCoordinate2D(latitude: 40, longitude: -30)
+        let mapCoordinateSpan = MKCoordinateSpan(latitudeDelta: 80, longitudeDelta: 80)
         let mapCoordinateRegion = MKCoordinateRegion(center: mapCoordinateCenter, span: mapCoordinateSpan)
         self.mapRegion = mapCoordinateRegion
     }

@@ -28,7 +28,6 @@ struct MapView: View {
         .ignoresSafeArea()
         .navigationTitle("Map")
         .toolbar(.hidden)
-//        .onTapGesture { deselectAll() }
         .alert(viewModel.errorMessage, isPresented: $viewModel.error) {
             Button("OK", role: .cancel) { }
         }

@@ -24,7 +24,7 @@ struct AddUpdateWreck: View {
     @State var longitude: String = ""
     @State var northLatitude: Bool = true
     @State var eastLongitude: Bool = true
-    @State var feetUnits: Bool = false
+    @State var feetUnits: Bool = true
     @State var depth: String = ""
     @State var type: WreckTypesEnum = .unknown
     @State var cause: WreckCausesEnum = .unknown
@@ -109,7 +109,6 @@ extension AddUpdateWreck {
         HStack {
             TextField("Latitude", text: $latitude)
                 .padding()
-                .keyboardType(.numberPad)
                 .focused($selectedField, equals: .latitude)
                 .neonField(light: selectedField == .latitude ? true : false)
                 .onSubmit {
@@ -132,7 +131,6 @@ extension AddUpdateWreck {
         HStack {
             TextField("Longitude", text: $longitude)
                 .padding()
-                .keyboardType(.numberPad)
                 .focused($selectedField, equals: .longitude)
                 .neonField(light: selectedField == .longitude ? true : false)
                 .onSubmit {
