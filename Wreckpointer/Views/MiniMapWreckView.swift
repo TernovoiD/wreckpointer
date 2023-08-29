@@ -10,6 +10,7 @@ import MapKit
 
 struct MiniMapWreckView: View {
     
+    @AppStorage("showFeetUnits") private var showFeetUnits: Bool = true
     @StateObject private var viewModel = MiniMapWreckViewModel()
     let wreck: Wreck
     
@@ -79,7 +80,7 @@ extension MiniMapWreckView {
             Text("Date: \(wreck.dateOfLoss?.formatted(date: .numeric, time: .omitted) ?? "Unknown")")
             Text("Lat: \(abs(wreck.latitude), specifier: "%.2F") \(wreck.latitude >= 0 ? "N" : "S")")
             Text("Long: \(abs(wreck.longitude), specifier: "%.2F") \(wreck.longitude >= 0 ? "E" : "W")")
-            Text("Depth: \(Int(wreck.depth ?? 0))")
+            Text(showFeetUnits ? "Depth: \(Int(wreck.depth?.metersToFeet ?? 0)) ft" : "Depth: \(Int(wreck.depth ?? 0)) m")
             Text("Type: \(wreck.type.capitalized)")
             Text("Cause: \(wreck.cause.capitalized)")
         }

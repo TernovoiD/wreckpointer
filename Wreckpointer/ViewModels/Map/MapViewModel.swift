@@ -25,6 +25,9 @@ class MapViewModel: ObservableObject {
     
     func changeMapRegion(latitude: Double, longitude: Double) {
         mapRegion.center = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        if abs(latitude) > 70 {
+            mapRegion.span = MKCoordinateSpan(latitudeDelta: 25, longitudeDelta: 25)
+        }
     }
     
     private func showError(withMessage message: String) {

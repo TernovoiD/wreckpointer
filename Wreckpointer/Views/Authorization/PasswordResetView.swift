@@ -62,14 +62,9 @@ struct PasswordResetView: View {
     func resetPassword() {
         Task {
             if await viewModel.resetPassword(onEmail: email) {
-                clearForm()
                 dismiss()
             }
         }
-    }
-    
-    private func clearForm() {
-        email = ""
     }
 }
 
@@ -90,8 +85,9 @@ extension PasswordResetView {
             .focused($selectedField, equals: .email)
             .neonField(light: selectedField == .email ? true : false)
             .submitLabel(.go)
-            .keyboardType(.emailAddress)
+            .textContentType(.emailAddress)
             .autocorrectionDisabled(true)
+            .textContentType(.username)
             .textInputAutocapitalization(.never)
             .onTapGesture {
                 selectedField = .email

@@ -20,6 +20,7 @@ struct CollectionDetailedView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal)
                 .padding(.leading, 5)
+                .padding(.top)
             if appState.authorizedUser == collection.creator || appState.authorizedUser?.role == "moderator" {
                 addBlockButton
                     .padding(.leading, 5)

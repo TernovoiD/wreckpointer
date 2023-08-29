@@ -30,6 +30,14 @@ struct CollectionsView: View {
         }
     }
     
+    private func authorized(forCollection collection: Collection) -> Bool {
+        appState.authorizedUser == collection.creator || appState.authorizedUser?.role == "moderator"
+    }
+    
+    private func empty(collection: Collection) -> Bool {
+        appState.authorizedUser == collection.creator || appState.authorizedUser?.role == "moderator" || collection.creator == nil
+    }
+    
     private func deleteCollection(collection: Collection) async {
         let result = await viewModel.delete(collection: collection)
         if result {
@@ -67,15 +75,19 @@ extension CollectionsView {
                             Task { await deleteCollection(collection: collection) } }
                         }
                 }
-                if appState.authorizedUser == collection.creator || appState.authorizedUser?.role == "moderator" {
+                if empty(collection: collection) {
                     VStack {
-                        NavigationLink {
-                            AddUpdateCollection(collection: $collection, collectionImage: collection.image, collectionName: collection.title, collectionDescription: collection.description)
-                        } label: { updateCollectionButton }
+                        if empty(collection: collection) {
+                            NavigationLink {
+                                AddUpdateCollection(collection: $collection, collectionImage: collection.image, collectionName: collection.title, collectionDescription: collection.description)
+                            } label: { updateCollectionButton }
+                        }
                         Spacer()
-                        Button {
-                            Task { await deleteCollection(collection: collection) }
-                        } label: { deleteCollectionButton }
+                        if authorized(forCollection: collection) {
+                            Button {
+                                Task { await deleteCollection(collection: collection) }
+                            } label: { deleteCollectionButton }
+                        }
                     }
                     .frame(maxHeight: 120)
                 }

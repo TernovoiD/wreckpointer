@@ -21,8 +21,10 @@ struct SelectedWreckPanel: View {
                 image
                 Spacer()
                 VStack {
-                    if appState.authorizedUser == appState.selectedWreck?.creator || appState.authorizedUser?.role == "moderator" {
+                    if appState.authorizedUser == appState.selectedWreck?.creator || appState.authorizedUser?.role == "moderator" || appState.selectedWreck?.creator == nil {
                         editButton
+                    }
+                    if appState.authorizedUser == appState.selectedWreck?.creator || appState.authorizedUser?.role == "moderator" {
                         deleteButton
                     }
                     moreButton
@@ -44,12 +46,14 @@ struct SelectedWreckPanel: View {
         })
     }
     
-    private func delete(wreck: Wreck) async {
-        let result = await viewModel.delete(wreck: wreck)
-        if result {
-            appData.wrecks.removeAll(where: { $0 == wreck })
-            appState.activate(element: .none)
-            appState.select(wreck: nil)
+    private func delete() async {
+        if let wreck = appState.selectedWreck {
+            let result = await viewModel.delete(wreck: wreck)
+            if result {
+                appData.wrecks.removeAll(where: { $0 == wreck })
+                appState.activate(element: .none)
+                appState.select(wreck: nil)
+            }
         }
     }
 }
@@ -145,10 +149,7 @@ extension SelectedWreckPanel {
             .background(Color.orange)
             .mask(RoundedRectangle(cornerRadius: 8, style: .continuous))
             .contextMenu {
-                Button(role: .destructive) {
-                    if let wreck = appState.selectedWreck {
-                        Task { await delete(wreck: wreck) }
-                    }
+                Button(role: .destructive) { Task { await delete() }
                 } label: {
                     Label("Delete", systemImage: "trash.circle")
                 }
@@ -159,7 +160,7 @@ extension SelectedWreckPanel {
     
     var deleteButton: some View {
         Button {
-            wreckToShow = appState.selectedWreck
+            Task { await delete() }
         } label: {
             HStack {
                 Image(systemName: "trash")

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct LoginView: View {
     
+    @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = LoginViewModel()
     @FocusState private var selectedField: FocusText?
     @EnvironmentObject var state: AppState
@@ -21,7 +22,7 @@ struct LoginView: View {
             viewModel.showError(withMessage: "Fields cannot be empty.")
             return false
         } else if !email.isValidEmail {
-            viewModel.showError(withMessage: "Email is not valid.")
+            viewModel.showError(withMessage: "Unvalid username")
             return false
         } else if !password.isValidPassword {
             viewModel.showError(withMessage: "Password must contain at least 6 characters.")
@@ -65,18 +66,19 @@ struct LoginView: View {
         .alert(viewModel.errorMessage, isPresented: $viewModel.error) {
             Button("OK", role: .cancel) { }
         }
-    }
-    
-    private func clearForm() {
-        email = ""
-        password = ""
+        .onAppear {
+            if state.authorizedUser != nil { dismiss() }
+            withAnimation(.easeInOut) {
+                state.activeUIElement = .none
+            }
+        }
     }
     
     private func login() async {
         if let user = await viewModel.login(withEmail: email, andPassword: password) {
             selectedField = .none
-            clearForm()
             state.authorizedUser = user
+            dismiss()
         }
     }
 }
@@ -102,6 +104,7 @@ extension LoginView {
             .focused($selectedField, equals: .email)
             .neonField(light: selectedField == .email ? true : false)
             .submitLabel(.next)
+            .textContentType(.username)
             .keyboardType(.emailAddress)
             .autocorrectionDisabled(true)
             .textInputAutocapitalization(.never)
@@ -121,6 +124,7 @@ extension LoginView {
             .neonField(light: selectedField == .password ? true : false)
             .submitLabel(.go)
             .autocorrectionDisabled(true)
+            .textContentType(.password)
             .textInputAutocapitalization(.never)
             .onTapGesture {
                 selectedField = .password

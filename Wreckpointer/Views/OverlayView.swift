@@ -14,6 +14,14 @@ struct OverlayView: View {
     
     var body: some View {
         VStack {
+            if appData.serverData == .error {
+                Text("Unable to connect to server")
+                    .padding(5)
+                    .frame(maxWidth: .infinity)
+                    .foregroundColor(.white)
+                    .background(Color.accentColor)
+                    .font(.headline.weight(.black))
+            }
             MapSearchBar()
             ZStack {
                 SelectedWreckPanel()

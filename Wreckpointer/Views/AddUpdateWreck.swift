@@ -68,6 +68,11 @@ struct AddUpdateWreck: View {
         .alert(viewModel.errorMessage, isPresented: $viewModel.error) {
             Button("OK", role: .cancel) { }
         }
+        .onAppear {
+            withAnimation(.easeInOut) {
+                appState.activeUIElement = .none
+            }
+        }
     }
     
     var datePicker: some View {
@@ -287,6 +292,7 @@ extension AddUpdateWreck {
             wreckToUpdate.longitude = eastLongitude ? longitudeValue : -longitudeValue
             wreckToUpdate.dateOfLoss = dateOfLossKnown ? dateOfLoss : nil
             wreckToUpdate.information = description
+            wreckToUpdate.creator = nil
             
             return wreckToUpdate
         } else {

@@ -8,9 +8,8 @@
 import Foundation
 
 enum BaseRoutes {
-    static let baseURL = "https://wreckpointer-2c6580e2baa4.herokuapp.com/"
-//    static let baseURL = "http://127.0.0.1:8080/"
-
+    static let baseURL = "https://wreckpointer.digital/"
+//        static let baseURL = "http://127.0.0.1:8080/"
 }
 
 enum Endpoints {
