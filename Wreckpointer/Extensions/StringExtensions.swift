@@ -17,7 +17,7 @@ extension String {
     
     
     var isValidUsername: Bool {
-        let usernameRegEx = "^[a-z0-9_-]{3,13}$"
+        let usernameRegEx = "^[A-Z0-9a-z_]{3,13}$"
 
         let usernamePred = NSPredicate(format:"SELF MATCHES %@", usernameRegEx)
         return usernamePred.evaluate(with: self)

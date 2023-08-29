@@ -19,7 +19,7 @@ struct MapView: View {
         Map(coordinateRegion: $viewModel.mapRegion, annotationItems: appData.wrecksFiltered) { wreck in
             MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: wreck.latitude,
                                                              longitude: wreck.longitude)) {
-                Image(systemName: "smallcircle.filled.circle.fill")
+                Image(systemName: "signpost.and.arrowtriangle.up.circle.fill")
                     .font(.caption2)
                     .onTapGesture { select(wreck: wreck) }
                     .scaleEffect(appState.selectedWreck != nil && appState.selectedWreck != wreck ? 1 : 1.5)

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct UserAccountView: View {
     
+    @Environment(\.dismiss) private var dismiss
     @StateObject var viewModel = AccountViewModel()
     @EnvironmentObject var state: AppState
     @State var showConfirmation: Bool = false
@@ -35,6 +36,7 @@ struct UserAccountView: View {
                 if isNotModerator { deleteAccountButton }
             }
         }
+        .navigationTitle("My account")
         .alert(viewModel.errorMessage, isPresented: $viewModel.error) {
             Button("OK", role: .cancel) { }
         }
@@ -42,6 +44,11 @@ struct UserAccountView: View {
             confirmAccountDeleteButton
         } message: {
             Text("You cannot undo this action")
+        }
+        .onAppear {
+            withAnimation(.easeInOut) {
+                state.activeUIElement = .none
+            }
         }
 
     }
@@ -57,6 +64,7 @@ struct UserAccountView: View {
                 withAnimation(.easeInOut) {
                     viewModel.signOut()
                     state.authorizedUser = nil
+                    dismiss()
                 }
             }
         }
@@ -82,11 +90,11 @@ extension UserAccountView {
                 .padding(.trailing)
             VStack(alignment: .leading, spacing: 5) {
                 Text(state.authorizedUser?.username ?? "Unknown")
-                    .font(.title.weight(.bold))
+                    .font(.title2.weight(.bold))
                 Text("Created: \(state.authorizedUser?.createdAt?.formatted(date: .numeric, time: .omitted) ?? Date().formatted(date: .long, time: .omitted))")
-                    .font(.headline)
+                    .font(.caption.weight(.bold))
                 Text(state.authorizedUser?.email ?? "")
-                    .font(.headline)
+                    .font(.caption.weight(.bold))
             }
             Spacer()
         }
@@ -133,6 +141,7 @@ extension UserAccountView {
             withAnimation(.easeInOut) {
                 viewModel.signOut()
                 state.authorizedUser = nil
+                dismiss()
             }
         } label: {
             Label("Sign Out", systemImage: "person.crop.rectangle.fill")

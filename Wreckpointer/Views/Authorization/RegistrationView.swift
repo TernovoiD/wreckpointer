@@ -17,10 +17,9 @@ struct RegistrationView: View {
     @State private var username: String = ""
     @State private var email: String = ""
     @State private var password: String = ""
-    @State private var passwordConfirmation: String = ""
     
     var validForm: Bool {
-        if email.isEmpty || username.isEmpty || password.isEmpty || passwordConfirmation.isEmpty {
+        if email.isEmpty || username.isEmpty || password.isEmpty {
             viewModel.showError(withMessage: "Fields cannot be empty.")
             return false
         }else if !email.isValidEmail {
@@ -32,9 +31,6 @@ struct RegistrationView: View {
         } else if !password.isValidPassword {
             viewModel.showError(withMessage: "Password must contain at least 6 characters.")
             return false
-        } else if password != passwordConfirmation {
-            viewModel.showError(withMessage: "Passwords do not match! Try again")
-            return false
         } else {
             return true
         }
@@ -44,7 +40,6 @@ struct RegistrationView: View {
         case email
         case username
         case password
-        case passwordConfirmation
     }
     
     var body: some View {
@@ -59,10 +54,9 @@ struct RegistrationView: View {
                     .glassyFont(textColor: .accentColor)
                     .font(.largeTitle)
                     .bold()
-                emailField
                 usernameField
+                emailField
                 passwordField
-                passwordConfirmationField
                 createAccountButton
                 createAccountLink
             }
@@ -76,21 +70,13 @@ struct RegistrationView: View {
         }
     }
     
-    private func clearForm() {
-        username = ""
-        email = ""
-        password = ""
-        passwordConfirmation = ""
-    }
-    
     private func createAccount() {
         let user = User(username: username,
                         email: email,
                         password: password,
-                        confirmPassword: passwordConfirmation)
+                        confirmPassword: password)
         Task {
             if let createdUser = await viewModel.register(user: user) {
-                clearForm()
                 authorize(user: createdUser)
             }
         }
@@ -119,24 +105,6 @@ struct RegistrationView_Previews: PreviewProvider {
 
 extension RegistrationView {
     
-    var emailField: some View {
-        TextField("Email", text: $email)
-            .padding()
-            .focused($selectedField, equals: .email)
-            .neonField(light: selectedField == .email ? true : false)
-            .submitLabel(.next)
-            .keyboardType(.emailAddress)
-            .autocorrectionDisabled(true)
-            .textInputAutocapitalization(.never)
-            .onTapGesture {
-                selectedField = .email
-            }
-            .onSubmit {
-                selectedField = .username
-            }
-            .padding(.horizontal)
-    }
-    
     var usernameField: some View {
         TextField("Username", text: $username)
             .padding()
@@ -147,6 +115,25 @@ extension RegistrationView {
             .textInputAutocapitalization(.never)
             .onTapGesture {
                 selectedField = .username
+            }
+            .onSubmit {
+                selectedField = .email
+            }
+            .padding(.horizontal)
+    }
+    
+    var emailField: some View {
+        TextField("Email", text: $email)
+            .padding()
+            .focused($selectedField, equals: .email)
+            .neonField(light: selectedField == .email ? true : false)
+            .submitLabel(.next)
+            .autocorrectionDisabled(true)
+            .textContentType(.username)
+            .keyboardType(.emailAddress)
+            .textInputAutocapitalization(.never)
+            .onTapGesture {
+                selectedField = .email
             }
             .onSubmit {
                 selectedField = .password
@@ -161,31 +148,13 @@ extension RegistrationView {
             .neonField(light: selectedField == .password ? true : false)
             .submitLabel(.next)
             .autocorrectionDisabled(true)
+            .textContentType(.newPassword)
             .textInputAutocapitalization(.never)
             .onTapGesture {
                 selectedField = .password
             }
             .onSubmit {
-                selectedField = .passwordConfirmation
-            }
-            .padding(.horizontal)
-    }
-    
-    var passwordConfirmationField: some View {
-        SecureField("Password", text: $passwordConfirmation)
-            .padding()
-            .focused($selectedField, equals: .passwordConfirmation)
-            .neonField(light: selectedField == .passwordConfirmation ? true : false)
-            .submitLabel(.go)
-            .autocorrectionDisabled(true)
-            .textInputAutocapitalization(.never)
-            .onTapGesture {
-                selectedField = .passwordConfirmation
-            }
-            .onSubmit {
-                if validForm {
-                    createAccount()
-                }
+                selectedField = .none
             }
             .padding(.horizontal)
     }

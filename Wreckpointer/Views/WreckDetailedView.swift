@@ -52,8 +52,6 @@ struct WreckDetailedView: View {
                 Text("Date of loss: \(wreck.dateOfLoss?.formatted(date: .abbreviated, time: .omitted) ?? "Unknown")")
                 Text("Wreck dive: \(wreck.wreckDive ? "Open" : "Not available")")
                     .padding(.bottom, 10)
-                Text("Last update: \(wreck.updatedAt?.formatted(date: .abbreviated, time: .omitted) ?? "Unknown")")
-                Text("Created: \(wreck.createdAt?.formatted(date: .abbreviated, time: .omitted) ?? "Unknown")")
             }
             Spacer()
             VStack(alignment: .leading) {

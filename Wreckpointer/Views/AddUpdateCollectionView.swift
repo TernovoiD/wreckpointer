@@ -55,6 +55,8 @@ struct AddUpdateCollection: View {
             updatedCollection.title = collectionName
             updatedCollection.description = collectionDescription
             updatedCollection.image = collectionImage
+            updatedCollection.creator = nil
+            updatedCollection.blocks = [ ]
             return updatedCollection
         }
     }

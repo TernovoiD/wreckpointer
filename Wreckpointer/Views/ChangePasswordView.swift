@@ -15,13 +15,12 @@ struct ChangePasswordView: View {
     
     @State private var oldPassword: String = ""
     @State private var newPassword: String = ""
-    @State private var newPasswordConfirmation: String = ""
     
     var validForm: Bool {
-        if oldPassword.isEmpty || newPassword.isEmpty || newPasswordConfirmation.isEmpty {
+        if oldPassword.isEmpty || newPassword.isEmpty {
             viewModel.showError(withMessage: "Fields cannot be empty.")
             return false
-        } else if !newPassword.isValidPassword || !newPasswordConfirmation.isValidPassword {
+        } else if !newPassword.isValidPassword {
             viewModel.showError(withMessage: "New password must contain at least 6 characters.")
             return false
         } else {
@@ -32,7 +31,6 @@ struct ChangePasswordView: View {
     enum FocusText {
         case oldPassword
         case newPassword
-        case newPasswordConfirmation
     }
     
     var body: some View {
@@ -40,9 +38,7 @@ struct ChangePasswordView: View {
             VStack(spacing: 15) {
                 oldPasswordField
                 newPasswordField
-                newPasswordConfirmationField
             }
-            .padding(.top, 100)
         }
         .toolbar{ saveButton }
         .navigationTitle("Change password")
@@ -58,7 +54,7 @@ struct ChangePasswordView: View {
         if validForm {
             return User(password: oldPassword,
                         newPassword: newPassword,
-                        newPasswordConfirm: newPasswordConfirmation)
+                        newPasswordConfirm: newPassword)
         } else { return nil }
     }
     
@@ -92,6 +88,7 @@ extension ChangePasswordView {
             .neonField(light: selectedField == .oldPassword ? true : false)
             .submitLabel(.go)
             .autocorrectionDisabled(true)
+            .textContentType(.password)
             .textInputAutocapitalization(.never)
             .onTapGesture {
                 selectedField = .oldPassword
@@ -109,29 +106,13 @@ extension ChangePasswordView {
             .neonField(light: selectedField == .newPassword ? true : false)
             .submitLabel(.go)
             .autocorrectionDisabled(true)
+            .textContentType(.newPassword)
             .textInputAutocapitalization(.never)
             .onTapGesture {
                 selectedField = .newPassword
             }
             .onSubmit {
-                selectedField = .newPasswordConfirmation
-            }
-            .padding(.horizontal)
-    }
-    
-    var newPasswordConfirmationField: some View {
-        SecureField("Confirm new password", text: $newPasswordConfirmation)
-            .padding()
-            .focused($selectedField, equals: .newPasswordConfirmation)
-            .neonField(light: selectedField == .newPasswordConfirmation ? true : false)
-            .submitLabel(.go)
-            .autocorrectionDisabled(true)
-            .textInputAutocapitalization(.never)
-            .onTapGesture {
-                selectedField = .newPasswordConfirmation
-            }
-            .onSubmit {
-                
+                selectedField = .none
             }
             .padding(.horizontal)
     }

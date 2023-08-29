@@ -18,7 +18,11 @@ struct MapMenu: View {
             if appState.activeUIElement == .mapMenu {
                 Divider()
                     .frame(maxWidth: 120)
-                accountButton
+                if appState.authorizedUser == nil {
+                    loginButton
+                } else {
+                    accountButton
+                }
                 addWreckButton
                     .disabled(appState.authorizedUser == nil ? true : false)
             }
@@ -60,14 +64,26 @@ extension MapMenu {
         }
     }
     
-    private var accountButton: some View {
+    private var loginButton: some View {
         NavigationLink {
-            AccountView()
+            LoginView()
         } label: {
             HStack {
                 Image(systemName: "person.crop.rectangle")
                     .frame(maxWidth: 20)
-                Text("Account")
+                Text("Login")
+            }
+        }
+    }
+    
+    private var accountButton: some View {
+        NavigationLink {
+            UserAccountView()
+        } label: {
+            HStack {
+                Image(systemName: "person.crop.rectangle")
+                    .frame(maxWidth: 20)
+                Text("My account")
             }
         }
     }
