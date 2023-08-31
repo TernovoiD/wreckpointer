@@ -5,12 +5,12 @@ Wreckpointer, the ultimate iOS application for shipwreck enthusiasts!  With Wrec
 
 [View in AppStore](https://apps.apple.com/us/app/wreckpointer/id6447294628)
 
-![Untitled](https://github.com/TernovoiD/wreckpointer/assets/121759315/3ce0866e-21f4-455c-85e0-69954baa897e)
+![Screen%20Recording%202023-08-31%20at%2015 39 02](https://github.com/TernovoiD/wreckpointer/assets/121759315/029637b1-4475-4652-86c2-905bd9d6c8d3)
 
-![3ca1124c6e9223d6e091e5a56c1646af_480x1040](https://github.com/TernovoiD/wreckpointer/assets/121759315/2536fb11-0ca1-4b38-80cc-55344ef0dd9b)
-![3ed818ea0c54b860114a5ccd3aecbf40_480x1040](https://github.com/TernovoiD/wreckpointer/assets/121759315/a081d878-0044-467f-85dd-839a01fcc8fd)
-![14420f0343e133bebd6035bba5b91e21_480x1040](https://github.com/TernovoiD/wreckpointer/assets/121759315/bc92fee9-b856-4e58-91e2-4e268418af57)
-![ad0812930b0f67d5c2df097f1d28d242_480x1040](https://github.com/TernovoiD/wreckpointer/assets/121759315/c151f82c-0e0f-438d-866b-8726826dc867)
+![Simulator Screenshot - iPhone 14 Pro Max - 2023-08-29 at 14 29 33](https://github.com/TernovoiD/wreckpointer/assets/121759315/74fea5a2-9174-47ca-afb6-1c566487c90a)
+![Simulator Screenshot - iPhone 14 Pro Max - 2023-08-29 at 14 28 54](https://github.com/TernovoiD/wreckpointer/assets/121759315/aaedf1a3-63c3-40ba-aa94-8e6873e5553f)
+![Simulator Screenshot - iPhone 14 Pro Max - 2023-08-29 at 14 29 49](https://github.com/TernovoiD/wreckpointer/assets/121759315/901a1ec3-20ca-4427-ab16-bad31d031e06)
+![Simulator Screenshot - iPhone 14 Pro Max - 2023-08-29 at 14 29 41](https://github.com/TernovoiD/wreckpointer/assets/121759315/d2a4bc42-58b3-47cc-9a51-fda4af22afc9)
 
 
 
