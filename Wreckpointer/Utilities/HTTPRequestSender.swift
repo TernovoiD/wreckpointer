@@ -7,7 +7,7 @@
 
 import Foundation
 
-class HTTPRequestSender {
+final class HTTPRequestSender {
     
     static let shared = HTTPRequestSender()
     
