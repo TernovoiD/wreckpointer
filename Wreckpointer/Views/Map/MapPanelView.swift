@@ -26,14 +26,13 @@ struct MapPanelView: View {
             } else if viewModel.activeMapOverlayElement == .filter {
                 MapFilterView(viewModel: viewModel)
             } else if viewModel.activeMapOverlayElement == .add {
-                AddWreckView()
+                AddWreckView(wreck: Wreck.test)
             }
         }
         .padding()
         .background()
         .clipShape(RoundedRectangle(cornerRadius: 15))
-        .shadow(radius: 1)
-        .shadow(color: .gray.opacity(0.1), radius: 5)
+        .shadow(color: .gray.opacity(0.5), radius: 5)
         .padding()
     }
     

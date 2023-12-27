@@ -9,23 +9,17 @@ import SwiftUI
 
 struct WreckpointerView: View {
     
-    @StateObject private var viewModel = WreckpointerViewModel()
-    @EnvironmentObject var wreckpointerData: WreckpointerData
+    @EnvironmentObject var wreckpointer: WreckpointerNetwork
     @State var moderatoTab: Bool = false
     
     var body: some View {
         TabView {
             MapView().tabItem { Label("Map", systemImage: "map") }
-            OptionsView(moderatorTab: $moderatoTab).tabItem { Label("Options", systemImage: "gear") }
-            if moderatoTab {
-                Circle().tabItem { Label("Moderator", systemImage: "person.fill") }
-            }
+            Circle().tabItem { Label("Circle", systemImage: "circle") }
             
         }
-        .task {
-//            wreckpointerData.wrecks = await viewModel.loadWrecksFromServer()
-        } 
-        .alert(viewModel.errorMessage, isPresented: $viewModel.error) {
+        .task { await wreckpointer.loadWrecksFromServer() }
+        .alert(wreckpointer.errorMessage, isPresented: $wreckpointer.error) {
             Button("OK", role: .cancel) { }
         }
     }
@@ -33,6 +27,5 @@ struct WreckpointerView: View {
 
 #Preview {
     WreckpointerView()
-        .environmentObject(WreckpointerData())
-        .environmentObject(WreckpointerViewModel())
+        .environmentObject(WreckpointerNetwork())
 }

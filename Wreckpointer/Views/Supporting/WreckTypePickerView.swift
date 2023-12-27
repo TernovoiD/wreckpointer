@@ -9,15 +9,26 @@ import SwiftUI
 
 struct WreckTypePickerView: View {
     
-    @Binding var selection: WreckTypes
+    @Binding var selection: WreckTypes?
+    var enableAllCase: Bool
     
     var body: some View {
         HStack {
             Text("Type")
             Spacer()
             Picker("Wreck type", selection: $selection) {
-                ForEach(WreckTypes.allCases) { option in
-                    Text(String(describing: option).capitalized)
+                if enableAllCase {
+                    Text("All")
+                        .tag(WreckTypes?.none)
+                    ForEach(WreckTypes.allCases) { type in
+                        Text(type.description)
+                            .tag(WreckTypes?.some(type))
+                    }
+                } else {
+                    ForEach(WreckTypes.allCases) { type in
+                        Text(type.description)
+                            .tag(type)
+                    }
                 }
             }
             .pickerStyle(.menu)
@@ -28,5 +39,5 @@ struct WreckTypePickerView: View {
 }
 
 #Preview {
-    WreckTypePickerView(selection: .constant(.unknown))
+    WreckTypePickerView(selection: .constant(nil), enableAllCase: true)
 }

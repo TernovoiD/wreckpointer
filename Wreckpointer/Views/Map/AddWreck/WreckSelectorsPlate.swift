@@ -18,8 +18,8 @@ struct WreckSelectorsPlate: View {
         VStack {
             DatePicker("Date", selection: $dateOfLoss, displayedComponents: .date)
                 .datePickerStyle(.compact)
-            WreckTypePickerView(selection: $type)
-            WreckCausePickerView(selection: $cause)
+//            WreckTypePickerView(selection: $type)
+//            WreckCausePickerView(selection: $cause)
             Toggle("Wreck dive", isOn: $isWreckDive)
         }
         .padding()

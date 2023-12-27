@@ -13,7 +13,7 @@ struct WreckRowView: View {
     
     var body: some View {
         HStack {
-//            ImageView(imageData: $wreck.image)
+//            ImageView(imageData: $wreck.imageData)
 //                .frame(maxWidth: 40, maxHeight: 40)
 //                .clipShape(RoundedRectangle(cornerRadius: 5, style: .continuous))
             VStack(alignment: .leading, spacing: 0) {
@@ -27,7 +27,6 @@ struct WreckRowView: View {
                 .font(.caption.bold())
                 .foregroundColor(.accentColor)
         }
-        .padding(.leading)
     }
 }
 

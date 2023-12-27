@@ -9,15 +9,26 @@ import SwiftUI
 
 struct WreckCausePickerView: View {
     
-    @Binding var selection: WreckCauses
+    @Binding var selection: WreckCauses?
+    var enableAllCase: Bool
     
     var body: some View {
         HStack {
             Text("Cause")
             Spacer()
             Picker("Wreck cause", selection: $selection) {
-                ForEach(WreckCauses.allCases) { option in
-                    Text(String(describing: option).capitalized)
+                if enableAllCase {
+                    Text("All")
+                        .tag(WreckCauses?.none)
+                    ForEach(WreckCauses.allCases) { cause in
+                        Text(cause.description)
+                            .tag(WreckCauses?.some(cause))
+                    }
+                } else {
+                    ForEach(WreckCauses.allCases) { cause in
+                        Text(cause.description)
+                            .tag(cause)
+                    }
                 }
             }
             .pickerStyle(.menu)
@@ -28,5 +39,5 @@ struct WreckCausePickerView: View {
 }
 
 #Preview {
-    WreckCausePickerView(selection: .constant(.unknown))
+    WreckCausePickerView(selection: .constant(nil), enableAllCase: true)
 }

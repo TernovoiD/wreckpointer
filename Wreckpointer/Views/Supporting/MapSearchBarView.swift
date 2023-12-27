@@ -8,20 +8,19 @@
 import SwiftUI
 
 struct MapSearchBarView: View {
-    
-    @EnvironmentObject var wreckpointerData: WreckpointerData
-    @ObservedObject var viewModel: MapViewModel
+    @EnvironmentObject var data: WreckpointerData
     @FocusState private var searchFieldSelected: Bool
+    @Binding var mapSelectedWreck: Wreck?
     
     var body: some View {
         VStack {
             searchTextField
+                .padding()
             if !viewModel.searched(wrecks: wreckpointerData.wrecks).isEmpty {
                 Divider()
                 searchedWrecksList
             }
         }
-        .padding()
         .coloredBorder(color: searchFieldSelected ? .accentColor : .gray)
     }
     
@@ -40,7 +39,7 @@ struct MapSearchBarView: View {
     
     private var searchedWrecksList: some View {
         List {
-            ForEach(viewModel.filtered(wrecks: wreckpointerData.wrecks)) { wreck in
+            ForEach(viewModel.searched(wrecks: wreckpointerData.wrecks)) { wreck in
                 Button {
                     viewModel.selectedWreck = wreck
                 } label: {
@@ -50,16 +49,27 @@ struct MapSearchBarView: View {
             .listRowBackground(Color.clear)
         }
         .listStyle(.plain)
-        .background(.ultraThinMaterial)
-        .frame(maxHeight: viewModel.textToSearch.isEmpty || viewModel.filtered(wrecks: wreckpointerData.wrecks).count == 0 ? 0 : 200)
-        .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
-        .padding(.horizontal)
+        .frame(maxHeight: 200)
     }
     
     private func dismissSearch() {
         viewModel.textToSearch = ""
         searchFieldSelected = false
     }
+    
+    //    func minimumDateOfLossDate(forWrecks allWrecks: [Wreck]) {
+    //        var datesArray: [Date] = [ ]
+    //        let wrecks = allWrecks.filter({ $0.dateOfLoss != nil })
+    //
+    //        if wrecks.isEmpty {
+    //            minimumDateFilter = Date()
+    //        } else {
+    //            for wreck in wrecks {
+    //                datesArray.append(wreck.dateOfLoss ?? Date())
+    //            }
+    //            minimumDateFilter = datesArray.min() ?? Date()
+    //        }
+    //    }
 }
 
 #Preview {

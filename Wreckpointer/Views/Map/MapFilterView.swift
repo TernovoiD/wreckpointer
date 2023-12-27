@@ -18,8 +18,8 @@ struct MapFilterView: View {
                 .datePickerStyle(.compact)
             DatePicker("To", selection: $viewModel.maximumDateFilter, displayedComponents: .date)
                 .datePickerStyle(.compact)
-            WreckTypePickerView(selection: $viewModel.wreckTypeFilter)
-            WreckCausePickerView(selection: $viewModel.wreckCauseFilter)
+            WreckTypePickerView(selection: $viewModel.wreckTypeFilter, enableAllCase: true)
+            WreckCausePickerView(selection: $viewModel.wreckCauseFilter, enableAllCase: true)
             Toggle("Wreck dives only", isOn: $viewModel.wreckDiverOnlyFilter)
         }
         .padding()

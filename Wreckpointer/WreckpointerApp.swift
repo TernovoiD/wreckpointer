@@ -10,12 +10,12 @@ import SwiftUI
 @main
 struct WreckpointerApp: App {
     
-    @StateObject var wreckpointerData = WreckpointerData()
+    @StateObject var wreckpointer = WreckpointerNetwork()
     
     var body: some Scene {
         WindowGroup {
             WreckpointerView()
-                .environmentObject(wreckpointerData)
+                .environmentObject(wreckpointer)
         }
     }
 }

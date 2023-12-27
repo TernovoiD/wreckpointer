@@ -12,7 +12,6 @@ class JSONDataCoder {
     private let dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
     
     static let shared = JSONDataCoder()
-    
     private init() { }
     
     func encodeItemToData<T: Codable>(item: T) throws -> Data {
@@ -22,16 +21,6 @@ class JSONDataCoder {
         encoder.dateEncodingStrategy = .formatted(dateFormatter)
         
         let data = try encoder.encode(item)
-        return data
-    }
-    
-    func encodeItemsToData<T: Codable>(items: [T]) throws -> Data {
-        let encoder = JSONEncoder()
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = dateFormat
-        encoder.dateEncodingStrategy = .formatted(dateFormatter)
-        
-        let data = try encoder.encode(items)
         return data
     }
     
@@ -47,7 +36,17 @@ class JSONDataCoder {
         return item
     }
     
-    func decodeItemsArrayFromData<T: Codable>(data: Data) throws -> [T] {
+    func encodeArrayToData<T: Codable>(items: [T]) throws -> Data {
+        let encoder = JSONEncoder()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = dateFormat
+        encoder.dateEncodingStrategy = .formatted(dateFormatter)
+        
+        let data = try encoder.encode(items)
+        return data
+    }
+    
+    func decodeArrayFromData<T: Codable>(data: Data) throws -> [T] {
         let decoder = JSONDecoder()
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = dateFormat

@@ -19,34 +19,47 @@ struct MapView: View {
             map
                 .ignoresSafeArea(edges: .top)
                 .onChange(of: viewModel.selectedWreck, perform: { selectedWreck in moveMap(to: selectedWreck) })
-                .onTapGesture { dismissActiveUIElement() }
             if viewModel.activeMapOverlayElement != .none {
-                Color.clear
-                    .background(.ultraThinMaterial)
+//                Color.clear
+//                    .background(.ultraThinMaterial)
+//                    .onTapGesture(perform: dismissActiveUIElement)
+                Color.black.opacity(0.8)
                     .onTapGesture(perform: dismissActiveUIElement)
+                    .ignoresSafeArea()
             }
             overlay
                 .padding(.top)
+                .padding(.bottom)
         }
     }
     
     private var map: some View {
         Map(coordinateRegion: $viewModel.mapRegion, annotationItems: viewModel.filtered(wrecks: appData.wrecks)) { wreck in
             MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: wreck.latitude, longitude: wreck.longitude)) {
-                Image(systemName: "signpost.and.arrowtriangle.up.circle.fill")
-                    .font(.caption2)
-                    .onTapGesture {
-                        viewModel.selectedWreck = wreck
-                    }
-                    .scaleEffect(viewModel.selectedWreck == wreck ? 1.5 : 1)
+                Circle()
+                    .foregroundStyle(Color.red)
+                    .scaleEffect(0.5)
+//                Image(systemName: "signpost.and.arrowtriangle.up.circle.fill")
+//                    .font(.caption2)
+//                    .onTapGesture {
+//                        viewModel.selectedWreck = wreck
+//                    }
+//                    .scaleEffect(viewModel.selectedWreck == wreck ? 1.5 : 1)
             }
         }
+        .onChange(of: appData.wrecks, perform: { wrecks in
+            viewModel.minimumDateOfLossDate(forWrecks: wrecks)
+            print(appData.wrecks)
+        })
     }
     
     private var overlay: some View {
         VStack {
             MapPanelView(viewModel: viewModel)
             Spacer()
+            if let selectedWreck = viewModel.selectedWreck {
+                MapSelectedWreck(viewModel: viewModel, wreck: selectedWreck)
+            }
         }
     }
     

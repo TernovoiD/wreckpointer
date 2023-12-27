@@ -8,19 +8,20 @@ import Foundation
 
 extension String {
     
+    func matches(pattern: String) -> Bool {
+        let predicate = NSPredicate(format:"SELF MATCHES %@", pattern)
+        return predicate.evaluate(with: self)
+    }
+    
     var isValidEmail: Bool {
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
-
-        let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
-        return emailPred.evaluate(with: self)
+        return self.matches(pattern: emailRegEx)
     }
     
     
     var isValidUsername: Bool {
         let usernameRegEx = "^[A-Z0-9a-z_]{3,13}$"
-
-        let usernamePred = NSPredicate(format:"SELF MATCHES %@", usernameRegEx)
-        return usernamePred.evaluate(with: self)
+        return self.matches(pattern: usernameRegEx)
     }
     
     var isValidPassword: Bool {

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct AddWreckView: View {
     
+    @EnvironmentObject var wreckpointerData: WreckpointerData
     @State private var tabSelection = 0
     
     //Required fileds
@@ -35,6 +36,27 @@ struct AddWreckView: View {
     @State var lossOfLife: String = ""
     @State var description: String = ""
     @State var imageData: Data?
+    
+    init(wreck: Wreck) {
+        self.name = wreck.name
+        self.latitudeDegrees = latitudeDegrees
+        self.latitudeMinutes = latitudeMinutes
+        self.latitudeSeconds = latitudeSeconds
+        self.latitudeNorth = latitudeNorth
+        self.longitudeDegrees = longitudeDegrees
+        self.longitudeMinutes = longitudeMinutes
+        self.longitudeSeconds = longitudeSeconds
+        self.longitudeEast = longitudeEast
+        self.type = type
+        self.cause = cause
+        self.isWreckDive = isWreckDive
+        self.dateOfLoss = dateOfLoss
+        self.depth = depth
+        self.deadweight = deadweight
+        self.lossOfLife = lossOfLife
+        self.description = description
+        self.imageData = imageData
+    }
     
     var body: some View {
         VStack(spacing: 5) {
@@ -66,19 +88,34 @@ struct AddWreckView: View {
     }
     
     private var saveButton: some View {
-        Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
-            Text("Add Wreck")
+        Button(action: {
+            Task {
+                await addWreck()
+            }
+        }, label: {
+            Text("Save")
                 .frame(maxWidth: .infinity)
                 .padding()
                 .background(Color.accentColor)
                 .foregroundColor(.white)
                 .mask(RoundedRectangle(cornerRadius: 15))
-                .disabled(true)
+                .disabled(name.isEmpty || latitudeDegrees.isEmpty || longitudeDegrees.isEmpty ? true : false)
         })
+    }
+    
+    private func addWreck() async {
+//        guard let latitude = Double(latitudeDegrees + "." + latitudeMinutes + latitudeSeconds) else { return }
+//        guard let longitude = Double(longitudeDegrees + "." + longitudeMinutes + longitudeSeconds) else { return }
+//        let newWreck = Wreck(name: name,
+//                             latitude: latitudeNorth ? latitude : -(latitude),
+//                             longitude: longitudeEast ? longitude : -(longitude),
+//                             type: type.rawValue, cause: cause.rawValue, depth: Double(depth), isWreckDive: isWreckDive, deadweight: Int(deadweight), dateOfLoss: dateOfLoss, lossOfLife: Int(lossOfLife), description: description, imageData: imageData)
+//        await wreckpointerData.add(wreck: newWreck)
     }
 }
 
 #Preview {
-    AddWreckView()
+    AddWreckView(wreck: Wreck.test)
+        .environmentObject(WreckpointerData())
         .padding()
 }
