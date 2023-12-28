@@ -14,11 +14,12 @@ struct WreckpointerView: View {
     
     var body: some View {
         TabView {
-            MapView().tabItem { Label("Map", systemImage: "map") }
+            Circle().tabItem { Label("Circle", systemImage: "circle") }
+            Circle().tabItem { Label("Circle", systemImage: "circle") }
             Circle().tabItem { Label("Circle", systemImage: "circle") }
             
         }
-        .task { await wreckpointer.loadWrecksFromServer() }
+//        .task { await wreckpointer.loadWrecksFromServer() }
         .alert(wreckpointer.errorMessage, isPresented: $wreckpointer.error) {
             Button("OK", role: .cancel) { }
         }

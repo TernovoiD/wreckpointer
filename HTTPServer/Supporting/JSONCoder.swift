@@ -1,17 +1,18 @@
 //
-//  JSONDataCoder.swift
-//  RememberX
+//  JSONCoder.swift
+//  Wreckpointer
 //
-//  Created by Danylo Ternovoi on 04.06.2023.
+//  Created by Danylo Ternovoi on 27.12.2023.
 //
 
 import Foundation
 
-class JSONDataCoder {
+final class JSONCoder {
     
     private let dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
     
-    static let shared = JSONDataCoder()
+    static let shared = JSONCoder()
+    
     private init() { }
     
     func encodeItemToData<T: Codable>(item: T) throws -> Data {

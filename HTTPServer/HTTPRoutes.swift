@@ -6,7 +6,7 @@
 //
 import Foundation
 
-public enum Endpoints {
+public enum ServerURL {
     private var baseURL: String { return "http://127.0.0.1:8080" }
     private var api: String { return "/api/v1" }
     

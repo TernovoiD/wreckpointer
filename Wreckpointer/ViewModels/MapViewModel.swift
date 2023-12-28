@@ -43,33 +43,33 @@ final class MapViewModel: ObservableObject {
 //        }
 //    }
     
-    func filtered(wrecks: [Wreck]) -> [Wreck] {
-        var filteredWrecks = wrecks
-        
-//        if !textToSearch.isEmpty {
-//            return wrecks.filter({ $0.name.lowercased().contains(textToSearch.lowercased()) })
-//        }
-        
-//        filteredWrecks = filteredWrecks.filter({
-//            if let dateOfLoss = $0.dateOfLoss {
-//                return dateOfLoss >= minimumDateFilter && dateOfLoss <= maximumDateFilter
-//            } else {
-//                return false
-//            }
-//        })
-        
-//        if wreckTypeFilter != .all {
-//            filteredWrecks = filteredWrecks.filter({ $0.type == wreckTypeFilter.rawValue })
-//        }
+//    func filtered(wrecks: [Wreck]) -> [Wreck] {
+//        var filteredWrecks = wrecks
 //        
-//        if wreckCauseFilter != .all {
-//            filteredWrecks = filteredWrecks.filter({ $0.cause == wreckCauseFilter.rawValue })
-//        }
+////        if !textToSearch.isEmpty {
+////            return wrecks.filter({ $0.name.lowercased().contains(textToSearch.lowercased()) })
+////        }
 //        
-//        if wreckDiverOnlyFilter {
-//            filteredWrecks = filteredWrecks.filter({ $0.isWreckDive == true })
-//        }
-        
-        return filteredWrecks
-    }
+////        filteredWrecks = filteredWrecks.filter({
+////            if let dateOfLoss = $0.dateOfLoss {
+////                return dateOfLoss >= minimumDateFilter && dateOfLoss <= maximumDateFilter
+////            } else {
+////                return false
+////            }
+////        })
+//        
+////        if wreckTypeFilter != .all {
+////            filteredWrecks = filteredWrecks.filter({ $0.type == wreckTypeFilter.rawValue })
+////        }
+////        
+////        if wreckCauseFilter != .all {
+////            filteredWrecks = filteredWrecks.filter({ $0.cause == wreckCauseFilter.rawValue })
+////        }
+////        
+////        if wreckDiverOnlyFilter {
+////            filteredWrecks = filteredWrecks.filter({ $0.isWreckDive == true })
+////        }
+//        
+//        return filteredWrecks
+//    }
 }

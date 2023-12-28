@@ -8,48 +8,26 @@
 
 /* Begin PBXBuildFile section */
 		814D9AB42B3B65F1005B13D4 /* WrecksManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814D9AB32B3B65F1005B13D4 /* WrecksManager.swift */; };
-		814D9AB72B3B65F8005B13D4 /* JSONDataCoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814D9AB62B3B65F8005B13D4 /* JSONDataCoder.swift */; };
 		814D9AC02B3B6604005B13D4 /* HTTPMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814D9ABA2B3B6604005B13D4 /* HTTPMethods.swift */; };
 		814D9AC22B3B6604005B13D4 /* HTTPHeaders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814D9ABB2B3B6604005B13D4 /* HTTPHeaders.swift */; };
-		814D9AC42B3B6604005B13D4 /* HTTPRequestSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814D9ABC2B3B6604005B13D4 /* HTTPRequestSender.swift */; };
 		814D9AC62B3B6604005B13D4 /* MIMETypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814D9ABD2B3B6604005B13D4 /* MIMETypes.swift */; };
 		814D9AC82B3B6604005B13D4 /* HTTPErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814D9ABE2B3B6604005B13D4 /* HTTPErrors.swift */; };
 		814D9ACA2B3B6604005B13D4 /* HTTPRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814D9ABF2B3B6604005B13D4 /* HTTPRoutes.swift */; };
 		816761F32A8BB48E00A8A2A4 /* WreckpointerNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816761F22A8BB48E00A8A2A4 /* WreckpointerNetwork.swift */; };
 		816762042A8C378200A8A2A4 /* DoubleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816762032A8C378200A8A2A4 /* DoubleExtension.swift */; };
 		816E9FBD29CAF74E00C3BC0F /* WreckpointerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816E9FBC29CAF74E00C3BC0F /* WreckpointerApp.swift */; };
-		8170AF4B2B21C11B00B45CDC /* WreckRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8170AF4A2B21C11B00B45CDC /* WreckRowView.swift */; };
-		8170AF592B23800800B45CDC /* MapPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8170AF582B23800800B45CDC /* MapPanelView.swift */; };
-		8170AF622B239CC300B45CDC /* ColoredBorderModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8170AF612B239CC300B45CDC /* ColoredBorderModifier.swift */; };
-		8170AF652B23A64C00B45CDC /* AddWreckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8170AF642B23A64C00B45CDC /* AddWreckView.swift */; };
-		8182FE112B2470F800A130BC /* DegreeSymbolModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8182FE102B2470F800A130BC /* DegreeSymbolModifier.swift */; };
-		8182FE132B24719500A130BC /* WreckRequiredFieldsPlate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8182FE122B24719500A130BC /* WreckRequiredFieldsPlate.swift */; };
-		8182FE152B247D2C00A130BC /* WreckSelectorsPlate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8182FE142B247D2C00A130BC /* WreckSelectorsPlate.swift */; };
-		8182FE172B247E9000A130BC /* WreckTypePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8182FE162B247E9000A130BC /* WreckTypePickerView.swift */; };
-		8182FE192B247F3A00A130BC /* WreckCausePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8182FE182B247F3A00A130BC /* WreckCausePickerView.swift */; };
-		8182FE1B2B2480CD00A130BC /* WreckAdditionalInfoPlate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8182FE1A2B2480CD00A130BC /* WreckAdditionalInfoPlate.swift */; };
-		8182FE1D2B24859C00A130BC /* WreckImagePlate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8182FE1C2B24859C00A130BC /* WreckImagePlate.swift */; };
-		8182FE1F2B2485AF00A130BC /* WreckDesctiptionPlate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8182FE1E2B2485AF00A130BC /* WreckDesctiptionPlate.swift */; };
-		8182FE212B2487F800A130BC /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8182FE202B2487F700A130BC /* ImageView.swift */; };
-		8182FE232B24881200A130BC /* ImageSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8182FE222B24881200A130BC /* ImageSelectorView.swift */; };
 		8184383E2B3CAD5C0013EFBD /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8184383D2B3CAD5C0013EFBD /* AuthManager.swift */; };
 		818438402B3CAD680013EFBD /* ModeratorsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8184383F2B3CAD680013EFBD /* ModeratorsManager.swift */; };
+		818438422B3CAFA90013EFBD /* HTTPServerToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818438412B3CAFA90013EFBD /* HTTPServerToken.swift */; };
+		818438442B3CB2020013EFBD /* HTTPServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818438432B3CB2020013EFBD /* HTTPServer.swift */; };
+		818438462B3CBE070013EFBD /* JSONCoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818438452B3CBE070013EFBD /* JSONCoder.swift */; };
 		81AF6E392B1B6793000C3CBB /* WreckpointerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AF6E382B1B6793000C3CBB /* WreckpointerView.swift */; };
-		81AF6E3B2B1B6903000C3CBB /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AF6E3A2B1B6903000C3CBB /* MapView.swift */; };
 		81AF6E3D2B1B6913000C3CBB /* MapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AF6E3C2B1B6913000C3CBB /* MapViewModel.swift */; };
-		81AF6E452B1B8911000C3CBB /* MapFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AF6E442B1B8911000C3CBB /* MapFilterView.swift */; };
-		81AF6E4A2B1BA63C000C3CBB /* MapSearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AF6E492B1BA63C000C3CBB /* MapSearchBarView.swift */; };
-		81AF6E4E2B1BA7A3000C3CBB /* BorderButtonModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AF6E4D2B1BA7A3000C3CBB /* BorderButtonModifier.swift */; };
-		81AF6E502B1BA7AB000C3CBB /* GlassyFontModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AF6E4F2B1BA7AB000C3CBB /* GlassyFontModifier.swift */; };
-		81AF6E532B1BA7B6000C3CBB /* LinearBackgroundColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AF6E512B1BA7B6000C3CBB /* LinearBackgroundColor.swift */; };
-		81AF6E542B1BA7B6000C3CBB /* NeonTextFieldModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AF6E522B1BA7B6000C3CBB /* NeonTextFieldModifier.swift */; };
 		81B34C8F2B3993630024E48B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 81B34C8E2B3993630024E48B /* Assets.xcassets */; };
-		81B34C962B39B6370024E48B /* iOS14WreckpointerMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B34C952B39B6370024E48B /* iOS14WreckpointerMap.swift */; };
 		81B6D0F62A601D4A00B5978F /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B6D0F52A601D4A00B5978F /* StringExtensions.swift */; };
 		81D9CA592B39743100E14B49 /* Wreck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D9CA562B39743100E14B49 /* Wreck.swift */; };
 		81DD4E8B2B38495500E58646 /* WreckCauses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81DD4E852B38495500E58646 /* WreckCauses.swift */; };
 		81DD4E8C2B38495500E58646 /* WreckTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81DD4E862B38495500E58646 /* WreckTypes.swift */; };
-		81DD977D2B25E64900E6C7E5 /* MapSelectedWreck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81DD977C2B25E64900E6C7E5 /* MapSelectedWreck.swift */; };
 		81E255D22B3C8F7B0063DCAB /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E255D12B3C8F7B0063DCAB /* User.swift */; };
 		81E255D42B3C8FBF0063DCAB /* UserRoles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E255D32B3C8FBF0063DCAB /* UserRoles.swift */; };
 /* End PBXBuildFile section */
@@ -69,10 +47,8 @@
 
 /* Begin PBXFileReference section */
 		814D9AB32B3B65F1005B13D4 /* WrecksManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WrecksManager.swift; sourceTree = "<group>"; };
-		814D9AB62B3B65F8005B13D4 /* JSONDataCoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONDataCoder.swift; sourceTree = "<group>"; };
 		814D9ABA2B3B6604005B13D4 /* HTTPMethods.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPMethods.swift; sourceTree = "<group>"; };
 		814D9ABB2B3B6604005B13D4 /* HTTPHeaders.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPHeaders.swift; sourceTree = "<group>"; };
-		814D9ABC2B3B6604005B13D4 /* HTTPRequestSender.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPRequestSender.swift; sourceTree = "<group>"; };
 		814D9ABD2B3B6604005B13D4 /* MIMETypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIMETypes.swift; sourceTree = "<group>"; };
 		814D9ABE2B3B6604005B13D4 /* HTTPErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPErrors.swift; sourceTree = "<group>"; };
 		814D9ABF2B3B6604005B13D4 /* HTTPRoutes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPRoutes.swift; sourceTree = "<group>"; };
@@ -81,38 +57,18 @@
 		816E9FB929CAF74E00C3BC0F /* Wreckpointer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Wreckpointer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		816E9FBC29CAF74E00C3BC0F /* WreckpointerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WreckpointerApp.swift; sourceTree = "<group>"; };
 		816E9FE929CAF7FD00C3BC0F /* Wreckpointer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Wreckpointer.entitlements; sourceTree = "<group>"; };
-		8170AF4A2B21C11B00B45CDC /* WreckRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WreckRowView.swift; sourceTree = "<group>"; };
-		8170AF582B23800800B45CDC /* MapPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapPanelView.swift; sourceTree = "<group>"; };
-		8170AF612B239CC300B45CDC /* ColoredBorderModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColoredBorderModifier.swift; sourceTree = "<group>"; };
-		8170AF642B23A64C00B45CDC /* AddWreckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWreckView.swift; sourceTree = "<group>"; };
-		8182FE102B2470F800A130BC /* DegreeSymbolModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DegreeSymbolModifier.swift; sourceTree = "<group>"; };
-		8182FE122B24719500A130BC /* WreckRequiredFieldsPlate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WreckRequiredFieldsPlate.swift; sourceTree = "<group>"; };
-		8182FE142B247D2C00A130BC /* WreckSelectorsPlate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WreckSelectorsPlate.swift; sourceTree = "<group>"; };
-		8182FE162B247E9000A130BC /* WreckTypePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WreckTypePickerView.swift; sourceTree = "<group>"; };
-		8182FE182B247F3A00A130BC /* WreckCausePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WreckCausePickerView.swift; sourceTree = "<group>"; };
-		8182FE1A2B2480CD00A130BC /* WreckAdditionalInfoPlate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WreckAdditionalInfoPlate.swift; sourceTree = "<group>"; };
-		8182FE1C2B24859C00A130BC /* WreckImagePlate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WreckImagePlate.swift; sourceTree = "<group>"; };
-		8182FE1E2B2485AF00A130BC /* WreckDesctiptionPlate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WreckDesctiptionPlate.swift; sourceTree = "<group>"; };
-		8182FE202B2487F700A130BC /* ImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
-		8182FE222B24881200A130BC /* ImageSelectorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageSelectorView.swift; sourceTree = "<group>"; };
 		8184383D2B3CAD5C0013EFBD /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		8184383F2B3CAD680013EFBD /* ModeratorsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeratorsManager.swift; sourceTree = "<group>"; };
+		818438412B3CAFA90013EFBD /* HTTPServerToken.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPServerToken.swift; sourceTree = "<group>"; };
+		818438432B3CB2020013EFBD /* HTTPServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPServer.swift; sourceTree = "<group>"; };
+		818438452B3CBE070013EFBD /* JSONCoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONCoder.swift; sourceTree = "<group>"; };
 		81AF6E382B1B6793000C3CBB /* WreckpointerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WreckpointerView.swift; sourceTree = "<group>"; };
-		81AF6E3A2B1B6903000C3CBB /* MapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		81AF6E3C2B1B6913000C3CBB /* MapViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
-		81AF6E442B1B8911000C3CBB /* MapFilterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapFilterView.swift; sourceTree = "<group>"; };
-		81AF6E492B1BA63C000C3CBB /* MapSearchBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapSearchBarView.swift; sourceTree = "<group>"; };
-		81AF6E4D2B1BA7A3000C3CBB /* BorderButtonModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BorderButtonModifier.swift; sourceTree = "<group>"; };
-		81AF6E4F2B1BA7AB000C3CBB /* GlassyFontModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlassyFontModifier.swift; sourceTree = "<group>"; };
-		81AF6E512B1BA7B6000C3CBB /* LinearBackgroundColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinearBackgroundColor.swift; sourceTree = "<group>"; };
-		81AF6E522B1BA7B6000C3CBB /* NeonTextFieldModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeonTextFieldModifier.swift; sourceTree = "<group>"; };
 		81B34C8E2B3993630024E48B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		81B34C952B39B6370024E48B /* iOS14WreckpointerMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOS14WreckpointerMap.swift; sourceTree = "<group>"; };
 		81B6D0F52A601D4A00B5978F /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 		81D9CA562B39743100E14B49 /* Wreck.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Wreck.swift; sourceTree = "<group>"; };
 		81DD4E852B38495500E58646 /* WreckCauses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WreckCauses.swift; sourceTree = "<group>"; };
 		81DD4E862B38495500E58646 /* WreckTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WreckTypes.swift; sourceTree = "<group>"; };
-		81DD977C2B25E64900E6C7E5 /* MapSelectedWreck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapSelectedWreck.swift; sourceTree = "<group>"; };
 		81E255D12B3C8F7B0063DCAB /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		81E255D32B3C8FBF0063DCAB /* UserRoles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRoles.swift; sourceTree = "<group>"; };
 		81E7102829D9C4C7008724FA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -134,8 +90,9 @@
 			children = (
 				814D9ABA2B3B6604005B13D4 /* HTTPMethods.swift */,
 				814D9ABB2B3B6604005B13D4 /* HTTPHeaders.swift */,
+				818438412B3CAFA90013EFBD /* HTTPServerToken.swift */,
 				814D9ABD2B3B6604005B13D4 /* MIMETypes.swift */,
-				814D9AB62B3B65F8005B13D4 /* JSONDataCoder.swift */,
+				818438452B3CBE070013EFBD /* JSONCoder.swift */,
 			);
 			path = Supporting;
 			sourceTree = "<group>";
@@ -143,7 +100,7 @@
 		814D9AB92B3B6604005B13D4 /* HTTPServer */ = {
 			isa = PBXGroup;
 			children = (
-				814D9ABC2B3B6604005B13D4 /* HTTPRequestSender.swift */,
+				818438432B3CB2020013EFBD /* HTTPServer.swift */,
 				814D9ABE2B3B6604005B13D4 /* HTTPErrors.swift */,
 				814D9ABF2B3B6604005B13D4 /* HTTPRoutes.swift */,
 				814D9AB22B3B65DC005B13D4 /* Supporting */,
@@ -192,8 +149,6 @@
 			isa = PBXGroup;
 			children = (
 				81AF6E382B1B6793000C3CBB /* WreckpointerView.swift */,
-				81AF6E482B1B8DBC000C3CBB /* Map */,
-				8170AF492B21C0C300B45CDC /* Supporting */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -206,64 +161,11 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
-		8170AF492B21C0C300B45CDC /* Supporting */ = {
-			isa = PBXGroup;
-			children = (
-				81AF6E4C2B1BA788000C3CBB /* ViewModifiers */,
-				8182FE222B24881200A130BC /* ImageSelectorView.swift */,
-				8182FE202B2487F700A130BC /* ImageView.swift */,
-				81B34C952B39B6370024E48B /* iOS14WreckpointerMap.swift */,
-				8170AF4A2B21C11B00B45CDC /* WreckRowView.swift */,
-				81AF6E492B1BA63C000C3CBB /* MapSearchBarView.swift */,
-				8182FE162B247E9000A130BC /* WreckTypePickerView.swift */,
-				8182FE182B247F3A00A130BC /* WreckCausePickerView.swift */,
-			);
-			path = Supporting;
-			sourceTree = "<group>";
-		};
-		8170AF632B23A63300B45CDC /* AddWreck */ = {
-			isa = PBXGroup;
-			children = (
-				8170AF642B23A64C00B45CDC /* AddWreckView.swift */,
-				8182FE122B24719500A130BC /* WreckRequiredFieldsPlate.swift */,
-				8182FE142B247D2C00A130BC /* WreckSelectorsPlate.swift */,
-				8182FE1A2B2480CD00A130BC /* WreckAdditionalInfoPlate.swift */,
-				8182FE1C2B24859C00A130BC /* WreckImagePlate.swift */,
-				8182FE1E2B2485AF00A130BC /* WreckDesctiptionPlate.swift */,
-			);
-			path = AddWreck;
-			sourceTree = "<group>";
-		};
 		818EA38C29D1E1F400C83951 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		81AF6E482B1B8DBC000C3CBB /* Map */ = {
-			isa = PBXGroup;
-			children = (
-				81AF6E3A2B1B6903000C3CBB /* MapView.swift */,
-				8170AF582B23800800B45CDC /* MapPanelView.swift */,
-				81AF6E442B1B8911000C3CBB /* MapFilterView.swift */,
-				81DD977C2B25E64900E6C7E5 /* MapSelectedWreck.swift */,
-				8170AF632B23A63300B45CDC /* AddWreck */,
-			);
-			path = Map;
-			sourceTree = "<group>";
-		};
-		81AF6E4C2B1BA788000C3CBB /* ViewModifiers */ = {
-			isa = PBXGroup;
-			children = (
-				81AF6E4D2B1BA7A3000C3CBB /* BorderButtonModifier.swift */,
-				81AF6E4F2B1BA7AB000C3CBB /* GlassyFontModifier.swift */,
-				81AF6E512B1BA7B6000C3CBB /* LinearBackgroundColor.swift */,
-				81AF6E522B1BA7B6000C3CBB /* NeonTextFieldModifier.swift */,
-				8170AF612B239CC300B45CDC /* ColoredBorderModifier.swift */,
-				8182FE102B2470F800A130BC /* DegreeSymbolModifier.swift */,
-			);
-			path = ViewModifiers;
 			sourceTree = "<group>";
 		};
 		81B34C8D2B3993630024E48B /* Preview Content */ = {
@@ -396,45 +298,23 @@
 			files = (
 				814D9AC82B3B6604005B13D4 /* HTTPErrors.swift in Sources */,
 				814D9AB42B3B65F1005B13D4 /* WrecksManager.swift in Sources */,
-				8182FE212B2487F800A130BC /* ImageView.swift in Sources */,
-				8182FE152B247D2C00A130BC /* WreckSelectorsPlate.swift in Sources */,
-				8182FE1F2B2485AF00A130BC /* WreckDesctiptionPlate.swift in Sources */,
-				81AF6E4E2B1BA7A3000C3CBB /* BorderButtonModifier.swift in Sources */,
 				81E255D42B3C8FBF0063DCAB /* UserRoles.swift in Sources */,
 				816E9FBD29CAF74E00C3BC0F /* WreckpointerApp.swift in Sources */,
-				8182FE112B2470F800A130BC /* DegreeSymbolModifier.swift in Sources */,
-				81AF6E3B2B1B6903000C3CBB /* MapView.swift in Sources */,
-				81AF6E532B1BA7B6000C3CBB /* LinearBackgroundColor.swift in Sources */,
-				8182FE1D2B24859C00A130BC /* WreckImagePlate.swift in Sources */,
-				8182FE1B2B2480CD00A130BC /* WreckAdditionalInfoPlate.swift in Sources */,
+				818438422B3CAFA90013EFBD /* HTTPServerToken.swift in Sources */,
 				81AF6E392B1B6793000C3CBB /* WreckpointerView.swift in Sources */,
-				8170AF652B23A64C00B45CDC /* AddWreckView.swift in Sources */,
-				81AF6E452B1B8911000C3CBB /* MapFilterView.swift in Sources */,
 				81D9CA592B39743100E14B49 /* Wreck.swift in Sources */,
-				8182FE192B247F3A00A130BC /* WreckCausePickerView.swift in Sources */,
-				8170AF622B239CC300B45CDC /* ColoredBorderModifier.swift in Sources */,
+				818438462B3CBE070013EFBD /* JSONCoder.swift in Sources */,
 				81E255D22B3C8F7B0063DCAB /* User.swift in Sources */,
-				814D9AC42B3B6604005B13D4 /* HTTPRequestSender.swift in Sources */,
 				8184383E2B3CAD5C0013EFBD /* AuthManager.swift in Sources */,
-				8182FE132B24719500A130BC /* WreckRequiredFieldsPlate.swift in Sources */,
-				81DD977D2B25E64900E6C7E5 /* MapSelectedWreck.swift in Sources */,
 				81AF6E3D2B1B6913000C3CBB /* MapViewModel.swift in Sources */,
-				8182FE172B247E9000A130BC /* WreckTypePickerView.swift in Sources */,
-				81AF6E502B1BA7AB000C3CBB /* GlassyFontModifier.swift in Sources */,
-				814D9AB72B3B65F8005B13D4 /* JSONDataCoder.swift in Sources */,
-				81B34C962B39B6370024E48B /* iOS14WreckpointerMap.swift in Sources */,
+				818438442B3CB2020013EFBD /* HTTPServer.swift in Sources */,
 				816761F32A8BB48E00A8A2A4 /* WreckpointerNetwork.swift in Sources */,
-				8170AF4B2B21C11B00B45CDC /* WreckRowView.swift in Sources */,
-				81AF6E4A2B1BA63C000C3CBB /* MapSearchBarView.swift in Sources */,
-				81AF6E542B1BA7B6000C3CBB /* NeonTextFieldModifier.swift in Sources */,
 				814D9AC22B3B6604005B13D4 /* HTTPHeaders.swift in Sources */,
 				816762042A8C378200A8A2A4 /* DoubleExtension.swift in Sources */,
 				81DD4E8B2B38495500E58646 /* WreckCauses.swift in Sources */,
 				814D9ACA2B3B6604005B13D4 /* HTTPRoutes.swift in Sources */,
-				8170AF592B23800800B45CDC /* MapPanelView.swift in Sources */,
 				814D9AC62B3B6604005B13D4 /* MIMETypes.swift in Sources */,
 				814D9AC02B3B6604005B13D4 /* HTTPMethods.swift in Sources */,
-				8182FE232B24881200A130BC /* ImageSelectorView.swift in Sources */,
 				818438402B3CAD680013EFBD /* ModeratorsManager.swift in Sources */,
 				81DD4E8C2B38495500E58646 /* WreckTypes.swift in Sources */,
 				81B6D0F62A601D4A00B5978F /* StringExtensions.swift in Sources */,
