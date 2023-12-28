@@ -25,6 +25,16 @@
 		81AF6E3D2B1B6913000C3CBB /* MapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AF6E3C2B1B6913000C3CBB /* MapViewModel.swift */; };
 		81B34C8F2B3993630024E48B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 81B34C8E2B3993630024E48B /* Assets.xcassets */; };
 		81B6D0F62A601D4A00B5978F /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B6D0F52A601D4A00B5978F /* StringExtensions.swift */; };
+		81B7B13F2B3DC3BC009062AE /* iOS14WreckpointerMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B7B13E2B3DC3BC009062AE /* iOS14WreckpointerMap.swift */; };
+		81B7B1412B3DC50A009062AE /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B7B1402B3DC50A009062AE /* MapView.swift */; };
+		81B7B1432B3DD48C009062AE /* MapOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B7B1422B3DD48C009062AE /* MapOverlayView.swift */; };
+		81B7B14A2B3DFF00009062AE /* WreckRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B7B1492B3DFEFF009062AE /* WreckRowView.swift */; };
+		81B7B1542B3E0192009062AE /* GlassyFontModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B7B14E2B3E0192009062AE /* GlassyFontModifier.swift */; };
+		81B7B1552B3E0192009062AE /* LinearBackgroundColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B7B14F2B3E0192009062AE /* LinearBackgroundColor.swift */; };
+		81B7B1562B3E0192009062AE /* NeonTextFieldModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B7B1502B3E0192009062AE /* NeonTextFieldModifier.swift */; };
+		81B7B1572B3E0192009062AE /* DegreeSymbolModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B7B1512B3E0192009062AE /* DegreeSymbolModifier.swift */; };
+		81B7B1582B3E0192009062AE /* BorderButtonModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B7B1522B3E0192009062AE /* BorderButtonModifier.swift */; };
+		81B7B1592B3E0192009062AE /* ColoredBorderModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B7B1532B3E0192009062AE /* ColoredBorderModifier.swift */; };
 		81D9CA592B39743100E14B49 /* Wreck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D9CA562B39743100E14B49 /* Wreck.swift */; };
 		81DD4E8B2B38495500E58646 /* WreckCauses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81DD4E852B38495500E58646 /* WreckCauses.swift */; };
 		81DD4E8C2B38495500E58646 /* WreckTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81DD4E862B38495500E58646 /* WreckTypes.swift */; };
@@ -66,6 +76,16 @@
 		81AF6E3C2B1B6913000C3CBB /* MapViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
 		81B34C8E2B3993630024E48B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		81B6D0F52A601D4A00B5978F /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
+		81B7B13E2B3DC3BC009062AE /* iOS14WreckpointerMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iOS14WreckpointerMap.swift; sourceTree = "<group>"; };
+		81B7B1402B3DC50A009062AE /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		81B7B1422B3DD48C009062AE /* MapOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapOverlayView.swift; sourceTree = "<group>"; };
+		81B7B1492B3DFEFF009062AE /* WreckRowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WreckRowView.swift; sourceTree = "<group>"; };
+		81B7B14E2B3E0192009062AE /* GlassyFontModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlassyFontModifier.swift; sourceTree = "<group>"; };
+		81B7B14F2B3E0192009062AE /* LinearBackgroundColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinearBackgroundColor.swift; sourceTree = "<group>"; };
+		81B7B1502B3E0192009062AE /* NeonTextFieldModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeonTextFieldModifier.swift; sourceTree = "<group>"; };
+		81B7B1512B3E0192009062AE /* DegreeSymbolModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DegreeSymbolModifier.swift; sourceTree = "<group>"; };
+		81B7B1522B3E0192009062AE /* BorderButtonModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BorderButtonModifier.swift; sourceTree = "<group>"; };
+		81B7B1532B3E0192009062AE /* ColoredBorderModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColoredBorderModifier.swift; sourceTree = "<group>"; };
 		81D9CA562B39743100E14B49 /* Wreck.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Wreck.swift; sourceTree = "<group>"; };
 		81DD4E852B38495500E58646 /* WreckCauses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WreckCauses.swift; sourceTree = "<group>"; };
 		81DD4E862B38495500E58646 /* WreckTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WreckTypes.swift; sourceTree = "<group>"; };
@@ -149,6 +169,11 @@
 			isa = PBXGroup;
 			children = (
 				81AF6E382B1B6793000C3CBB /* WreckpointerView.swift */,
+				81B7B13A2B3DC37A009062AE /* Map */,
+				81B7B1442B3DE0B1009062AE /* Home */,
+				81B7B13D2B3DC38E009062AE /* Statistics */,
+				81B7B13B2B3DC382009062AE /* Options */,
+				81B7B13C2B3DC389009062AE /* Moderator */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -182,6 +207,59 @@
 				816762032A8C378200A8A2A4 /* DoubleExtension.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		81B7B13A2B3DC37A009062AE /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				81B7B1402B3DC50A009062AE /* MapView.swift */,
+				81B7B13E2B3DC3BC009062AE /* iOS14WreckpointerMap.swift */,
+				81B7B1422B3DD48C009062AE /* MapOverlayView.swift */,
+				81B7B1492B3DFEFF009062AE /* WreckRowView.swift */,
+				81B7B14D2B3E0192009062AE /* ViewModifiers */,
+			);
+			path = Map;
+			sourceTree = "<group>";
+		};
+		81B7B13B2B3DC382009062AE /* Options */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Options;
+			sourceTree = "<group>";
+		};
+		81B7B13C2B3DC389009062AE /* Moderator */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Moderator;
+			sourceTree = "<group>";
+		};
+		81B7B13D2B3DC38E009062AE /* Statistics */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Statistics;
+			sourceTree = "<group>";
+		};
+		81B7B1442B3DE0B1009062AE /* Home */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		81B7B14D2B3E0192009062AE /* ViewModifiers */ = {
+			isa = PBXGroup;
+			children = (
+				81B7B14E2B3E0192009062AE /* GlassyFontModifier.swift */,
+				81B7B14F2B3E0192009062AE /* LinearBackgroundColor.swift */,
+				81B7B1502B3E0192009062AE /* NeonTextFieldModifier.swift */,
+				81B7B1512B3E0192009062AE /* DegreeSymbolModifier.swift */,
+				81B7B1522B3E0192009062AE /* BorderButtonModifier.swift */,
+				81B7B1532B3E0192009062AE /* ColoredBorderModifier.swift */,
+			);
+			path = ViewModifiers;
 			sourceTree = "<group>";
 		};
 		81E255CC2B3C86BB0063DCAB /* Models */ = {
@@ -253,7 +331,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1510;
-				LastUpgradeCheck = 1500;
+				LastUpgradeCheck = 1510;
 				TargetAttributes = {
 					816E9FB829CAF74E00C3BC0F = {
 						CreatedOnToolsVersion = 14.2;
@@ -297,14 +375,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				814D9AC82B3B6604005B13D4 /* HTTPErrors.swift in Sources */,
+				81B7B1412B3DC50A009062AE /* MapView.swift in Sources */,
 				814D9AB42B3B65F1005B13D4 /* WrecksManager.swift in Sources */,
 				81E255D42B3C8FBF0063DCAB /* UserRoles.swift in Sources */,
+				81B7B1562B3E0192009062AE /* NeonTextFieldModifier.swift in Sources */,
 				816E9FBD29CAF74E00C3BC0F /* WreckpointerApp.swift in Sources */,
+				81B7B1552B3E0192009062AE /* LinearBackgroundColor.swift in Sources */,
 				818438422B3CAFA90013EFBD /* HTTPServerToken.swift in Sources */,
+				81B7B13F2B3DC3BC009062AE /* iOS14WreckpointerMap.swift in Sources */,
 				81AF6E392B1B6793000C3CBB /* WreckpointerView.swift in Sources */,
 				81D9CA592B39743100E14B49 /* Wreck.swift in Sources */,
+				81B7B1572B3E0192009062AE /* DegreeSymbolModifier.swift in Sources */,
+				81B7B1432B3DD48C009062AE /* MapOverlayView.swift in Sources */,
 				818438462B3CBE070013EFBD /* JSONCoder.swift in Sources */,
 				81E255D22B3C8F7B0063DCAB /* User.swift in Sources */,
+				81B7B1542B3E0192009062AE /* GlassyFontModifier.swift in Sources */,
 				8184383E2B3CAD5C0013EFBD /* AuthManager.swift in Sources */,
 				81AF6E3D2B1B6913000C3CBB /* MapViewModel.swift in Sources */,
 				818438442B3CB2020013EFBD /* HTTPServer.swift in Sources */,
@@ -315,8 +400,11 @@
 				814D9ACA2B3B6604005B13D4 /* HTTPRoutes.swift in Sources */,
 				814D9AC62B3B6604005B13D4 /* MIMETypes.swift in Sources */,
 				814D9AC02B3B6604005B13D4 /* HTTPMethods.swift in Sources */,
+				81B7B14A2B3DFF00009062AE /* WreckRowView.swift in Sources */,
 				818438402B3CAD680013EFBD /* ModeratorsManager.swift in Sources */,
 				81DD4E8C2B38495500E58646 /* WreckTypes.swift in Sources */,
+				81B7B1592B3E0192009062AE /* ColoredBorderModifier.swift in Sources */,
+				81B7B1582B3E0192009062AE /* BorderButtonModifier.swift in Sources */,
 				81B6D0F62A601D4A00B5978F /* StringExtensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -328,6 +416,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -389,6 +478,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -458,6 +548,7 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -473,7 +564,7 @@
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -495,6 +586,7 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -510,7 +602,7 @@
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

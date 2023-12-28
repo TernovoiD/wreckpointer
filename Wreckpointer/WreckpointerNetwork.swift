@@ -19,6 +19,13 @@ final class WreckpointerNetwork: ObservableObject {
     let authManager = AuthManager()
     let wrecksManager = WrecksManager()
     
+    init() {
+        Task {
+//            await authorize()
+//            await loadWrecks()
+        }
+    }
+    
     private func showError(withMessage message: String) {
         self.errorMessage = message
         self.error = true
