@@ -18,9 +18,10 @@ struct WreckRowView: View {
 //                .clipShape(RoundedRectangle(cornerRadius: 5, style: .continuous))
             Image(systemName: "ferry")
             VStack(alignment: .leading, spacing: 0) {
-                Text(wreck.name)
+                Text(wreck.hasname)
                     .font(.subheadline.weight(.medium))
-                Text("\(wreck.info?.dateOfLoss?.formatted(date: .abbreviated, time: .omitted) ?? "unknown")")
+                let lossDate = wreck.hasDateOfLoss.isValid ? "\(wreck.hasDateOfLoss.date.formatted(date: .abbreviated, time: .omitted))" : "unknown"
+                Text("Date of loss: " + lossDate)
                     .font(.caption.weight(.medium))
             }
             Spacer()

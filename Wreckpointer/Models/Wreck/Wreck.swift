@@ -8,39 +8,61 @@
 import Foundation
 
 struct Wreck: Codable, Identifiable, Equatable {
+    
     let id: UUID?
     let createdAt: Date?
     let updatedAt: Date?
     
-    var name: String
-    var latitude: Double
-    var longitude: Double
-    var info: WreckInfo?
-    var images: [WreckImage]
-    
-    static let test = Wreck(id: UUID(uuidString: "12345"), createdAt: Date(), updatedAt: Date(), name: "RMS Titanic", latitude: 34, longitude: -51, info: WreckInfo.test, images: [ ])
-}
-
-struct WreckInfo: Codable, Identifiable, Equatable {
-    let id: UUID?
-    let createdAt: Date?
-    let updatedAt: Date?
-    
+    var name: String?
+    var latitude: Double?
+    var longitude: Double?
+    var images: [WreckImage]?
     var type: WreckTypes?
     var cause: WreckCauses?
-    var isWreckDive: Bool?
+    var approved: Bool?
+    var dive: Bool?
     var dateOfLoss: Date?
-    var lossOfLife: Int?
+    var lossOfLive: Int?
     var history: String?
-    var deadweight: Int?
+    var displacement: Int?
     var depth: Int?
     
-    static let test = WreckInfo(id: UUID(uuidString: "678910"), createdAt: Date(), updatedAt: Date(), type: .unknown, cause: .unknown, isWreckDive: false, dateOfLoss: Date(), lossOfLife: 0, history: "Deep history", deadweight: 0, depth: 0)
-}
-
-struct WreckImage: Codable, Identifiable, Equatable {
-    let id: UUID?
-    let createdAt: Date?
-    let updatedAt: Date?
-    let data: Data
+    static let test = Wreck(id: UUID(uuidString: "12345"), createdAt: Date(), updatedAt: Date(), name: "RMS Titanic", latitude: 31, longitude: -51, images: [ ], type: .passengerShip, cause: .collision, approved: false, dive: false, dateOfLoss: Date(), lossOfLive: 1500, history: "Titanic history", displacement: 13500, depth: 12500)
+    
+    
+    // Computed properties
+    
+    var hasCoordinates: (areValid: Bool, latitude: Double, longitude: Double) {
+        let areValid = latitude != nil && longitude != nil
+        let validLatitude = latitude ?? 0
+        let validLongitude = longitude ?? 0
+        return (areValid, validLatitude, validLongitude)
+    }
+    
+    var hasDateOfLoss: (isValid: Bool, date: Date) {
+        let isValid = dateOfLoss != nil
+        let validDate = dateOfLoss ?? Date()
+        return (isValid, validDate)
+    }
+    
+    var hasname: String {
+        return name ?? "unknown"
+    }
+    
+    var hastype: WreckTypes {
+        return type ?? .unknown
+    }
+    
+    var hascause: WreckCauses {
+        return cause ?? .unknown
+    }
+    
+    var isApproved: Bool {
+        return approved ?? false
+    }
+    
+    
+    var isWreckDive: Bool {
+        return dive ?? false
+    }
 }

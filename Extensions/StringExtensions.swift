@@ -13,6 +13,20 @@ extension String {
         return predicate.evaluate(with: self)
     }
     
+    func filterWithRegEx(pattern: String) -> String {
+        var result = ""
+        
+        for character in self {
+            var textToTest = result
+            textToTest.append(character)
+            if textToTest.matches(pattern: pattern) {
+                result.append(character)
+            }
+        }
+        
+        return result
+    }
+    
     var isValidEmail: Bool {
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
         return self.matches(pattern: emailRegEx)

@@ -19,9 +19,9 @@ struct iOS14WreckpointerMap: View {
     
     var body: some View {
         Map(coordinateRegion: $mapRegion, annotationItems: wrecks) { wreck in
-            MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: wreck.latitude, longitude: wreck.longitude)) {
+            MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: wreck.hasCoordinates.latitude, longitude: wreck.hasCoordinates.longitude)) {
                 Circle()
-//                    .foregroundStyle(Color.red)
+                    .foregroundStyle(Color.red)
                     .scaleEffect(0.5)
             }
         }
@@ -34,9 +34,9 @@ struct iOS14WreckpointerMap: View {
     
     private func moveMap(to wreck: Wreck) {
         withAnimation(.easeInOut) {
-            mapRegion.center = CLLocationCoordinate2D(latitude: wreck.latitude, 
-                                                      longitude: wreck.longitude)
-            if abs(wreck.latitude) > 65 {
+            mapRegion.center = CLLocationCoordinate2D(latitude: wreck.hasCoordinates.latitude,
+                                                      longitude: wreck.hasCoordinates.longitude)
+            if abs(wreck.hasCoordinates.latitude) > 65 {
                 mapRegion.span = MKCoordinateSpan(latitudeDelta: 25,
                                                   longitudeDelta: 25)
             }

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		814D5CD02B3EC17B005C1E40 /* OptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814D5CCF2B3EC17B005C1E40 /* OptionsView.swift */; };
+		814D5CD22B3EC6A0005C1E40 /* ModeratorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814D5CD12B3EC69F005C1E40 /* ModeratorView.swift */; };
 		814D9AB42B3B65F1005B13D4 /* WrecksManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814D9AB32B3B65F1005B13D4 /* WrecksManager.swift */; };
 		814D9AC02B3B6604005B13D4 /* HTTPMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814D9ABA2B3B6604005B13D4 /* HTTPMethods.swift */; };
 		814D9AC22B3B6604005B13D4 /* HTTPHeaders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814D9ABB2B3B6604005B13D4 /* HTTPHeaders.swift */; };
@@ -16,11 +18,19 @@
 		816761F32A8BB48E00A8A2A4 /* WreckpointerNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816761F22A8BB48E00A8A2A4 /* WreckpointerNetwork.swift */; };
 		816762042A8C378200A8A2A4 /* DoubleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816762032A8C378200A8A2A4 /* DoubleExtension.swift */; };
 		816E9FBD29CAF74E00C3BC0F /* WreckpointerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816E9FBC29CAF74E00C3BC0F /* WreckpointerApp.swift */; };
+		8178D6022B435C7400C761CF /* WreckImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8178D6012B435C7400C761CF /* WreckImage.swift */; };
+		8178D6042B435F3700C761CF /* AddUpdateWreckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8178D6032B435F3700C761CF /* AddUpdateWreckView.swift */; };
 		8184383E2B3CAD5C0013EFBD /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8184383D2B3CAD5C0013EFBD /* AuthManager.swift */; };
 		818438402B3CAD680013EFBD /* ModeratorsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8184383F2B3CAD680013EFBD /* ModeratorsManager.swift */; };
 		818438422B3CAFA90013EFBD /* HTTPServerToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818438412B3CAFA90013EFBD /* HTTPServerToken.swift */; };
 		818438442B3CB2020013EFBD /* HTTPServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818438432B3CB2020013EFBD /* HTTPServer.swift */; };
 		818438462B3CBE070013EFBD /* JSONCoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818438452B3CBE070013EFBD /* JSONCoder.swift */; };
+		81A94E2A2B44709100B63C9F /* WreckImagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A94E292B44709100B63C9F /* WreckImagesView.swift */; };
+		81A94E2C2B44710800B63C9F /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A94E2B2B44710800B63C9F /* ImageView.swift */; };
+		81A94E2E2B44710E00B63C9F /* ImageSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A94E2D2B44710E00B63C9F /* ImageSelectorView.swift */; };
+		81A94E312B4478DC00B63C9F /* WreckpointerData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 81A94E2F2B4478DC00B63C9F /* WreckpointerData.xcdatamodeld */; };
+		81A94E332B447BD800B63C9F /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A94E322B447BD800B63C9F /* CoreDataManager.swift */; };
+		81A94E362B447C6B00B63C9F /* CoreDataCoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A94E352B447C6B00B63C9F /* CoreDataCoder.swift */; };
 		81AF6E392B1B6793000C3CBB /* WreckpointerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AF6E382B1B6793000C3CBB /* WreckpointerView.swift */; };
 		81AF6E3D2B1B6913000C3CBB /* MapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AF6E3C2B1B6913000C3CBB /* MapViewModel.swift */; };
 		81B34C8F2B3993630024E48B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 81B34C8E2B3993630024E48B /* Assets.xcassets */; };
@@ -56,6 +66,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		814D5CCF2B3EC17B005C1E40 /* OptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsView.swift; sourceTree = "<group>"; };
+		814D5CD12B3EC69F005C1E40 /* ModeratorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeratorView.swift; sourceTree = "<group>"; };
 		814D9AB32B3B65F1005B13D4 /* WrecksManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WrecksManager.swift; sourceTree = "<group>"; };
 		814D9ABA2B3B6604005B13D4 /* HTTPMethods.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPMethods.swift; sourceTree = "<group>"; };
 		814D9ABB2B3B6604005B13D4 /* HTTPHeaders.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPHeaders.swift; sourceTree = "<group>"; };
@@ -67,11 +79,19 @@
 		816E9FB929CAF74E00C3BC0F /* Wreckpointer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Wreckpointer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		816E9FBC29CAF74E00C3BC0F /* WreckpointerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WreckpointerApp.swift; sourceTree = "<group>"; };
 		816E9FE929CAF7FD00C3BC0F /* Wreckpointer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Wreckpointer.entitlements; sourceTree = "<group>"; };
+		8178D6012B435C7400C761CF /* WreckImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WreckImage.swift; sourceTree = "<group>"; };
+		8178D6032B435F3700C761CF /* AddUpdateWreckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddUpdateWreckView.swift; sourceTree = "<group>"; };
 		8184383D2B3CAD5C0013EFBD /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		8184383F2B3CAD680013EFBD /* ModeratorsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeratorsManager.swift; sourceTree = "<group>"; };
 		818438412B3CAFA90013EFBD /* HTTPServerToken.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPServerToken.swift; sourceTree = "<group>"; };
 		818438432B3CB2020013EFBD /* HTTPServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPServer.swift; sourceTree = "<group>"; };
 		818438452B3CBE070013EFBD /* JSONCoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONCoder.swift; sourceTree = "<group>"; };
+		81A94E292B44709100B63C9F /* WreckImagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WreckImagesView.swift; sourceTree = "<group>"; };
+		81A94E2B2B44710800B63C9F /* ImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
+		81A94E2D2B44710E00B63C9F /* ImageSelectorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageSelectorView.swift; sourceTree = "<group>"; };
+		81A94E302B4478DC00B63C9F /* WreckpointerData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WreckpointerData.xcdatamodel; sourceTree = "<group>"; };
+		81A94E322B447BD800B63C9F /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		81A94E352B447C6B00B63C9F /* CoreDataCoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataCoder.swift; sourceTree = "<group>"; };
 		81AF6E382B1B6793000C3CBB /* WreckpointerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WreckpointerView.swift; sourceTree = "<group>"; };
 		81AF6E3C2B1B6913000C3CBB /* MapViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
 		81B34C8E2B3993630024E48B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -112,7 +132,6 @@
 				814D9ABB2B3B6604005B13D4 /* HTTPHeaders.swift */,
 				818438412B3CAFA90013EFBD /* HTTPServerToken.swift */,
 				814D9ABD2B3B6604005B13D4 /* MIMETypes.swift */,
-				818438452B3CBE070013EFBD /* JSONCoder.swift */,
 			);
 			path = Supporting;
 			sourceTree = "<group>";
@@ -132,6 +151,7 @@
 			isa = PBXGroup;
 			children = (
 				816E9FBB29CAF74E00C3BC0F /* Wreckpointer */,
+				81A94E342B447C4600B63C9F /* Utilities */,
 				814D9AB92B3B6604005B13D4 /* HTTPServer */,
 				81B6D0F42A601D2B00B5978F /* Extensions */,
 				818EA38C29D1E1F400C83951 /* Frameworks */,
@@ -161,6 +181,7 @@
 				816E9FE929CAF7FD00C3BC0F /* Wreckpointer.entitlements */,
 				81E7102829D9C4C7008724FA /* Info.plist */,
 				81B34C8E2B3993630024E48B /* Assets.xcassets */,
+				81A94E2F2B4478DC00B63C9F /* WreckpointerData.xcdatamodeld */,
 			);
 			path = Wreckpointer;
 			sourceTree = "<group>";
@@ -174,6 +195,7 @@
 				81B7B13D2B3DC38E009062AE /* Statistics */,
 				81B7B13B2B3DC382009062AE /* Options */,
 				81B7B13C2B3DC389009062AE /* Moderator */,
+				81A94E112B44080000B63C9F /* Supporting */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -191,6 +213,27 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		81A94E112B44080000B63C9F /* Supporting */ = {
+			isa = PBXGroup;
+			children = (
+				8178D6032B435F3700C761CF /* AddUpdateWreckView.swift */,
+				81B7B14D2B3E0192009062AE /* ViewModifiers */,
+				81A94E292B44709100B63C9F /* WreckImagesView.swift */,
+				81A94E2D2B44710E00B63C9F /* ImageSelectorView.swift */,
+				81A94E2B2B44710800B63C9F /* ImageView.swift */,
+			);
+			path = Supporting;
+			sourceTree = "<group>";
+		};
+		81A94E342B447C4600B63C9F /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				818438452B3CBE070013EFBD /* JSONCoder.swift */,
+				81A94E352B447C6B00B63C9F /* CoreDataCoder.swift */,
+			);
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 		81B34C8D2B3993630024E48B /* Preview Content */ = {
@@ -216,7 +259,6 @@
 				81B7B13E2B3DC3BC009062AE /* iOS14WreckpointerMap.swift */,
 				81B7B1422B3DD48C009062AE /* MapOverlayView.swift */,
 				81B7B1492B3DFEFF009062AE /* WreckRowView.swift */,
-				81B7B14D2B3E0192009062AE /* ViewModifiers */,
 			);
 			path = Map;
 			sourceTree = "<group>";
@@ -224,6 +266,7 @@
 		81B7B13B2B3DC382009062AE /* Options */ = {
 			isa = PBXGroup;
 			children = (
+				814D5CCF2B3EC17B005C1E40 /* OptionsView.swift */,
 			);
 			path = Options;
 			sourceTree = "<group>";
@@ -231,6 +274,7 @@
 		81B7B13C2B3DC389009062AE /* Moderator */ = {
 			isa = PBXGroup;
 			children = (
+				814D5CD12B3EC69F005C1E40 /* ModeratorView.swift */,
 			);
 			path = Moderator;
 			sourceTree = "<group>";
@@ -277,6 +321,7 @@
 				8184383D2B3CAD5C0013EFBD /* AuthManager.swift */,
 				814D9AB32B3B65F1005B13D4 /* WrecksManager.swift */,
 				8184383F2B3CAD680013EFBD /* ModeratorsManager.swift */,
+				81A94E322B447BD800B63C9F /* CoreDataManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -286,6 +331,7 @@
 			children = (
 				81DD4E852B38495500E58646 /* WreckCauses.swift */,
 				81DD4E862B38495500E58646 /* WreckTypes.swift */,
+				8178D6012B435C7400C761CF /* WreckImage.swift */,
 				81D9CA562B39743100E14B49 /* Wreck.swift */,
 			);
 			path = Wreck;
@@ -375,9 +421,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				814D9AC82B3B6604005B13D4 /* HTTPErrors.swift in Sources */,
+				8178D6022B435C7400C761CF /* WreckImage.swift in Sources */,
 				81B7B1412B3DC50A009062AE /* MapView.swift in Sources */,
 				814D9AB42B3B65F1005B13D4 /* WrecksManager.swift in Sources */,
 				81E255D42B3C8FBF0063DCAB /* UserRoles.swift in Sources */,
+				814D5CD22B3EC6A0005C1E40 /* ModeratorView.swift in Sources */,
 				81B7B1562B3E0192009062AE /* NeonTextFieldModifier.swift in Sources */,
 				816E9FBD29CAF74E00C3BC0F /* WreckpointerApp.swift in Sources */,
 				81B7B1552B3E0192009062AE /* LinearBackgroundColor.swift in Sources */,
@@ -389,9 +437,14 @@
 				81B7B1432B3DD48C009062AE /* MapOverlayView.swift in Sources */,
 				818438462B3CBE070013EFBD /* JSONCoder.swift in Sources */,
 				81E255D22B3C8F7B0063DCAB /* User.swift in Sources */,
+				81A94E2E2B44710E00B63C9F /* ImageSelectorView.swift in Sources */,
 				81B7B1542B3E0192009062AE /* GlassyFontModifier.swift in Sources */,
 				8184383E2B3CAD5C0013EFBD /* AuthManager.swift in Sources */,
+				81A94E312B4478DC00B63C9F /* WreckpointerData.xcdatamodeld in Sources */,
 				81AF6E3D2B1B6913000C3CBB /* MapViewModel.swift in Sources */,
+				81A94E362B447C6B00B63C9F /* CoreDataCoder.swift in Sources */,
+				81A94E2C2B44710800B63C9F /* ImageView.swift in Sources */,
+				81A94E332B447BD800B63C9F /* CoreDataManager.swift in Sources */,
 				818438442B3CB2020013EFBD /* HTTPServer.swift in Sources */,
 				816761F32A8BB48E00A8A2A4 /* WreckpointerNetwork.swift in Sources */,
 				814D9AC22B3B6604005B13D4 /* HTTPHeaders.swift in Sources */,
@@ -402,8 +455,11 @@
 				814D9AC02B3B6604005B13D4 /* HTTPMethods.swift in Sources */,
 				81B7B14A2B3DFF00009062AE /* WreckRowView.swift in Sources */,
 				818438402B3CAD680013EFBD /* ModeratorsManager.swift in Sources */,
+				8178D6042B435F3700C761CF /* AddUpdateWreckView.swift in Sources */,
+				81A94E2A2B44709100B63C9F /* WreckImagesView.swift in Sources */,
 				81DD4E8C2B38495500E58646 /* WreckTypes.swift in Sources */,
 				81B7B1592B3E0192009062AE /* ColoredBorderModifier.swift in Sources */,
+				814D5CD02B3EC17B005C1E40 /* OptionsView.swift in Sources */,
 				81B7B1582B3E0192009062AE /* BorderButtonModifier.swift in Sources */,
 				81B6D0F62A601D4A00B5978F /* StringExtensions.swift in Sources */,
 			);
@@ -628,6 +684,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		81A94E2F2B4478DC00B63C9F /* WreckpointerData.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				81A94E302B4478DC00B63C9F /* WreckpointerData.xcdatamodel */,
+			);
+			currentVersion = 81A94E302B4478DC00B63C9F /* WreckpointerData.xcdatamodel */;
+			path = WreckpointerData.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 816E9FB129CAF74E00C3BC0F /* Project object */;
 }

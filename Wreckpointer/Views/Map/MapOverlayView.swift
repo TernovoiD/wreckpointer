@@ -42,19 +42,9 @@ struct MapOverlayView: View {
             Spacer()
         }
         .padding()
-        
-        //    private var searchedWrecksList: some View {
-        //
-        //    }
-        
-        //    private func dismissSearch() {
-        //        viewModel.textToSearch = ""
-        //        searchFieldSelected = false
-        //    }
-        
     }
     
-    var placeholder: some View {
+    private var placeholder: some View {
         HStack {
             Button(action: { 
                 activate(element: .search)
@@ -64,6 +54,15 @@ struct MapOverlayView: View {
                     Label("Search", systemImage: "magnifyingglass")
                 }
             })
+            Color.gray
+                .frame(maxWidth: 1, maxHeight: 30)
+            NavigationLink {
+                AddUpdateWreckView()
+            } label: {
+                Color.clear.overlay {
+                    Label("Add", systemImage: "plus.circle")
+                }
+            }
             Color.gray
                 .frame(maxWidth: 1, maxHeight: 30)
             Button(action: { activate(element: .filter) }, label: {
@@ -76,7 +75,7 @@ struct MapOverlayView: View {
         .foregroundStyle(.secondary)
     }
     
-    var searchPlate: some View {
+    private var searchPlate: some View {
         VStack(spacing: 0) {
             HStack {
                 TextField("RMS Titanic", text: $textToSearch.animation(.easeInOut))
@@ -109,7 +108,7 @@ struct MapOverlayView: View {
         }
     }
     
-    var filterPlate: some View {
+    private var filterPlate: some View {
         VStack(alignment: .leading, spacing: 5) {
             DatePicker("From", selection: $minimumDateFilter, displayedComponents: .date)
                 .datePickerStyle(.compact)
@@ -122,7 +121,7 @@ struct MapOverlayView: View {
         .padding()
     }
     
-    var wreckTypePicker: some View {
+    private var wreckTypePicker: some View {
         HStack {
             Text("Type")
             Spacer()
@@ -140,7 +139,7 @@ struct MapOverlayView: View {
         }
     }
     
-    var wreckCausePicker: some View {
+    private var wreckCausePicker: some View {
         HStack {
             Text("Cause")
             Spacer()
@@ -170,7 +169,7 @@ struct MapOverlayView: View {
         LinearGradient(colors: [Color.white, Color.blue,Color.green], startPoint: .topTrailing, endPoint: .bottomLeading)
             .blur(radius: 10)
             .ignoresSafeArea()
-        MapOverlayView(activeUIElement: .constant(.search),
+        MapOverlayView(activeUIElement: .constant(nil),
                        mapSelectedWreck: .constant(nil),
                        filteredWrecks: .constant([Wreck.test, Wreck.test, Wreck.test, Wreck.test, Wreck.test]),
                        textToSearch: .constant(""),

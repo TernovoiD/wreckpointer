@@ -10,15 +10,19 @@ import SwiftUI
 struct WreckpointerView: View {
     
     @EnvironmentObject var wreckpointer: WreckpointerNetwork
-    @State var moderatoTab: Bool = false
+    @State var moderatorTab: Bool = true
     
     var body: some View {
         TabView {
             MapView().tabItem { Label("Map", systemImage: "globe.americas") }
-            Circle().tabItem { Label("Home", systemImage: "house.fill") }
-            Circle().tabItem { Label("Statisctics", systemImage: "chart.bar.xaxis.ascending") }
-            Circle().tabItem { Label("Options", systemImage: "gear.circle") }
-            Circle().tabItem { Label("Moderator", systemImage: "lock.rectangle.stack.fill") }
+            Text("Home").tabItem { Label("Home", systemImage: "house.fill") }
+            Text("Statistic").tabItem { Label("Statisctics", systemImage: "chart.bar.xaxis.ascending") }
+            OptionsView(showModeratorPage: $moderatorTab)
+                .tabItem { Label("Options", systemImage: "gear.circle") }
+            if moderatorTab {
+                ModeratorView()
+                    .tabItem { Label("Moderator", systemImage: "lock.rectangle.stack.fill") }
+            }
         }
         .alert(isPresented: $wreckpointer.error, content: {
             Alert(title: Text("Error"),

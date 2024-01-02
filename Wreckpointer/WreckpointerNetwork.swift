@@ -63,6 +63,7 @@ extension WreckpointerNetwork {
     func loadWrecks() async {
         do {
             wrecks = try await wrecksManager.fetchAll()
+            print(wrecks)
         } catch let error {
             showError(withMessage: error.localizedDescription)
         }
