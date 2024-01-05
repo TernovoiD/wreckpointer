@@ -10,7 +10,7 @@ import MapKit
 
 struct iOS14WreckpointerMap: View {
     
-    @Binding var wrecks: [Wreck]
+    @EnvironmentObject var server: WreckpointerNetwork
     @Binding var selectedWreck: Wreck?
     @State var mapRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 30,
                                                                              longitude: -75),
@@ -18,11 +18,21 @@ struct iOS14WreckpointerMap: View {
                                                                      longitudeDelta: 120))
     
     var body: some View {
-        Map(coordinateRegion: $mapRegion, annotationItems: wrecks) { wreck in
+        Map(coordinateRegion: $mapRegion, annotationItems: server.filteredWrecks) { wreck in
             MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: wreck.hasCoordinates.latitude, longitude: wreck.hasCoordinates.longitude)) {
-                Circle()
-                    .foregroundStyle(Color.red)
-                    .scaleEffect(0.5)
+                
+                if mapRegion.span.longitudeDelta < 30 {
+                    MapPinMedium(wreck: wreck)
+                        .onTapGesture {
+                            withAnimation(.spring) {
+                                selectedWreck = wreck
+                            }
+                        }
+                } else {
+                    Circle()
+                        .foregroundStyle(Color.red)
+                        .scaleEffect(0.5)
+                }
             }
         }
         .onChange(of: selectedWreck, perform: { newSelectedWreck in
@@ -45,6 +55,7 @@ struct iOS14WreckpointerMap: View {
 }
 
 #Preview {
-    iOS14WreckpointerMap(wrecks: .constant([]), selectedWreck: .constant(nil))
+    iOS14WreckpointerMap(selectedWreck: .constant(nil))
         .ignoresSafeArea()
+        .environmentObject(WreckpointerNetwork())
 }

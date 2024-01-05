@@ -15,7 +15,7 @@ struct ColoredBorderModifier: ViewModifier {
         content
             .background(
                 RoundedRectangle(cornerRadius: 15, style: .continuous)
-                    .stroke(lineWidth: 2)
+                    .stroke(lineWidth: 3)
                     .foregroundStyle(color)
             )
             .background()

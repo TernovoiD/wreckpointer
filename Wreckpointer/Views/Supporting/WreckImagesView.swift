@@ -9,7 +9,7 @@ import SwiftUI
 
 struct WreckImagesView: View {
     
-    @State var wreckImages: [WreckImage]
+    @State var wreckImages: [Data]
     @State var images = ["warship.armada", "warship.armada1", "warship.armada2", "warship.armada3"]
     
     var body: some View {

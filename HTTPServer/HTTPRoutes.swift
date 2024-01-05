@@ -7,7 +7,7 @@
 import Foundation
 
 public enum ServerURL {
-    private var baseURL: String { return "http://127.0.0.1:8080" }
+    private var baseURL: String { return "https://wreckpointer-v3-79ac712aeb5d.herokuapp.com" }
     private var api: String { return "/api/v1" }
     
     // Login

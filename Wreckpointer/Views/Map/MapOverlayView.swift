@@ -9,22 +9,29 @@ import SwiftUI
 
 struct MapOverlayView: View {
     
+    @EnvironmentObject var server: WreckpointerNetwork
+    @EnvironmentObject var store: PurchasesManager
     @FocusState private var searchFieldSelected: Bool
     @Binding var activeUIElement: MapUIElement?
     @Binding var mapSelectedWreck: Wreck?
-    @Binding var filteredWrecks: [Wreck]
     
     @Binding var textToSearch: String
+    @Binding var filterByDate: Bool
     @Binding var minimumDateFilter: Date
     @Binding var maximumDateFilter: Date
     @Binding var wreckTypeFilter: WreckTypes?
     @Binding var wreckCauseFilter: WreckCauses?
     @Binding var wreckDiverOnlyFilter: Bool
+    let filterAction: () -> Void
     
     var body: some View {
         VStack {
             VStack {
-                if activeUIElement == .search {
+                if let wreck = mapSelectedWreck {
+                    SelectedWreckView(wreck: wreck)
+                        .coloredBorder(color: .primary)
+                        .padding(12)
+                } else if activeUIElement == .search {
                     searchPlate
                         .coloredBorder(color: .primary)
                         .padding(12)
@@ -78,7 +85,7 @@ struct MapOverlayView: View {
     private var searchPlate: some View {
         VStack(spacing: 0) {
             HStack {
-                TextField("RMS Titanic", text: $textToSearch.animation(.easeInOut))
+                TextField("RMS Titanic", text: $textToSearch)
                     .focused($searchFieldSelected)
                     .submitLabel(.search)
                     .autocorrectionDisabled(true)
@@ -92,9 +99,9 @@ struct MapOverlayView: View {
             .padding(.top, 10)
             .padding(.bottom, 10)
             RoundedRectangle(cornerRadius: 1)
-                .frame(maxHeight: 1)
+                .frame(maxHeight: 2)
             List {
-                ForEach($filteredWrecks) { $wreck in
+                ForEach(server.searchedWrecks) { wreck in
                     Button {
                         mapSelectedWreck = wreck
                     } label: {
@@ -109,16 +116,33 @@ struct MapOverlayView: View {
     }
     
     private var filterPlate: some View {
-        VStack(alignment: .leading, spacing: 5) {
-            DatePicker("From", selection: $minimumDateFilter, displayedComponents: .date)
-                .datePickerStyle(.compact)
-            DatePicker("To", selection: $maximumDateFilter, displayedComponents: .date)
-                .datePickerStyle(.compact)
-            wreckTypePicker
-            wreckCausePicker
-            Toggle("Wreck dives only", isOn: $wreckDiverOnlyFilter)
+        VStack {
+            VStack(alignment: .leading, spacing: 10) {
+                wreckTypePicker
+                wreckCausePicker
+                Toggle("Wreck dives only", isOn: $wreckDiverOnlyFilter)
+                Toggle("Filter by date", isOn: $filterByDate.animation())
+                if filterByDate {
+                    DatePicker("From", selection: $minimumDateFilter, displayedComponents: .date)
+                        .datePickerStyle(.compact)
+                    DatePicker("To", selection: $maximumDateFilter, displayedComponents: .date)
+                        .datePickerStyle(.compact)
+                }
+            }
+            .padding()
+            VStack(spacing: 0) {
+                RoundedRectangle(cornerRadius: 1)
+                    .frame(maxHeight: 2)
+                Button(action: { filterAction() }, label: {
+                    Color.clear
+                        .overlay {
+                            Text("Clear")
+                                .font(.headline.bold())
+                        }
+                        .frame(maxHeight: 40)
+                })
+            }
         }
-        .padding()
     }
     
     private var wreckTypePicker: some View {
@@ -169,14 +193,17 @@ struct MapOverlayView: View {
         LinearGradient(colors: [Color.white, Color.blue,Color.green], startPoint: .topTrailing, endPoint: .bottomLeading)
             .blur(radius: 10)
             .ignoresSafeArea()
-        MapOverlayView(activeUIElement: .constant(nil),
-                       mapSelectedWreck: .constant(nil),
-                       filteredWrecks: .constant([Wreck.test, Wreck.test, Wreck.test, Wreck.test, Wreck.test]),
+        MapOverlayView(activeUIElement: .constant(.filter),
+                       mapSelectedWreck: .constant(Wreck.test),
                        textToSearch: .constant(""),
+                       filterByDate: .constant(true),
                        minimumDateFilter: .constant(Date()),
                        maximumDateFilter: .constant(Date()),
                        wreckTypeFilter: .constant(nil),
                        wreckCauseFilter: .constant(nil),
-                       wreckDiverOnlyFilter: .constant(false))
+                       wreckDiverOnlyFilter: .constant(false),
+                       filterAction: { } )
+        .environmentObject(WreckpointerNetwork())
+        .environmentObject(PurchasesManager())
     }
 }

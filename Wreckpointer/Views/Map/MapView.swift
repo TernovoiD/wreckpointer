@@ -15,65 +15,81 @@ enum MapUIElement {
 struct MapView: View {
     
     @EnvironmentObject var server: WreckpointerNetwork
-    @StateObject var viewModel = MapViewModel()
+    @State var presentedWreck: Wreck?
     @State var selectedWreck: Wreck?
     @State var activeUIElement: MapUIElement?
     
     var body: some View {
         NavigationView {
             ZStack {
-                iOS14WreckpointerMap(wrecks: $server.wrecks, selectedWreck: $selectedWreck)
+                iOS14WreckpointerMap(selectedWreck: $selectedWreck)
                     .ignoresSafeArea(edges: .top)
-                if activeUIElement != nil {
+                if activeUIElement != nil || selectedWreck != nil {
                     Color.black.opacity(0.6)
                         .ignoresSafeArea(edges: .top)
                         .onTapGesture {
                             withAnimation(.spring) {
                                 activeUIElement = .none
+                                selectedWreck = nil
                             }
                         }
                 }
                 MapOverlayView(activeUIElement: $activeUIElement,
-                               mapSelectedWreck: .constant(nil),
-                               filteredWrecks: .constant([ ]),
-                               textToSearch: .constant(""),
-                               minimumDateFilter: .constant(Date()),
-                               maximumDateFilter: .constant(Date()),
-                               wreckTypeFilter: .constant(nil),
-                               wreckCauseFilter: .constant(nil),
-                               wreckDiverOnlyFilter: .constant(false))
+                               mapSelectedWreck: $selectedWreck,
+                               textToSearch: $server.textToSearch,
+                               filterByDate: $server.filterByDate,
+                               minimumDateFilter: $server.minimumDateFilter,
+                               maximumDateFilter: $server.maximumDateFilter,
+                               wreckTypeFilter: $server.wreckTypeFilter,
+                               wreckCauseFilter: $server.wreckCauseFilter,
+                               wreckDiverOnlyFilter: $server.wreckDiverOnlyFilter) { clearFilter() }
                 .padding(.top)
             }
+            .sheet(item: $presentedWreck) { wreck in
+                WreckDetailView(wreck: wreck)
+            }
+            .onChange(of: server.filterByDate, perform: { filterByDate in
+                if filterByDate {
+                    clearFilterDates()
+                }
+            })
         }
     }
     
-//    private var minimumDateOfLossDate: Date {
-//        var datesArray: [Date] = [ ]
-//        let wrecks = server.wrecks.filter({ $0.validD.isValid })
-//        
-//        if wrecks.isEmpty {
-//            return Date()
-//        } else {
-//            for wreck in wrecks {
-//                datesArray.append(wreck.dateOfLoss.date)
-//            }
-//            return datesArray.min() ?? Date()
-//        }
-//    }
+    private var minimumDateOfLossDate: Date {
+        var datesArray: [Date] = [ ]
+        let wrecks = server.databaseWrecks.filter({ $0.hasDateOfLoss.isValid })
+        
+        if wrecks.isEmpty {
+            return Date()
+        } else {
+            for wreck in wrecks {
+                datesArray.append(wreck.hasDateOfLoss.date)
+            }
+            return datesArray.min() ?? Date()
+        }
+    }
     
     private func clearFilter() {
-        viewModel.textToSearch = ""
-        viewModel.minimumDateFilter = Date()
-//        viewModel.maximumDateFilter = minimumDateOfLossDate
-        viewModel.wreckTypeFilter = nil
-        viewModel.wreckCauseFilter = nil
-        viewModel.wreckDiverOnlyFilter = false
+        withAnimation() {
+            server.textToSearch = ""
+            server.filterByDate = false
+            server.wreckTypeFilter = nil
+            server.wreckCauseFilter = nil
+            server.wreckDiverOnlyFilter = false
+        }
+    }
+    
+    private func clearFilterDates() {
+        withAnimation() {
+            server.maximumDateFilter = Date()
+            server.minimumDateFilter = minimumDateOfLossDate
+        }
     }
 }
 
 #Preview {
     MapView()
         .environmentObject(WreckpointerNetwork())
-        .environmentObject(MapViewModel())
         .clipShape(RoundedRectangle(cornerRadius: 25))
 }

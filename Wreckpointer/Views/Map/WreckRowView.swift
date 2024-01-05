@@ -13,12 +13,9 @@ struct WreckRowView: View {
     
     var body: some View {
         HStack {
-//            ImageView(imageData: $wreck.imageData)
-//                .frame(maxWidth: 40, maxHeight: 40)
-//                .clipShape(RoundedRectangle(cornerRadius: 5, style: .continuous))
             Image(systemName: "ferry")
             VStack(alignment: .leading, spacing: 0) {
-                Text(wreck.hasname)
+                Text(wreck.hasName)
                     .font(.subheadline.weight(.medium))
                 let lossDate = wreck.hasDateOfLoss.isValid ? "\(wreck.hasDateOfLoss.date.formatted(date: .abbreviated, time: .omitted))" : "unknown"
                 Text("Date of loss: " + lossDate)

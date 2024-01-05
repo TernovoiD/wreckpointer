@@ -11,11 +11,13 @@ import SwiftUI
 struct WreckpointerApp: App {
     
     @StateObject var wreckpointer = WreckpointerNetwork()
+    @StateObject var store = PurchasesManager()
     
     var body: some Scene {
         WindowGroup {
             WreckpointerView()
                 .environmentObject(wreckpointer)
+                .environmentObject(store)
         }
     }
 }

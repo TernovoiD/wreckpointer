@@ -29,13 +29,10 @@ class CoreDataCoder {
                                      dive: entity.dive,
                                      dateOfLoss: entity.dateOfLoss,
                                      lossOfLive: entity.lossOfLive == 999999 ? nil : Int(exactly: entity.lossOfLive),
-                                     history: entity.history,
                                      displacement: entity.displacement == 999999 ? nil : Int(exactly: entity.displacement),
-                                     depth: entity.depth == 999999 ? nil : Int(exactly: entity.depth))
-            if let data = entity.images {
-                let images = try JSONCoder.shared.decodeArrayFromData(data: data) as [WreckImage]
-                encodedWreck.images = images
-            }
+                                     depth: entity.depth == 999999 ? nil : Int(exactly: entity.depth),
+                                     image: entity.image,
+                                     history: entity.history)
             wrecks.append(encodedWreck)
         }
         return wrecks
@@ -49,10 +46,7 @@ class CoreDataCoder {
         newEntity.name = wreck.name
         newEntity.latitude = wreck.latitude ?? 999999
         newEntity.longitude = wreck.longitude ?? 999999
-        if let images = wreck.images {
-            let data = try JSONCoder.shared.encodeArrayToData(items: images)
-            newEntity.images = data
-        }
+        newEntity.image = wreck.image
         newEntity.type = wreck.type?.rawValue
         newEntity.cause = wreck.cause?.rawValue
         newEntity.approved = wreck.approved ?? false

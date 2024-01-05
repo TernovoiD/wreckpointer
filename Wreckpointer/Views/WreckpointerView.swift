@@ -10,18 +10,28 @@ import SwiftUI
 struct WreckpointerView: View {
     
     @EnvironmentObject var wreckpointer: WreckpointerNetwork
-    @State var moderatorTab: Bool = true
+    @EnvironmentObject var store: PurchasesManager
+    @State var moderatorTab: Bool = false
+    @State var selectedPage: Int = 0
     
     var body: some View {
-        TabView {
-            MapView().tabItem { Label("Map", systemImage: "globe.americas") }
-            Text("Home").tabItem { Label("Home", systemImage: "house.fill") }
-            Text("Statistic").tabItem { Label("Statisctics", systemImage: "chart.bar.xaxis.ascending") }
+        TabView(selection: $selectedPage) {
+            MapView()
+                .tabItem { Label("Map", systemImage: "globe.americas") }
+                .tag(0)
+            HomeView()
+                .tabItem { Label("Home", systemImage: "house.fill") }
+                .tag(1)
+            Text("Statistic")
+                .tabItem { Label("Statisctics", systemImage: "chart.bar.xaxis.ascending") }
+                .tag(2)
             OptionsView(showModeratorPage: $moderatorTab)
                 .tabItem { Label("Options", systemImage: "gear.circle") }
+                .tag(3)
             if moderatorTab {
                 ModeratorView()
                     .tabItem { Label("Moderator", systemImage: "lock.rectangle.stack.fill") }
+                    .tag(4)
             }
         }
         .alert(isPresented: $wreckpointer.error, content: {
@@ -37,4 +47,5 @@ struct WreckpointerView: View {
 #Preview {
     WreckpointerView()
         .environmentObject(WreckpointerNetwork())
+        .environmentObject(PurchasesManager())
 }
