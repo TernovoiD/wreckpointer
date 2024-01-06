@@ -10,22 +10,21 @@ import MapKit
 
 struct iOS14WreckpointerMap: View {
     
-    @EnvironmentObject var server: WreckpointerNetwork
-    @Binding var selectedWreck: Wreck?
-    @State var mapRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 30,
-                                                                             longitude: -75),
-                                              span: MKCoordinateSpan(latitudeDelta: 80,
-                                                                     longitudeDelta: 120))
+    @ObservedObject var map: MapViewModel
+    @State private var mapRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 30,
+                                                                                     longitude: -75),
+                                                      span: MKCoordinateSpan(latitudeDelta: 80,
+                                                                             longitudeDelta: 120))
     
     var body: some View {
-        Map(coordinateRegion: $mapRegion, annotationItems: server.filteredWrecks) { wreck in
+        Map(coordinateRegion: $mapRegion, annotationItems: map.filteredWrecks) { wreck in
             MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: wreck.hasCoordinates.latitude, longitude: wreck.hasCoordinates.longitude)) {
                 
                 if mapRegion.span.longitudeDelta < 30 {
                     MapPinMedium(wreck: wreck)
                         .onTapGesture {
                             withAnimation(.spring) {
-                                selectedWreck = wreck
+                                map.selectedWreck = wreck
                             }
                         }
                 } else {
@@ -35,7 +34,7 @@ struct iOS14WreckpointerMap: View {
                 }
             }
         }
-        .onChange(of: selectedWreck, perform: { newSelectedWreck in
+        .onChange(of: map.selectedWreck, perform: { newSelectedWreck in
             if let wreck = newSelectedWreck {
                 moveMap(to: wreck)
             }
@@ -55,7 +54,6 @@ struct iOS14WreckpointerMap: View {
 }
 
 #Preview {
-    iOS14WreckpointerMap(selectedWreck: .constant(nil))
+    iOS14WreckpointerMap(map: MapViewModel())
         .ignoresSafeArea()
-        .environmentObject(WreckpointerNetwork())
 }

@@ -18,20 +18,23 @@ struct WreckSelector: View {
             TabView(selection: $selectedTabIndex) {
                 ForEach(0..<wrecks.count, id: \.self) { wreckNumber in
                     GeometryReader { proxy in
-                        Button(action: { presentedWreck = wrecks[wreckNumber]}, label: {ImageView(imageData: wrecks[wreckNumber].image)
+                        NavigationLink(destination: {
+                            WreckView(wreck: wrecks[wreckNumber])
+                        }, label: {
+                            ImageView(imageData: $wrecks[wreckNumber].image)
                                 .frame(maxHeight: 320)
                                 .clipShape(RoundedRectangle(cornerRadius: 25, style: .continuous))
                                 .rotation3DEffect(.degrees(proxy.frame(in: .global).minX / -10), axis: (x: 0, y: 1, z: 0))
                                 .shadow(color: Color.black.opacity(0.6), radius: 5, x: 0, y: 5)
-                                .blur(radius: abs(proxy.frame(in: .global).minX) / 50).overlay(
+                                .blur(radius: abs(proxy.frame(in: .global).minX) / 50)
+                                .overlay(
                                     Text(wrecks[wreckNumber].hasName)
                                         .font(.title2.weight(.black))
                                         .foregroundStyle(Color.white)
                                         .shadow(color: .black, radius: 3)
                                         .offset(x: 0, y: 120)
                                         .frame(maxWidth: 200)
-                                        .offset(x: proxy.frame(in: .global).minX)
-                                )
+                                        .offset(x: proxy.frame(in: .global).minX))
                         })
                         .padding()
                         
@@ -47,7 +50,7 @@ struct WreckSelector: View {
         }
         .frame(height: 380)
         .sheet(item: $presentedWreck) { wreck in
-            WreckDetailView(wreck: wreck)
+            WreckView(wreck: wreck)
         }
     }
     

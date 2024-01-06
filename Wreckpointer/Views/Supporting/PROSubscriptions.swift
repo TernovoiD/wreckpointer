@@ -8,7 +8,7 @@
 import SwiftUI
 import StoreKit
 
-struct SubscriptionsView: View {
+struct PROSubscriptions: View {
     
     @EnvironmentObject var store: PurchasesManager
     @Environment(\.dismiss) var dismiss
@@ -64,7 +64,7 @@ struct SubscriptionsView: View {
 
 #Preview {
     NavigationView {
-        SubscriptionsView()
+        PROSubscriptions()
             .environmentObject(PurchasesManager())
     }
 }

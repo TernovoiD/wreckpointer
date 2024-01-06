@@ -22,7 +22,7 @@ struct SelectedWreckView: View {
             .padding(15)
             RoundedRectangle(cornerRadius: 1)
                 .frame(maxHeight: 2)
-            buttons
+            readButton
                 .frame(maxHeight: 40)
         }
     }
@@ -41,23 +41,17 @@ struct SelectedWreckView: View {
         }
     }
     
-    private var buttons: some View {
-        HStack {
-            Button(action: {}, label: {
-                Color.clear
-                    .overlay {
-                        Text("Edit")
-                    }
-            })
-            Button(action: {}, label: {
-                Color.clear
-                    .overlay {
-                        Text("Read")
-                    }
-            })
+    private var readButton: some View {
+        NavigationLink {
+            WreckView(wreck: wreck)
+        } label: {
+            Color.clear
+                .overlay {
+                    Text("Read")
+                }
+                .foregroundStyle(Color.primary)
+                .font(.headline.bold())
         }
-        .foregroundStyle(Color.primary)
-        .font(.headline.bold())
     }
 }
 

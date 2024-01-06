@@ -12,8 +12,9 @@ import PhotosUI
 struct ImageSelectorView: View {
     @State var selectedImage: PhotosPickerItem?
     @State var imageWeight: Double = 0
-    
     @Binding var selectedImageData: Data?
+    // Warning
+    @State var warning: Bool = false
     
     
     var body: some View {
@@ -23,26 +24,36 @@ struct ImageSelectorView: View {
                     updateImage(with: newItem)
                 }
             }
+            .alert(isPresented: $warning, content: {
+                Alert(title: Text("Warning"),
+                      message: Text("Image weight must not exceed 0.2MB"),
+                      dismissButton: .default(Text("Okay"), action: {
+                    warning = false
+                }))
+            })
     }
     
     private var photosPicker: some View {
         PhotosPicker(selection: $selectedImage, photoLibrary: .shared()) {
-            if selectedImageData == nil {
-                placeholder
+            if let selectedImageData,
+               let uiImage = UIImage(data: selectedImageData) {
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .aspectRatio(1, contentMode: .fill)
             } else {
-                image
+                placeholder
             }
         }
     }
     
     private var placeholder: some View {
-        Color.gray.opacity(0.2)
+        Color.secondary.opacity(0.6)
             .overlay {
                 Text("Select image")
                     .font(.title2)
                     .foregroundColor(.white)
                     .padding()
-                    .background(Color.gray.opacity(0.25))
+                    .background(Color.gray)
                     .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
             }
     }
@@ -53,8 +64,10 @@ struct ImageSelectorView: View {
                let uiImage = UIImage(data: selectedImageData) {
                 Image(uiImage: uiImage)
                     .resizable()
-                    .aspectRatio(contentMode: .fill)
+                    .aspectRatio(1, contentMode: .fit)
                     .clipped()
+            } else {
+                placeholder
             }
         }
     }
@@ -63,9 +76,9 @@ struct ImageSelectorView: View {
         VStack {
             Spacer()
             imageWeightCounter
-            .padding(.bottom, 10)
-            .padding(.horizontal)
-            .background(.regularMaterial)
+                .padding(.bottom, 10)
+                .padding(.horizontal)
+                .background(.regularMaterial)
         }
     }
     
@@ -96,8 +109,13 @@ struct ImageSelectorView: View {
     
     private func updateImage(with newItem: PhotosPickerItem?) {
         Task {
-            if let data = try? await newItem?.loadTransferable(type: Data.self) {
-                selectedImageData = data
+            if var data = try? await newItem?.loadTransferable(type: Data.self) {
+                if data.count > 200000 {
+                    warning = true
+                    selectedImage = nil
+                } else {
+                    selectedImageData = data
+                }
             }
             imageWeight = Double(selectedImageData?.count ?? 0)
         }
@@ -107,8 +125,6 @@ struct ImageSelectorView: View {
 #Preview {
     if #available(iOS 16, *) {
         ImageSelectorView(selectedImageData: .constant(nil))
-            .padding()
-            .frame(height: 200)
     } else {
         Circle()
     }

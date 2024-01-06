@@ -14,34 +14,34 @@ final class HTTPServer {
     private init() { }
     
     func sendRequest(url: URL,
-                    data: Data? = nil,
-                    HTTPMethod: HTTPMethods,
-                    loginToken: String? = nil,
-                    basicAuthorization: String? = nil) async throws -> Data {
-         
-         // Create request
-         var request = URLRequest(url: url)
+                     data: Data? = nil,
+                     HTTPMethod: HTTPMethods,
+                     loginToken: String? = nil,
+                     basicAuthorization: String? = nil) async throws -> Data {
+        
+        // Create request
+        var request = URLRequest(url: url)
         request.httpMethod = HTTPMethod.rawValue
-         request.addValue(MIMETypes.JSON.rawValue, forHTTPHeaderField: HTTPHeaders.contentType.rawValue)
-         
-         // Add data
-         if let data {
-             request.httpBody = data
-         }
-         
-         // Add user login and password
-         if let basicAuthorization {
-             request.addValue("Basic \(basicAuthorization)", forHTTPHeaderField: HTTPHeaders.authorization.rawValue)
-         }
-         
-         // Add user token
-         if let loginToken {
-             request.addValue("Bearer \(loginToken)", forHTTPHeaderField: HTTPHeaders.authorization.rawValue)
-         }
-         
-         let serverResponse = try await URLSession.shared.data(for: request)
-         return try verify(serverResponse: serverResponse)
-     }
+        request.addValue(MIMETypes.JSON.rawValue, forHTTPHeaderField: HTTPHeaders.contentType.rawValue)
+        
+        // Add data
+        if let data {
+            request.httpBody = data
+        }
+        
+        // Add user login and password
+        if let basicAuthorization {
+            request.addValue("Basic \(basicAuthorization)", forHTTPHeaderField: HTTPHeaders.authorization.rawValue)
+        }
+        
+        // Add user token
+        if let loginToken {
+            request.addValue("Bearer \(loginToken)", forHTTPHeaderField: HTTPHeaders.authorization.rawValue)
+        }
+        
+        let serverResponse = try await URLSession.shared.data(for: request)
+        return try verify(serverResponse: serverResponse)
+    }
     
     private func verify(serverResponse: (Data, URLResponse)) throws -> Data {
         let (data, response) = serverResponse

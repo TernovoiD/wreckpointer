@@ -8,34 +8,61 @@
 import SwiftUI
 
 struct ModeratorView: View {
+    
+    @StateObject var viewModel = ModeratorViewModel()
+    
     var body: some View {
-        NavigationView {
-            List {
-                NavigationLink { 
-                    Text("Created wrecks")
-                } label: {
-                    Label("Newly created wrecks", systemImage: "calendar.badge.plus")
+        ZStack {
+            NavigationView {
+                List {
+                    ForEach(viewModel.searchedWrecks) { wreck in
+                        NavigationLink {
+                            AddUpdateWreckView(moderatorVM: viewModel, wreck: wreck)
+                        } label: {
+                            WreckRowView(wreck: wreck, arrow: false)
+                        }
+                    }
+                    .onDelete(perform: delete)
                 }
-                NavigationLink {
-                    Text("Unapproved wrecks")
-                } label: {
-                    Label("Unapproved wrecks", systemImage: "checkmark.circle.badge.xmark")
-                }
-            }
-            .toolbar {
-                ToolbarItem {
-                    NavigationLink {
-                        Text("Moderator access")
-                    } label: {
-                        Text("Access")
+                .navigationTitle("Moderator")
+                .searchable(text: $viewModel.textToSearch)
+                .refreshable {
+                    Task {
+                        await viewModel.loadWrecks()
                     }
                 }
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Toggle("Unapproved", isOn: $viewModel.unapprovedOnly)
+                            .padding(.horizontal)
+                    }
+                    ToolbarItem {
+                        EditButton()
+                    }
+                    
+                }
             }
-            .navigationTitle("Moderator")
+            LoginPageView(viewModel: viewModel)
+                .offset(x: viewModel.user == nil ? 0 : 1000)
+        }
+        .task {
+            await viewModel.authorize()
+        }
+        .alert(viewModel.errorMessage, isPresented: $viewModel.error) {
+            Button("OK", role: .cancel) { }
+        }
+    }
+    
+    private func delete(indexSet: IndexSet) {
+        indexSet.forEach { index in
+            Task {
+                await viewModel.delete(wreck: viewModel.searchedWrecks[index])
+            }
         }
     }
 }
 
 #Preview {
     ModeratorView()
+        .environmentObject(ModeratorViewModel())
 }

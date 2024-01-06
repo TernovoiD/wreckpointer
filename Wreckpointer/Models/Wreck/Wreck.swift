@@ -31,7 +31,9 @@ struct Wreck: Codable, Identifiable, Equatable {
     
     // Computed properties
     
-    var hasCoordinates: (areValid: Bool, latitude: Double, longitude: Double) {
+    var hasCoordinates: (areValid: Bool, 
+                         latitude: Double,
+                         longitude: Double) {
         let areValid = latitude != nil && longitude != nil
         let validLatitude = latitude ?? 0
         let validLongitude = longitude ?? 0
@@ -41,6 +43,12 @@ struct Wreck: Codable, Identifiable, Equatable {
     var hasDateOfLoss: (isValid: Bool, date: Date) {
         let isValid = dateOfLoss != nil
         let validDate = dateOfLoss ?? Date()
+        return (isValid, validDate)
+    }
+    
+    var hasUpdate: (isValid: Bool, date: Date) {
+        let isValid = updatedAt != nil
+        let validDate = updatedAt ?? Date()
         return (isValid, validDate)
     }
     

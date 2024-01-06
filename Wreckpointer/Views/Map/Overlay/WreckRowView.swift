@@ -10,6 +10,7 @@ import SwiftUI
 struct WreckRowView: View {
     
     @State var wreck: Wreck
+    @State var arrow: Bool = true
     
     var body: some View {
         HStack {
@@ -22,9 +23,11 @@ struct WreckRowView: View {
                     .font(.caption.weight(.medium))
             }
             Spacer()
-            Image(systemName: "chevron.right")
-                .font(.headline.bold())
-                .foregroundColor(.accentColor)
+            if arrow {
+                Image(systemName: "chevron.right")
+                    .font(.headline.bold())
+                    .foregroundColor(.accentColor)
+            }
         }
     }
 }

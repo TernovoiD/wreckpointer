@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ImageView: View {
     
-    @State var imageData: Data?
+    @Binding var imageData: Data?
     @State var placehoder: String = "warship.sunk"
     
     var body: some View {
@@ -28,8 +28,7 @@ struct ImageView: View {
 
 struct ImageView_Previews: PreviewProvider {
     static var previews: some View {
-        ImageView(imageData: nil)
-//            .frame(width: 200)
+        ImageView(imageData: .constant(nil))
             .frame(height: 200)
     }
 }

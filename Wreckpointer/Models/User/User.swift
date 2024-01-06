@@ -9,10 +9,22 @@ import Foundation
 
 struct User: Codable, Identifiable, Equatable {
     let id: UUID?
+    let email: String
+    let bio: String?
+    let username: String?
+    let role: UserRoles
     let createdAt: Date?
     let updatedAt: Date?
-    let username: String
-    let role: UserRoles
     
-    static let test = User(id: UUID(uuidString: "12345"), createdAt: Date(), updatedAt: Date(), username: "Moderator_1", role: .moderator)
+    init(id: UUID? = nil, email: String, bio: String? = nil, username: String? = nil, role: UserRoles, createdAt: Date? = nil, updatedAt: Date? = nil) {
+        self.id = id
+        self.email = email
+        self.bio = bio
+        self.username = username
+        self.role = role
+        self.createdAt = createdAt
+        self.updatedAt = updatedAt
+    }
+    
+    static let test = User(email: "moderator1", role: .moderator)
 }

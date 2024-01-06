@@ -7,7 +7,10 @@
 import Foundation
 
 public enum ServerURL {
-    private var baseURL: String { return "https://wreckpointer-v3-79ac712aeb5d.herokuapp.com" }
+    private var baseURL: String {
+        return "https://wreckpointer-v3-79ac712aeb5d.herokuapp.com"
+//        return "http://127.0.0.1:8080"
+    }
     private var api: String { return "/api/v1" }
     
     // Login
@@ -15,12 +18,8 @@ public enum ServerURL {
     // Wrecks
     case wrecks
     case wreck(UUID)
-    case wreckImages(UUID)
-    case wreckImage(UUID, UUID)
-    case wreckApprovedStatus(UUID)
-    // Moderators
-    case moderators
-    case moderator(UUID)
+    case mapWrecks
+    case homePageWrecks
     
     var path: String {
         var endpoint: String
@@ -32,16 +31,10 @@ public enum ServerURL {
             endpoint = "/wrecks"
         case .wreck(let uUID):
             endpoint = "/wrecks/\(uUID.uuidString)"
-        case .wreckImages(let uUID):
-            endpoint = "/wrecks/\(uUID.uuidString)/images"
-        case .wreckImage(let uUID, let uUID2):
-            endpoint = "/wrecks/\(uUID.uuidString)/images/\(uUID2.uuidString)"
-        case .wreckApprovedStatus(let uUID):
-            endpoint = "/wrecks/\(uUID.uuidString)/approved-status"
-        case .moderators:
-            endpoint = "/moderators"
-        case .moderator(let uUID):
-            endpoint = "/moderators/\(uUID.uuidString)"
+        case .mapWrecks:
+            endpoint = "/wrecks/map"
+        case .homePageWrecks:
+            endpoint = "/wrecks/home"
         }
         
         return baseURL + api + endpoint

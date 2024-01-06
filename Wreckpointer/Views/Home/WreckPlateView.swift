@@ -10,10 +10,9 @@ import SwiftUI
 struct WreckPlateView: View {
     
     @State var wreck: Wreck
-    let placeholder: String
     
     var body: some View {
-        ImageView(imageData: wreck.image, placehoder: placeholder)
+        ImageView(imageData: $wreck.image)
             .frame(height: 100)
             .clipShape(RoundedRectangle(cornerRadius: 15))
             .overlay {
@@ -25,7 +24,7 @@ struct WreckPlateView: View {
                             .font(.title3.weight(.black))
                             .foregroundStyle(Color.white)
                             .shadow(color: .black, radius: 3)
-                            .offset(y: 7)
+                            .offset(y: 9)
                     }
                 }
             }
@@ -34,5 +33,5 @@ struct WreckPlateView: View {
 }
 
 #Preview {
-    WreckPlateView(wreck: Wreck.test, placeholder: "warship.sunk")
+    WreckPlateView(wreck: Wreck.test)
 }
