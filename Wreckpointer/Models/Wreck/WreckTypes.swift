@@ -102,9 +102,9 @@ enum WreckTypes: String, Codable, CaseIterable, Identifiable {
         case .helicopter:
             return "Helicopter"
         case .unknown:
-            return "Unknown"
+            return "Unknown type"
         case .other:
-            return "Other"
+            return "Other type"
         }
     }
 }
