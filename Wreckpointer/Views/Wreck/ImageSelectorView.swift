@@ -109,7 +109,7 @@ struct ImageSelectorView: View {
     
     private func updateImage(with newItem: PhotosPickerItem?) {
         Task {
-            if var data = try? await newItem?.loadTransferable(type: Data.self) {
+            if let data = try? await newItem?.loadTransferable(type: Data.self) {
                 if data.count > 200000 {
                     warning = true
                     selectedImage = nil

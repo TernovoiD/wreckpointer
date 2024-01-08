@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 final class HomePageViewModel: ObservableObject {
     
     @Published var random5Wrecks: [Wreck] = [ ]

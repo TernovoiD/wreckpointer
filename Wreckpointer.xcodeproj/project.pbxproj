@@ -57,8 +57,6 @@
 		81665B242B4AE57400052C3C /* MediumWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81665B1F2B4AE4D800052C3C /* MediumWidgetView.swift */; };
 		81665B262B4AE72600052C3C /* WreckInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81665B252B4AE72600052C3C /* WreckInfoView.swift */; };
 		81665B272B4AE72A00052C3C /* WreckInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81665B252B4AE72600052C3C /* WreckInfoView.swift */; };
-		81665B292B4AFF2900052C3C /* SupportWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81665B282B4AFF2900052C3C /* SupportWidgetView.swift */; };
-		81665B2A2B4AFFC900052C3C /* SupportWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81665B282B4AFF2900052C3C /* SupportWidgetView.swift */; };
 		816762042A8C378200A8A2A4 /* DoubleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816762032A8C378200A8A2A4 /* DoubleExtension.swift */; };
 		816E9FBD29CAF74E00C3BC0F /* WreckpointerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816E9FBC29CAF74E00C3BC0F /* WreckpointerApp.swift */; };
 		8178D6042B435F3700C761CF /* AddUpdateWreckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8178D6032B435F3700C761CF /* AddUpdateWreckView.swift */; };
@@ -123,6 +121,7 @@
 /* Begin PBXFileReference section */
 		81003ADC2B49E6D500878ABD /* WreckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WreckView.swift; sourceTree = "<group>"; };
 		81003ADE2B49ECD800878ABD /* AddUpdateWreckViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddUpdateWreckViewModel.swift; sourceTree = "<group>"; };
+		81130F872B4C1166000312A1 /* TodayExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TodayExtension.entitlements; sourceTree = "<group>"; };
 		8138D4DC2B4721EA00505767 /* MapPinMedium.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapPinMedium.swift; sourceTree = "<group>"; };
 		8138D4DE2B472DE500505767 /* SelectedWreckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedWreckView.swift; sourceTree = "<group>"; };
 		814D5CCF2B3EC17B005C1E40 /* OptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsView.swift; sourceTree = "<group>"; };
@@ -153,7 +152,6 @@
 		81665B1F2B4AE4D800052C3C /* MediumWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediumWidgetView.swift; sourceTree = "<group>"; };
 		81665B212B4AE4E400052C3C /* LargeWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeWidgetView.swift; sourceTree = "<group>"; };
 		81665B252B4AE72600052C3C /* WreckInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WreckInfoView.swift; sourceTree = "<group>"; };
-		81665B282B4AFF2900052C3C /* SupportWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportWidgetView.swift; sourceTree = "<group>"; };
 		816762032A8C378200A8A2A4 /* DoubleExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoubleExtension.swift; sourceTree = "<group>"; };
 		816E9FB929CAF74E00C3BC0F /* Wreckpointer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Wreckpointer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		816E9FBC29CAF74E00C3BC0F /* WreckpointerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WreckpointerApp.swift; sourceTree = "<group>"; };
@@ -275,7 +273,6 @@
 				81665B1A2B4AE18700052C3C /* SmallWidgetView.swift */,
 				81665B1F2B4AE4D800052C3C /* MediumWidgetView.swift */,
 				81665B212B4AE4E400052C3C /* LargeWidgetView.swift */,
-				81665B282B4AFF2900052C3C /* SupportWidgetView.swift */,
 			);
 			path = Widget;
 			sourceTree = "<group>";
@@ -283,6 +280,7 @@
 		816E9FB029CAF74E00C3BC0F = {
 			isa = PBXGroup;
 			children = (
+				81130F872B4C1166000312A1 /* TodayExtension.entitlements */,
 				816E9FBB29CAF74E00C3BC0F /* Wreckpointer */,
 				81665AFB2B4AAE9F00052C3C /* Today */,
 				816503382B47E9DA0076EFD4 /* PurchasesManager.swift */,
@@ -322,7 +320,6 @@
 		816E9FCA29CAF78300C3BC0F /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				81665B1D2B4AE4B700052C3C /* Widget */,
 				81AF6E382B1B6793000C3CBB /* WreckpointerView.swift */,
 				81B7B13A2B3DC37A009062AE /* Map */,
 				81B7B1442B3DE0B1009062AE /* Home */,
@@ -330,6 +327,7 @@
 				81B7B13C2B3DC389009062AE /* Moderator */,
 				8165035B2B49BBE10076EFD4 /* Wreck */,
 				81A94E112B44080000B63C9F /* Supporting */,
+				81665B1D2B4AE4B700052C3C /* Widget */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -554,7 +552,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				81665B2A2B4AFFC900052C3C /* SupportWidgetView.swift in Sources */,
 				81665B232B4AE57200052C3C /* LargeWidgetView.swift in Sources */,
 				81665B092B4AAFBA00052C3C /* PurchasesManager.swift in Sources */,
 				81665B152B4AB28B00052C3C /* MIMETypes.swift in Sources */,
@@ -599,7 +596,6 @@
 				81D9CA592B39743100E14B49 /* Wreck.swift in Sources */,
 				81F316C92B47051900558659 /* WreckPlateView.swift in Sources */,
 				81B7B1572B3E0192009062AE /* DegreeSymbolModifier.swift in Sources */,
-				81665B292B4AFF2900052C3C /* SupportWidgetView.swift in Sources */,
 				81003ADF2B49ECD800878ABD /* AddUpdateWreckViewModel.swift in Sources */,
 				8165035A2B49B8AB0076EFD4 /* WreckViewModel.swift in Sources */,
 				81B7B1432B3DD48C009062AE /* MapOverlayView.swift in Sources */,
@@ -651,6 +647,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = TodayExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -660,7 +657,7 @@
 				INFOPLIST_FILE = Today/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Today;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -686,6 +683,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = TodayExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -695,7 +693,7 @@
 				INFOPLIST_FILE = Today/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Today;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -859,7 +857,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0;
+				MARKETING_VERSION = 3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.danyloternovoi.Wreckpointer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -898,7 +896,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0;
+				MARKETING_VERSION = 3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.danyloternovoi.Wreckpointer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

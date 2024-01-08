@@ -12,6 +12,7 @@ enum MapUIElements {
     case filter
 }
 
+@MainActor
 final class MapViewModel: ObservableObject {
     
     @Published var wrecks: [Wreck] = [ ]

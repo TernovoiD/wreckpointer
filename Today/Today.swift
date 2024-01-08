@@ -11,8 +11,6 @@ import MapKit
 
 struct Provider: TimelineProvider {
     
-    @StateObject var store = PurchasesManager()
-    
     func placeholder(in context: Context) -> SimpleEntry {
         SimpleEntry(date: Date(), serverConnection: true, wreck: Wreck.test, mapImage: nil, premium: false)
     }
@@ -29,7 +27,8 @@ struct Provider: TimelineProvider {
             if let wreck = await getRandomWreck() {
                 let mapSnapshot = await generateMapSnapshot(latitude: wreck.hasCoordinates.latitude,
                                                             longitude: wreck.hasCoordinates.longitude)
-                mapSnapshot == nil ? print("empty") : print("not empty")
+                let store = PurchasesManager()
+                await store.updateCustomerProductStatus()
                 let pro = store.hasPRO
                 let entry = SimpleEntry(date: Date(), serverConnection: true, wreck: wreck, mapImage: mapSnapshot, premium: pro)
                 entries.append(entry)
@@ -97,28 +96,15 @@ struct TodayEntryView : View {
     
     @ViewBuilder
     var body: some View {
-        if entry.premium {
-            switch family {
-            case .systemSmall:
-                SmallWidgetView(wreck: entry.wreck)
-            case .systemMedium:
-                MediumWidgetView(wreck: entry.wreck)
-            case .systemLarge:
-                LargeWidgetView(wreck: entry.wreck, map: entry.mapImage)
-            default:
-                Text("Wreckpointer")
-            }
-        } else {
-            switch family {
-            case .systemSmall:
-                SupportWidgetView(description: "")
-            case .systemMedium:
-                SupportWidgetView(description: "Support")
-            case .systemLarge:
-                SupportWidgetView(description: "Support")
-            default:
-                Text("Wreckpointer")
-            }
+        switch family {
+        case .systemSmall:
+            SmallWidgetView(wreck: entry.wreck, subscription: entry.premium)
+        case .systemMedium:
+            MediumWidgetView(wreck: entry.wreck, subscription: entry.premium)
+        case .systemLarge:
+            LargeWidgetView(wreck: entry.wreck, map: entry.mapImage, subscription: entry.premium)
+        default:
+            Text("Wreckpointer")
         }
     }
 }
@@ -143,8 +129,8 @@ struct Today: Widget {
     }
 }
 
-#Preview(as: .systemSmall) {
-    Today()
-} timeline: {
-    SimpleEntry(date: .now, serverConnection: true, wreck: Wreck.test, mapImage: nil, premium: false)
-}
+//#Preview(as: .systemSmall) {
+//    Today()
+//} timeline: {
+//    SimpleEntry(date: .now, serverConnection: true, wreck: Wreck.test, mapImage: nil, premium: false)
+//}

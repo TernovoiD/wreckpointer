@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import WidgetKit
 
 struct OptionsView: View {
     
@@ -33,6 +34,11 @@ struct OptionsView: View {
                     Button(action: { }, label: {
                         Text("Credits")
                     })
+                }
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Reload widget") {
+                        WidgetCenter.shared.reloadAllTimelines()
+                    }
                 }
             }
             .navigationTitle("Options")

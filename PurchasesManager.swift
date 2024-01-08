@@ -108,7 +108,7 @@ class PurchasesManager: ObservableObject {
     }
 
     @MainActor
-    private func updateCustomerProductStatus() async {
+    func updateCustomerProductStatus() async {
         var purchasedSubscriptions: [Product] = []
         for await result in Transaction.currentEntitlements {
             do {

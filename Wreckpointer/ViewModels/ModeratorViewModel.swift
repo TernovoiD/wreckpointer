@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 final class ModeratorViewModel: ObservableObject {
     
     @Published var wrecks: [Wreck] = [ ]
