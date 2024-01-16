@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct SelectedWreckView: View {
-    
     @State var wreck: Wreck
     
     var body: some View {
@@ -23,7 +22,7 @@ struct SelectedWreckView: View {
             RoundedRectangle(cornerRadius: 1)
                 .frame(maxHeight: 2)
             readButton
-                .frame(maxHeight: 40)
+                .frame(maxHeight: 60)
         }
     }
     
@@ -43,7 +42,7 @@ struct SelectedWreckView: View {
     
     private var readButton: some View {
         NavigationLink {
-            WreckView(wreck: wreck)
+            WreckView(wreck: wreck, loadWreck: true)
         } label: {
             Color.clear
                 .overlay {

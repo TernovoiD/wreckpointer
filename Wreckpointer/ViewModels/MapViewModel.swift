@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 enum MapUIElements {
     case search
@@ -14,6 +15,9 @@ enum MapUIElements {
 
 @MainActor
 final class MapViewModel: ObservableObject {
+    
+    @AppStorage("showUnapprovedWrecks",store: UserDefaults(suiteName: "group.com.danyloternovoi.Wreckpointer"))
+    var showUnapprovedWrecks: Bool = false
     
     @Published var wrecks: [Wreck] = [ ]
     @Published var selectedWreck: Wreck?
@@ -32,11 +36,23 @@ final class MapViewModel: ObservableObject {
     @Published var wreckCauseFilter: WreckCauses?
     @Published var wreckDiverOnlyFilter: Bool = false
     
+    init() {
+        Task {
+            await loadWrecks()
+        }
+    }
+    
     var searchedWrecks: [Wreck] {
+        var filteredWrecks = wrecks
+        
+        if !showUnapprovedWrecks {
+            filteredWrecks = filteredWrecks.filter({ $0.isApproved == true })
+        }
+        
         if textToSearch.isEmpty {
-            return wrecks
+            return filteredWrecks
         } else {
-            return wrecks.filter({ $0.hasName.lowercased().contains(textToSearch.lowercased())})
+            return filteredWrecks.filter({ $0.hasName.lowercased().contains(textToSearch.lowercased())})
         }
     }
     
@@ -59,6 +75,9 @@ final class MapViewModel: ObservableObject {
         }
         if wreckDiverOnlyFilter {
             filteredWrecks = filteredWrecks.filter({ $0.isWreckDive == true })
+        }
+        if !showUnapprovedWrecks {
+            filteredWrecks = filteredWrecks.filter({ $0.isApproved == true })
         }
         return filteredWrecks
     }
@@ -95,6 +114,7 @@ final class MapViewModel: ObservableObject {
         self.error = true
     }
     
+    @MainActor
     func loadWrecks() async {
         do {
             guard let url = URL(string: ServerURL.mapWrecks.path) else {
@@ -102,9 +122,7 @@ final class MapViewModel: ObservableObject {
             }
             let serverData = try await HTTPServer.shared.sendRequest(url: url, HTTPMethod: .GET)
             let serverWrecks = try JSONCoder.shared.decodeArrayFromData(data: serverData) as [Wreck]
-            DispatchQueue.main.async {
-                self.wrecks = serverWrecks
-            }
+            self.wrecks = serverWrecks
         } catch let error {
             showError(withMessage: error.localizedDescription)
         }

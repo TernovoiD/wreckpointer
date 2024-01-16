@@ -12,23 +12,33 @@ struct WreckPlateView: View {
     @State var wreck: Wreck
     
     var body: some View {
-        ImageView(imageData: $wreck.image)
-            .frame(height: 100)
-            .clipShape(RoundedRectangle(cornerRadius: 15))
-            .overlay {
-                VStack {
-                    Spacer()
-                    HStack {
-                        Spacer()
-                        Text(wreck.hasName)
-                            .font(.title3.weight(.black))
-                            .foregroundStyle(Color.white)
-                            .shadow(color: .black, radius: 3)
-                            .offset(y: 9)
-                    }
-                }
+        HStack(alignment: .top) {
+        ImageView(imageData: .constant(wreck.image))
+            .frame(width: 100, height: 100)
+            .clipShape(RoundedRectangle(cornerRadius: 10))
+            .shadow(radius: 5)
+        VStack(alignment: .leading, spacing: 5) {
+            Text(wreck.hasName)
+                .font(.headline.weight(.bold))
+                .foregroundStyle(Color.primary)
+            if wreck.hasDateOfLoss.isValid {
+                Text("Date of loss: \(wreck.hasDateOfLoss.date.formatted(date: .abbreviated, time: .omitted))")
             }
-            .shadow(radius: 3)
+            Text("Type: \(wreck.hasType.description)")
+            Text("Cause: \(wreck.hasCause.description)")
+        }
+        .font(.subheadline)
+        .foregroundStyle(Color.secondary)
+        Spacer()
+        VStack {
+            Spacer()
+            Image(systemName: "chevron.right")
+                .foregroundStyle(Color.accentColor)
+            Spacer()
+        }
+    }
+        .foregroundStyle(Color.primary)
+        .frame(height: 100)
     }
 }
 

@@ -9,7 +9,8 @@ import SwiftUI
 
 struct WreckpointerView: View {
     
-    @State var moderatorTab: Bool = true
+    @AppStorage("moderatorTab",store: UserDefaults(suiteName: "group.com.danyloternovoi.Wreckpointer"))
+    var moderatorTab: Bool = false
     @State var selectedPage: Int = 1
     
     var body: some View {
@@ -34,5 +35,4 @@ struct WreckpointerView: View {
 
 #Preview {
     WreckpointerView()
-        .environmentObject(PurchasesManager())
 }

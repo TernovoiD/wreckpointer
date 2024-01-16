@@ -13,8 +13,8 @@ struct iOS14WreckpointerMap: View {
     @ObservedObject var map: MapViewModel
     @State private var mapRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 30,
                                                                                      longitude: -75),
-                                                      span: MKCoordinateSpan(latitudeDelta: 80,
-                                                                             longitudeDelta: 120))
+                                                      span: MKCoordinateSpan(latitudeDelta: 50,
+                                                                             longitudeDelta: 50))
     
     var body: some View {
         Map(coordinateRegion: $mapRegion, annotationItems: map.filteredWrecks) { wreck in
@@ -45,10 +45,7 @@ struct iOS14WreckpointerMap: View {
         withAnimation(.easeInOut) {
             mapRegion.center = CLLocationCoordinate2D(latitude: wreck.hasCoordinates.latitude,
                                                       longitude: wreck.hasCoordinates.longitude)
-            if abs(wreck.hasCoordinates.latitude) > 65 {
-                mapRegion.span = MKCoordinateSpan(latitudeDelta: 25,
-                                                  longitudeDelta: 25)
-            }
+            mapRegion.span = MKCoordinateSpan(latitudeDelta: 5, longitudeDelta: 5)
         }
     }
 }

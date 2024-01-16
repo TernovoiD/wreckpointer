@@ -37,6 +37,11 @@ struct MapOverlayView: View {
             Spacer()
         }
         .padding()
+        .onChange(of: map.activeUIElement, perform: { element in
+            if element == .none {
+                searchFieldSelected = false
+            }
+        })
     }
     
     private var placeholder: some View {

@@ -29,9 +29,10 @@ struct MapView: View {
                 MapOverlayView(map: viewModel)
                     .padding(.top)
             }
-            .task {
-                await viewModel.loadWrecks()
+            .alert(viewModel.errorMessage, isPresented: $viewModel.error) {
+                Button("OK", role: .cancel) { }
             }
+            .ignoresSafeArea(.keyboard)
         }
     }
 }

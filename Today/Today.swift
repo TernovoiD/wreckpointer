@@ -12,45 +12,37 @@ import MapKit
 struct Provider: TimelineProvider {
     
     func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), serverConnection: true, wreck: Wreck.test, mapImage: nil, premium: false)
+        SimpleEntry(date: Date(), wreck: generateExampleWreck(), mapImage: UIImage(named: "RMSLusitania"))
     }
 
     func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> ()) {
-        let entry = SimpleEntry(date: Date(), serverConnection: true, wreck: Wreck.test, mapImage: nil, premium: false)
+        let entry = SimpleEntry(date: Date(), wreck: generateExampleWreck(), mapImage: UIImage(named: "RMSLusitaniaMap"))
         completion(entry)
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
         Task {
-            // Create shapshots
             var entries: [SimpleEntry] = []
-            if let wreck = await getRandomWreck() {
+            let wrecks = await getWrecks()
+            let today = Date()
+            
+            // Make entries
+            for index in 0 ..< wrecks.count {
+                let entryDate = Calendar.current.date(byAdding: .minute, value: index * 20, to: today) ?? Date()
+                let wreck = wrecks[index]
                 let mapSnapshot = await generateMapSnapshot(latitude: wreck.hasCoordinates.latitude,
                                                             longitude: wreck.hasCoordinates.longitude)
-                let store = PurchasesManager()
-                await store.updateCustomerProductStatus()
-                let pro = store.hasPRO
-                let entry = SimpleEntry(date: Date(), serverConnection: true, wreck: wreck, mapImage: mapSnapshot, premium: pro)
-                entries.append(entry)
-            } else {
-                let entry = SimpleEntry(date: Date(), serverConnection: false, wreck: Wreck.test, mapImage: nil, premium: false)
+                let entry = SimpleEntry(date: entryDate, wreck: wreck, mapImage: mapSnapshot)
                 entries.append(entry)
             }
             
-            // Calculate time to next widget update
-            let calendar = Calendar.current
-            let today: Date = calendar.startOfDay(for: Date())
-            guard let nextUpdate = Calendar.current.date(byAdding: .day, value: 1, to: today) else {
-                print("Error while fetching date")
-                return
-            }
             // Create timeline
-            let timeline = Timeline(entries: entries, policy: .after(nextUpdate))
+            let timeline = Timeline(entries: entries, policy: .atEnd)
             completion(timeline)
         }
     }
     
-    private func getRandomWreck() async -> Wreck? {
+    private func getWrecks() async -> [Wreck] {
         do {
             guard let url = URL(string: ServerURL.homePageWrecks.path) else {
                 throw HTTPError.badURL
@@ -58,11 +50,41 @@ struct Provider: TimelineProvider {
             let serverData = try await HTTPServer.shared.sendRequest(url: url, HTTPMethod: .GET)
             let serverHomePageModel = try JSONCoder.shared.decodeItemFromData(data: serverData) as HomePageModel
             let wrecks = serverHomePageModel.random5Wrecks
-            return wrecks.randomElement()
+            return wrecks
         } catch let error {
             print("Wreckpointer.Today Error: \(error.localizedDescription)")
-            return nil
+            return [ ]
         }
+    }
+    
+    private func generateExampleWreck() -> Wreck {
+        let calendar = Calendar.current
+        var dateComponents = DateComponents()
+        dateComponents.year = 1915
+        dateComponents.month = 5
+        dateComponents.day = 7
+        
+        let dateOfLoss = calendar.date(from: dateComponents) ?? Date()
+        
+        let image = UIImage(named: "RMSLusitania")
+        let imageData = image?.pngData()
+        
+        return Wreck(id: UUID(uuidString: "12345"),
+                     createdAt: Date(),
+                     updatedAt: Date(),
+                     name: "RMS Lusitania",
+                     latitude: 51.25,
+                     longitude: -8.33,
+                     type: .passengerShip,
+                     cause: .explosion,
+                     approved: true,
+                     dive: false,
+                     dateOfLoss: dateOfLoss,
+                     lossOfLive: 1191,
+                     displacement: 44060,
+                     depth: 305,
+                     image: imageData,
+                     history: "The RMS Lusitania, a British ocean liner, met a tragic fate during World War I on May 7, 1915. Sailing from New York to Liverpool, it was struck by a German torpedo off the coast of Ireland, causing its swift sinking within 18 minutes. This devastating event claimed the lives of 1,198 passengers and crew, including 128 Americans. The sinking significantly influenced public opinion worldwide and played a role in the eventual entry of the United States into World War I. The loss of the Lusitania remains a poignant reminder of the human toll and the complexities of wartime maritime history.")
     }
     
     private func generateMapSnapshot(latitude: Double, longitude: Double) async -> UIImage? {
@@ -84,10 +106,8 @@ struct Provider: TimelineProvider {
 
 struct SimpleEntry: TimelineEntry {
     var date: Date
-    let serverConnection: Bool
     let wreck: Wreck
     let mapImage: UIImage?
-    let premium: Bool
 }
 
 struct TodayEntryView : View {
@@ -98,11 +118,11 @@ struct TodayEntryView : View {
     var body: some View {
         switch family {
         case .systemSmall:
-            SmallWidgetView(wreck: entry.wreck, subscription: entry.premium)
+            SmallWidgetView(wreck: entry.wreck)
         case .systemMedium:
-            MediumWidgetView(wreck: entry.wreck, subscription: entry.premium)
+            MediumWidgetView(wreck: entry.wreck, map: entry.mapImage)
         case .systemLarge:
-            LargeWidgetView(wreck: entry.wreck, map: entry.mapImage, subscription: entry.premium)
+            LargeWidgetView(wreck: entry.wreck, map: entry.mapImage)
         default:
             Text("Wreckpointer")
         }
@@ -124,13 +144,7 @@ struct Today: Widget {
             }
         }
         .contentMarginsDisabled()
-        .configurationDisplayName("My Widget")
-        .description("This is an example widget.")
+        .configurationDisplayName("Wreckpointer.widget")
+        .description("Unveil History's Depths. Navigate the Shipwrecks.")
     }
 }
-
-//#Preview(as: .systemSmall) {
-//    Today()
-//} timeline: {
-//    SimpleEntry(date: .now, serverConnection: true, wreck: Wreck.test, mapImage: nil, premium: false)
-//}

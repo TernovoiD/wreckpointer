@@ -11,6 +11,7 @@ struct WreckView: View {
     
     @StateObject var viewModel = WreckViewModel()
     @State var wreck: Wreck
+    @State var loadWreck: Bool = false
     
     var body: some View {
         ScrollView {
@@ -19,46 +20,30 @@ struct WreckView: View {
                     .frame(height: 350)
                     .clipped()
                     .overlay { imageOverlay }
-                Divider()
-                    .padding(.top, 30)
-                VStack(alignment: .leading, spacing: 0) {
-                    if wreck.hasDisplacement.isValid {
-                        Text("Displacement:  \(String(wreck.hasDisplacement.tons)) tons")
-                    }
-                    Text("Type:  \(wreck.hasType.description)")
-                    Text("Cause:  \(wreck.hasCause.description)")
-                    if wreck.hasDepth.isValid {
-                        Text("Depth:  \(wreck.hasDepth.ft) ft.")
-                    }
-                    if wreck.hasDateOfLoss.isValid {
-                        Text("Date of loss:  \(wreck.hasDateOfLoss.date.formatted(date: .abbreviated, time: .omitted))")
-                    }
-                    if wreck.hasLossOfLife.isValid {
-                        Text("Loss of Life:  \(wreck.hasLossOfLife.souls) lives")
-                    }
-                    if wreck.isWreckDive {
-                        Text("Open for wreck dive")
-                    }
-                }
+                WreckInfoView(wreck: wreck)
                 .font(.callout)
-                .foregroundStyle(.primary)
+                .foregroundStyle(.secondary)
                 .padding()
+                .padding(.top, 15)
                 Divider()
                     .padding(.bottom)
                 Text(wreck.history ?? "")
                     .font(.callout)
                     .foregroundStyle(.primary)
                     .padding(.horizontal)
+                    .padding(.bottom, 100)
                 Spacer()
             }
         }
         .ignoresSafeArea()
-        .onAppear(perform: {
-            viewModel.update(wreck: wreck)
-            Task {
-                await viewModel.synchronizeWithServer()
+        .task {
+            if loadWreck {
+                let serverWreck = await viewModel.synchronize(wreck: wreck)
+                if let serverWreck {
+                    updateView(with: serverWreck)
+                }
             }
-        })
+        }
         .toolbar {
             ToolbarItem {
                 
@@ -66,12 +51,9 @@ struct WreckView: View {
         }
     }
     
-    private func loadWreck() {
-        Task {
-//            let serverWreck = await server.loadWreck(wreck)
-//            if let serverWreck {
-//                wreck = serverWreck
-//            }
+    private func updateView(with wreck: Wreck) {
+        withAnimation {
+            self.wreck = wreck
         }
     }
     
@@ -97,7 +79,7 @@ struct WreckView: View {
 
 #Preview {
     NavigationView {
-        WreckView(wreck: Wreck.test)
+        WreckView(wreck: Wreck.test, loadWreck: true)
             .environmentObject(WreckViewModel())
     }
 }

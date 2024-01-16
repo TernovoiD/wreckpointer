@@ -33,6 +33,11 @@ struct ModeratorView: View {
                 }
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
+                        Button("Sign Out") {
+                            viewModel.sighOut()
+                        }
+                    }
+                    ToolbarItem(placement: .cancellationAction) {
                         Toggle("Unapproved", isOn: $viewModel.unapprovedOnly)
                             .padding(.horizontal)
                     }
