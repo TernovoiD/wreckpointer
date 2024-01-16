@@ -8,8 +8,6 @@
 import Foundation
 
 final class WreckViewModel: ObservableObject {
-    
-    @Published var wreck: Wreck?
     //Error handling
     @Published var error: Bool = false
     @Published var errorMessage: String = ""
@@ -19,25 +17,21 @@ final class WreckViewModel: ObservableObject {
         self.error = true
     }
     
-    func update(wreck: Wreck) {
-        self.wreck = wreck
-    }
-    
-    func synchronizeWithServer() async {
+    @MainActor
+    func synchronize(wreck: Wreck) async -> Wreck? {
         do {
-            if let uuid = wreck?.id,
+            if let uuid = wreck.id,
                let url = URL(string: ServerURL.wreck(uuid).path) {
                 let wreckData = try await HTTPServer.shared.sendRequest(url: url, HTTPMethod: .GET)
                 let serverWreck = try JSONCoder.shared.decodeItemFromData(data: wreckData) as Wreck
                 
-                DispatchQueue.main.async {
-                    self.wreck = serverWreck
-                }
+                return serverWreck
             } else {
-                return
+                return nil
             }
         } catch let error {
             showError(withMessage: "Unable to load wreck from the server: \(error.localizedDescription)")
+            return nil
         }
     }
 }

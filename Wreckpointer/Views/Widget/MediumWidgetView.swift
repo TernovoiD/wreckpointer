@@ -10,60 +10,55 @@ import SwiftUI
 struct MediumWidgetView: View {
     
     let wreck: Wreck
-    let subscription: Bool
+    let map: UIImage?
     
     var body: some View {
-        if subscription {
-            widget
-        } else {
-            subscriptionPlaceholder
-                .padding()
-        }
-    }
-    
-    private var widget: some View {
         ZStack {
-            ImageView(imageData: .constant(wreck.image))
-            HStack {
-                VStack(alignment: .leading, spacing: 0) {
-                    Text(wreck.hasName)
-                        .font(.headline.weight(.black))
-                        .foregroundStyle(Color.white)
-                        .shadow(color: .black, radius: 3)
-                    WreckInfoView(wreck: wreck)
-                        .font(.caption2.bold())
-                    .foregroundStyle(Color.white)
+            if let map {
+                Image(uiImage: map)
+                    .resizable()
+                    .aspectRatio(1, contentMode: .fill)
+                    .clipped()
                     .shadow(color: .black, radius: 3)
-                }
+                    .overlay {
+                        MapPinMedium(wreck: wreck)
+                            .scaleEffect(0.8)
+                            .foregroundStyle(Color.white)
+                    }
+            }
+            HStack {
+                ImageView(imageData: .constant(wreck.image))
+                    .frame(maxWidth: 90, maxHeight: 90)
+                    .clipped()
+                    .clipShape(RoundedRectangle(cornerRadius: 15))
+                    .shadow(radius: 5)
                 Spacer()
             }
             .padding()
         }
     }
     
-    private var subscriptionPlaceholder: some View {
-        VStack {
-            VStack(alignment: .trailing) {
-                Text("Wreckpointer")
-                    .font(.headline.weight(.black))
-                Text(".project")
-                    .font(.subheadline.bold())
-                    .foregroundStyle(Color.accentColor)
+    private var wreckImage: some View {
+        ImageView(imageData: .constant(wreck.image))
+            .frame(width: 60, height: 60)
+            .background()
+            .clipShape(RoundedRectangle(cornerRadius: 9))
+            .overlay {
+                VStack {
+                    Spacer()
+                    Text(wreck.hasName)
+                        .font(.caption2.weight(.black))
+                        .foregroundStyle(Color.white)
+                        .shadow(color: .black, radius: 3)
+                }
             }
-            Spacer()
-            VStack(alignment: .center) {
-                Text("Get .PRO subscription to unlock Wreckpointer.today widget.")
-                    .font(.caption.bold())
-                    .foregroundStyle(Color.secondary)
-            }
-        }
     }
 }
 
 #Preview {
     ZStack {
         Color.green
-        MediumWidgetView(wreck: Wreck.test, subscription: false)
+        MediumWidgetView(wreck: Wreck.test, map: UIImage(named: "RMSLusitaniaMap"))
             .frame(width: .infinity, height: 150)
             .background()
             .clipShape(RoundedRectangle(cornerRadius: 25))

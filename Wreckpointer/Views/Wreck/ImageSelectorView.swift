@@ -121,11 +121,3 @@ struct ImageSelectorView: View {
         }
     }
 }
-
-#Preview {
-    if #available(iOS 16, *) {
-        ImageSelectorView(selectedImageData: .constant(nil))
-    } else {
-        Circle()
-    }
-}

@@ -10,12 +10,9 @@ import SwiftUI
 @main
 struct WreckpointerApp: App {
     
-    @StateObject var store = PurchasesManager()
-    
     var body: some Scene {
         WindowGroup {
             WreckpointerView()
-                .environmentObject(store)
         }
     }
 }

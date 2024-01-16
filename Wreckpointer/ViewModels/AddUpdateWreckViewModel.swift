@@ -14,6 +14,7 @@ final class AddUpdateWreckViewModel: ObservableObject {
     @Published var name: String = ""
     @Published var type: WreckTypes = .unknown
     @Published var cause: WreckCauses = .unknown
+    @Published var isApproved: Bool = false
     @Published var isWreckDive: Bool = false
     @Published var dateOfLoss: Date = Date()
     @Published var dateOfLossKnown: Bool = false
@@ -62,12 +63,13 @@ final class AddUpdateWreckViewModel: ObservableObject {
         type = wreck.hasType
         cause = wreck.hasCause
         isWreckDive = wreck.isWreckDive
+        isApproved = wreck.isApproved
         dateOfLoss = wreck.hasDateOfLoss.date
         dateOfLossKnown = wreck.hasDateOfLoss.isValid
-        lossOfLive = String(wreck.hasLossOfLife.souls)
+        lossOfLive = wreck.hasLossOfLife.isValid ? String(wreck.hasLossOfLife.souls) : ""
         history = wreck.history ?? ""
-        displacement = String(wreck.hasDisplacement.tons)
-        depth = String(wreck.hasDepth.ft)
+        displacement = wreck.hasDisplacement.isValid ? String(wreck.hasDisplacement.tons) : ""
+        depth = wreck.hasDepth.isValid ? String(wreck.hasDepth.ft) : ""
         latitudeDegrees = wreck.hasCoordinates.latitude.getCoordinates().degrees
         latitudeMinutes = wreck.hasCoordinates.latitude.getCoordinates().minutes
         latitudeSeconds = wreck.hasCoordinates.latitude.getCoordinates().seconds
@@ -87,7 +89,7 @@ final class AddUpdateWreckViewModel: ObservableObject {
                      longitude: wreckLongitude,
                      type: type,
                      cause: cause,
-                     approved: nil,
+                     approved: isApproved,
                      dive: isWreckDive,
                      dateOfLoss: dateOfLossKnown ? dateOfLoss : nil,
                      lossOfLive: lossOfLive.isEmpty ? nil : Int(lossOfLive),

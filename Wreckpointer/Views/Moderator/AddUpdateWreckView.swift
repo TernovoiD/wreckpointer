@@ -38,15 +38,12 @@ struct AddUpdateWreckView: View {
                     .font(.caption)
                     .foregroundStyle(Color.secondary)
                     .padding(.horizontal)
-                    .background()
-                    .onTapGesture {
-                        focusedField = .none
-                    }
                 Divider()
                 VStack {
                     VStack {
                         typePicker
                         causePicker
+                        Toggle("Approved", isOn: $viewModel.isApproved)
                         Toggle("Wreck dive", isOn: $viewModel.isWreckDive)
                     }
                     .background()
@@ -59,10 +56,6 @@ struct AddUpdateWreckView: View {
                 Divider()
                 additionalInfo
                     .padding(.horizontal)
-                    .background()
-                    .onTapGesture {
-                        focusedField = .none
-                    }
             }
             .padding(.horizontal)
         }
@@ -97,6 +90,7 @@ private extension AddUpdateWreckView {
                             focusedField = .latitudeMinutes
                         }
                     })
+                    .keyboardType(.numberPad)
                     .focused($focusedField, equals: .latitudeDegrees)
                     .frame(maxWidth: 35)
                     .degree(symbol: "°")
@@ -107,6 +101,7 @@ private extension AddUpdateWreckView {
                             focusedField = .latitudeSeconds
                         }
                     })
+                    .keyboardType(.numberPad)
                     .focused($focusedField, equals: .latitudeMinutes)
                     .frame(maxWidth: 35)
                     .degree(symbol: "'")
@@ -117,6 +112,7 @@ private extension AddUpdateWreckView {
                             focusedField = .longitudeDegrees
                         }
                     })
+                    .keyboardType(.numberPad)
                     .focused($focusedField, equals: .latitudeSeconds)
                     .frame(maxWidth: 35)
                     .degree(symbol: "''")
@@ -142,15 +138,16 @@ private extension AddUpdateWreckView {
                 .font(.title3.bold())
             Spacer()
             HStack {
-                TextField("49", text: $viewModel.longitudeDegrees)
+                TextField("032", text: $viewModel.longitudeDegrees)
                     .onChange(of: viewModel.longitudeDegrees, perform: { value in
-                        viewModel.longitudeDegrees = value.filterWithRegEx(pattern: "[0-9]{1,2}")
+                        viewModel.longitudeDegrees = value.filterWithRegEx(pattern: "[0-9]{1,3}")
                         if viewModel.longitudeDegrees.count == 2 {
                             focusedField = .longitudeMinutes
                         }
                     })
+                    .keyboardType(.numberPad)
                     .focused($focusedField, equals: .longitudeDegrees)
-                    .frame(maxWidth: 35)
+                    .frame(width: 40)
                     .degree(symbol: "°")
                 TextField("56", text: $viewModel.longitudeMinutes)
                     .onChange(of: viewModel.longitudeMinutes, perform: { value in
@@ -159,6 +156,7 @@ private extension AddUpdateWreckView {
                             focusedField = .longitudeSeconds
                         }
                     })
+                    .keyboardType(.numberPad)
                     .focused($focusedField, equals: .longitudeMinutes)
                     .frame(maxWidth: 35)
                     .degree(symbol: "'")
@@ -169,6 +167,7 @@ private extension AddUpdateWreckView {
                             focusedField = .none
                         }
                     })
+                    .keyboardType(.numberPad)
                     .focused($focusedField, equals: .longitudeSeconds)
                     .frame(maxWidth: 35)
                     .degree(symbol: "''")

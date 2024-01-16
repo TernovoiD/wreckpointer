@@ -11,67 +11,32 @@ struct LargeWidgetView: View {
     
     let wreck: Wreck
     let map: UIImage?
-    let subscription: Bool
     
     var body: some View {
-        if subscription {
-            widget
-        } else {
-            subscriptionPlaceholder
-                .padding()
-        }
-    }
-    
-    private var widget: some View {
         ZStack {
-            if let map {
-                Image(uiImage: map)
-                    .resizable()
-                    .aspectRatio(1, contentMode: .fill)
-                    .overlay {
-                        MapPinMedium(wreck: wreck)
-                    }
-            }
+            ImageView(imageData: .constant(wreck.image))
             VStack {
-                Spacer()
-                ZStack {
-                    ImageView(imageData: .constant(wreck.image))
-                        .frame(height: 120)
-                        .clipped()
-                    HStack {
-                        WreckInfoView(wreck: wreck)
-                            .font(.caption2.bold())
-                            .foregroundStyle(Color.white)
-                            .shadow(color: .black, radius: 3)
-                        Spacer()
-                    }
-                    .padding(.horizontal, 40)
+                HStack(alignment: .top, spacing: 15) {
+                    Spacer()
+                    Text(wreck.hasName)
+                        .font(.title2.weight(.black))
+                        .shadow(color: .black, radius: 3)
+                        .foregroundStyle(Color.white)
                 }
+                Spacer()
+                Text(wreck.history ?? "")
+                    .font(.caption2.weight(.bold))
+                    .foregroundStyle(Color.white)
+                    .shadow(color: .black, radius: 3)
+                    .frame(maxHeight: 70)
             }
-        }
-    }
-    
-    private var subscriptionPlaceholder: some View {
-        VStack {
-            VStack(alignment: .trailing) {
-                Text("Wreckpointer")
-                    .font(.headline.weight(.black))
-                Text(".project")
-                    .font(.subheadline.bold())
-                    .foregroundStyle(Color.accentColor)
-            }
-            Spacer()
-            VStack(alignment: .center) {
-                Text("Get .PRO subscription to unlock Wreckpointer.today widget.")
-                    .font(.caption.bold())
-                    .foregroundStyle(Color.secondary)
-            }
+            .padding()
         }
     }
 }
 
 #Preview {
-    LargeWidgetView(wreck: Wreck.test, map: nil, subscription: true)
+    LargeWidgetView(wreck: Wreck.test, map: UIImage(named: "RMSLusitania"))
         .frame(width: .infinity, height: 360)
         .background()
         .clipShape(RoundedRectangle(cornerRadius: 25))
