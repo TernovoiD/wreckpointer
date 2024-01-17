@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import MapKit
 
 enum MapUIElements {
     case search
@@ -15,6 +16,17 @@ enum MapUIElements {
 
 @MainActor
 final class MapViewModel: ObservableObject {
+    
+    var _region: MKCoordinateRegion = MKCoordinateRegion(
+        center: CLLocationCoordinate2D(latitude: 30, longitude: -75),
+        span: MKCoordinateSpan(latitudeDelta: 30, longitudeDelta: 30))
+    
+    var region: Binding<MKCoordinateRegion> {
+        Binding(
+            get: { self._region },
+            set: { self._region = $0 }
+        )
+    }
     
     @AppStorage("showUnapprovedWrecks",store: UserDefaults(suiteName: "group.com.danyloternovoi.Wreckpointer"))
     var showUnapprovedWrecks: Bool = false

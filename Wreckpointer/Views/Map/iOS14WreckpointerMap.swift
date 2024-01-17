@@ -17,21 +17,17 @@ struct iOS14WreckpointerMap: View {
                                                                              longitudeDelta: 50))
     
     var body: some View {
-        Map(coordinateRegion: $mapRegion, annotationItems: map.filteredWrecks) { wreck in
+        Map(coordinateRegion: map.region, annotationItems: map.filteredWrecks) { wreck in
             MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: wreck.hasCoordinates.latitude, longitude: wreck.hasCoordinates.longitude)) {
                 
-                if mapRegion.span.longitudeDelta < 30 {
-                    MapPinMedium(wreck: wreck)
+                    Image(systemName: "diamond.inset.filled")
+                        .foregroundStyle(Color.red)
+                        .scaleEffect(0.5)
                         .onTapGesture {
                             withAnimation(.spring) {
                                 map.selectedWreck = wreck
                             }
                         }
-                } else {
-                    Circle()
-                        .foregroundStyle(Color.red)
-                        .scaleEffect(0.5)
-                }
             }
         }
         .onChange(of: map.selectedWreck, perform: { newSelectedWreck in
