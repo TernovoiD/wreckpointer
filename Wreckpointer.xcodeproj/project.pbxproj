@@ -198,13 +198,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		81130F892B4C1622000312A1 /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "Preview Content";
-			sourceTree = "<group>";
-		};
 		814D9AB22B3B65DC005B13D4 /* Supporting */ = {
 			isa = PBXGroup;
 			children = (
@@ -226,6 +219,13 @@
 				814D9AB22B3B65DC005B13D4 /* Supporting */,
 			);
 			path = HTTPServer;
+			sourceTree = "<group>";
+		};
+		815C5C2F2B581DE70092B049 /*  Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = " Preview Content";
 			sourceTree = "<group>";
 		};
 		8165034E2B49A4690076EFD4 /* ViewModels */ = {
@@ -306,11 +306,11 @@
 		816E9FBB29CAF74E00C3BC0F /* Wreckpointer */ = {
 			isa = PBXGroup;
 			children = (
+				815C5C2F2B581DE70092B049 /*  Preview Content */,
 				816E9FBC29CAF74E00C3BC0F /* WreckpointerApp.swift */,
 				816E9FCA29CAF78300C3BC0F /* Views */,
 				8165034E2B49A4690076EFD4 /* ViewModels */,
 				81E255CC2B3C86BB0063DCAB /* Models */,
-				81130F892B4C1622000312A1 /* Preview Content */,
 				816E9FBA29CAF74E00C3BC0F /* Products */,
 				816E9FE929CAF7FD00C3BC0F /* Wreckpointer.entitlements */,
 				81E7102829D9C4C7008724FA /* Info.plist */,
@@ -833,7 +833,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
-				DEVELOPMENT_ASSET_PATHS = "Wreckpointer/Preview\\ Content";
+				DEVELOPMENT_ASSET_PATHS = "Wreckpointer/\\ Preview\\ Content";
 				DEVELOPMENT_TEAM = MWQ8P93RWJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -873,7 +873,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
-				DEVELOPMENT_ASSET_PATHS = "Wreckpointer/Preview\\ Content";
+				DEVELOPMENT_ASSET_PATHS = "Wreckpointer/\\ Preview\\ Content";
 				DEVELOPMENT_TEAM = MWQ8P93RWJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;

@@ -11,7 +11,7 @@ struct WreckpointerView: View {
     
     @AppStorage("moderatorTab",store: UserDefaults(suiteName: "group.com.danyloternovoi.Wreckpointer"))
     var moderatorTab: Bool = false
-    @State var selectedPage: Int = 1
+    @State var selectedPage: Int = 0
     
     var body: some View {
         TabView(selection: $selectedPage) {
