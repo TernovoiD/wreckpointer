@@ -6,13 +6,24 @@
 //
 
 import SwiftUI
+import GoogleMobileAds
 
 @main
 struct WreckpointerApp: App {
     
+    @StateObject var data = WreckpointerData()
+    @StateObject var store = PurchasesManager()
+    
     var body: some Scene {
         WindowGroup {
-            WreckpointerView()
+            if let userDefaults = UserDefaults(suiteName: "group.MWQ8P93RWJ.com.danyloternovoi.Wreckpointer") {
+                WreckpointerView()
+                    .defaultAppStorage(userDefaults)
+                    .environmentObject(data)
+                    .environmentObject(store)
+            } else {
+                Text("Failed to load UserDefaults")
+            }
         }
     }
 }

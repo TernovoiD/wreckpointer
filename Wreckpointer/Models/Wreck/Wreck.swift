@@ -20,7 +20,7 @@ struct Wreck: Codable, Identifiable, Equatable {
     var approved: Bool?
     var dive: Bool?
     var dateOfLoss: Date?
-    var lossOfLive: Int?
+    var lossOfLife: Int?
     var displacement: Int?
     var depth: Int?
     var image: Data?
@@ -38,7 +38,7 @@ struct Wreck: Codable, Identifiable, Equatable {
                             approved: true,
                             dive: false,
                             dateOfLoss: Date(),
-                            lossOfLive: 1500,
+                            lossOfLife: 1500,
                             displacement: 50000,
                             depth: 12500,
                             image: nil,
@@ -93,8 +93,8 @@ struct Wreck: Codable, Identifiable, Equatable {
     }
     
     var hasLossOfLife: (isValid: Bool, souls: Int) {
-        let isValid = lossOfLive != nil
-        let souls = lossOfLive ?? 0
+        let isValid = lossOfLife != nil
+        let souls = lossOfLife ?? 0
         return (isValid, souls)
     }
     

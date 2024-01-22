@@ -10,7 +10,6 @@ import SwiftUI
 struct LargeWidgetView: View {
     
     let wreck: Wreck
-    let map: UIImage?
     
     var body: some View {
         ZStack {
@@ -36,7 +35,7 @@ struct LargeWidgetView: View {
 }
 
 #Preview {
-    LargeWidgetView(wreck: Wreck.test, map: UIImage(named: "RMSLusitania"))
+    LargeWidgetView(wreck: Wreck.test)
         .frame(width: .infinity, height: 360)
         .background()
         .clipShape(RoundedRectangle(cornerRadius: 25))

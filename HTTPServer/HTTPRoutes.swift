@@ -19,6 +19,7 @@ public enum ServerURL {
     case wreck(UUID)
     case mapWrecks
     case homePageWrecks
+    case widgetWrecks
     
     var path: String {
         var endpoint: String
@@ -34,6 +35,8 @@ public enum ServerURL {
             endpoint = "/wrecks/map"
         case .homePageWrecks:
             endpoint = "/wrecks/home"
+        case .widgetWrecks:
+            endpoint = "/wrecks/widget"
         }
         
         return baseURL + api + endpoint

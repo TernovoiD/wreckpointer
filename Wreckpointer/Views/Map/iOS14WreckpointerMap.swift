@@ -11,15 +11,14 @@ import MapKit
 struct iOS14WreckpointerMap: View {
     
     @ObservedObject var map: MapViewModel
-    @State private var mapRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 30,
-                                                                                     longitude: -75),
-                                                      span: MKCoordinateSpan(latitudeDelta: 50,
-                                                                             longitudeDelta: 50))
     
     var body: some View {
         Map(coordinateRegion: map.region, annotationItems: map.filteredWrecks) { wreck in
             MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: wreck.hasCoordinates.latitude, longitude: wreck.hasCoordinates.longitude)) {
                 
+                if wreck == map.selectedWreck {
+                    MapPin(wreck: wreck)
+                } else {
                     Image(systemName: "diamond.inset.filled")
                         .foregroundStyle(Color.red)
                         .scaleEffect(0.5)
@@ -28,6 +27,7 @@ struct iOS14WreckpointerMap: View {
                                 map.selectedWreck = wreck
                             }
                         }
+                }
             }
         }
         .onChange(of: map.selectedWreck, perform: { newSelectedWreck in
@@ -39,9 +39,8 @@ struct iOS14WreckpointerMap: View {
     
     private func moveMap(to wreck: Wreck) {
         withAnimation(.easeInOut) {
-            mapRegion.center = CLLocationCoordinate2D(latitude: wreck.hasCoordinates.latitude,
-                                                      longitude: wreck.hasCoordinates.longitude)
-            mapRegion.span = MKCoordinateSpan(latitudeDelta: 5, longitudeDelta: 5)
+            map.updateMapPosition(latitude: wreck.hasCoordinates.latitude, longitude: wreck.hasCoordinates.longitude)
+            map.flag.toggle()
         }
     }
 }

@@ -6,12 +6,14 @@
 //
 
 import SwiftUI
+import GoogleMobileAds
 
 struct WreckpointerView: View {
     
-    @AppStorage("moderatorTab",store: UserDefaults(suiteName: "group.com.danyloternovoi.Wreckpointer"))
+    @EnvironmentObject var wreckpointerData: WreckpointerData
+    @AppStorage("moderatorTab",store: UserDefaults(suiteName: "group.MWQ8P93RWJ.com.danyloternovoi.Wreckpointer"))
     var moderatorTab: Bool = false
-    @State var selectedPage: Int = 0
+    @State var selectedPage: Int = 1
     
     var body: some View {
         TabView(selection: $selectedPage) {
@@ -30,9 +32,19 @@ struct WreckpointerView: View {
                     .tag(3)
             }
         }
+        .onAppear { startAds() }
+        .alert(wreckpointerData.errorMessage, isPresented: $wreckpointerData.error) {
+            Button("OK", role: .cancel) { }
+        }
+    }
+    
+    private func startAds() {
+            GADMobileAds.sharedInstance().start(completionHandler: nil)
     }
 }
 
 #Preview {
     WreckpointerView()
+        .environmentObject(WreckpointerData())
+        .environmentObject(PurchasesManager())
 }
