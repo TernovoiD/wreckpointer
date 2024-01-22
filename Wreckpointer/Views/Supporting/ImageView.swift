@@ -17,18 +17,17 @@ struct ImageView: View {
            let uiImage = UIImage(data: imageData) {
             Image(uiImage: uiImage)
                 .resizable()
-                .aspectRatio(1, contentMode: .fill)
         } else {
             Image(placehoder)
                 .resizable()
-                .aspectRatio(1, contentMode: .fill)
         }
     }
 }
 
-struct ImageView_Previews: PreviewProvider {
-    static var previews: some View {
-        ImageView(imageData: .constant(nil))
-            .frame(height: 200)
-    }
+#Preview {
+    ImageView(imageData: .constant(nil))
+        .aspectRatio(contentMode: .fill)
+        .frame(width: 350, height: 350)
+        .clipped()
+        .clipShape(RoundedRectangle(cornerRadius: 15))
 }

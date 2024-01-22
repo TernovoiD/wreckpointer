@@ -27,16 +27,19 @@ final class MapViewModel: ObservableObject {
             set: { self._region = $0 }
         )
     }
+    @Published var flag: Bool = false
     
-    @AppStorage("showUnapprovedWrecks",store: UserDefaults(suiteName: "group.com.danyloternovoi.Wreckpointer"))
-    var showUnapprovedWrecks: Bool = false
+    func updateMapPosition(latitude: Double, longitude: Double) {
+        self._region = MKCoordinateRegion(
+            center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude),
+            span: MKCoordinateSpan(latitudeDelta: 5, longitudeDelta: 5))
+    }
+    @AppStorage("hideUnapprovedWrecks",store: UserDefaults(suiteName: "group.MWQ8P93RWJ.com.danyloternovoi.Wreckpointer"))
+    var hideUnapprovedWrecks: Bool = false
     
     @Published var wrecks: [Wreck] = [ ]
     @Published var selectedWreck: Wreck?
     @Published var activeUIElement: MapUIElements?
-    //Error handling
-    @Published var error: Bool = false
-    @Published var errorMessage: String = ""
     // Filter options
     @Published var textToSearch: String = ""
     @Published var filterByDate: Bool = false {
@@ -48,16 +51,10 @@ final class MapViewModel: ObservableObject {
     @Published var wreckCauseFilter: WreckCauses?
     @Published var wreckDiverOnlyFilter: Bool = false
     
-    init() {
-        Task {
-            await loadWrecks()
-        }
-    }
-    
     var searchedWrecks: [Wreck] {
         var filteredWrecks = wrecks
         
-        if !showUnapprovedWrecks {
+        if hideUnapprovedWrecks {
             filteredWrecks = filteredWrecks.filter({ $0.isApproved == true })
         }
         
@@ -88,7 +85,7 @@ final class MapViewModel: ObservableObject {
         if wreckDiverOnlyFilter {
             filteredWrecks = filteredWrecks.filter({ $0.isWreckDive == true })
         }
-        if !showUnapprovedWrecks {
+        if hideUnapprovedWrecks {
             filteredWrecks = filteredWrecks.filter({ $0.isApproved == true })
         }
         return filteredWrecks
@@ -121,22 +118,7 @@ final class MapViewModel: ObservableObject {
         minimumDateFilter = minimumDateOfLossDate
     }
     
-    private func showError(withMessage message: String) {
-        self.errorMessage = message
-        self.error = true
-    }
-    
-    @MainActor
-    func loadWrecks() async {
-        do {
-            guard let url = URL(string: ServerURL.mapWrecks.path) else {
-                throw HTTPError.badURL
-            }
-            let serverData = try await HTTPServer.shared.sendRequest(url: url, HTTPMethod: .GET)
-            let serverWrecks = try JSONCoder.shared.decodeArrayFromData(data: serverData) as [Wreck]
-            self.wrecks = serverWrecks
-        } catch let error {
-            showError(withMessage: error.localizedDescription)
-        }
+    func show(wrecks: [Wreck]) {
+        self.wrecks = wrecks
     }
 }

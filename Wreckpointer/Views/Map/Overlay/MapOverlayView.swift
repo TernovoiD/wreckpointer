@@ -9,17 +9,16 @@ import SwiftUI
 
 struct MapOverlayView: View {
     
+    
+    @AppStorage("proSubscription", store: UserDefaults(suiteName: "group.MWQ8P93RWJ.com.danyloternovoi.Wreckpointer"))
+    var proSubscription: Bool = false
     @FocusState private var searchFieldSelected: Bool
     @ObservedObject var map: MapViewModel
     
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             VStack {
-                if let wreck = map.selectedWreck {
-                    SelectedWreckView(wreck: wreck)
-                        .coloredBorder(color: .primary)
-                        .padding(12)
-                } else if map.activeUIElement == .search {
+                if map.activeUIElement == .search {
                     searchPlate
                         .coloredBorder(color: .primary)
                         .padding(12)
@@ -32,11 +31,23 @@ struct MapOverlayView: View {
                 }
             }
             .background()
-            .clipShape(RoundedRectangle(cornerRadius: 25))
+            .clipShape(RoundedRectangle(cornerRadius: 15))
             .shadow(radius: 7)
+            .padding()
             Spacer()
+            if let wreck = map.selectedWreck {
+                NavigationLink {
+                    WreckView(wreck: wreck, loadWreck: true)
+                } label: {
+                    readMoreButton
+                        .padding()
+                        .padding(.bottom)
+                }
+            }
+            if proSubscription == false {
+                BannerContentView()
+            }
         }
-        .padding()
         .onChange(of: map.activeUIElement, perform: { element in
             if element == .none {
                 searchFieldSelected = false
@@ -61,6 +72,16 @@ struct MapOverlayView: View {
                     Label("Filter", systemImage: "slider.horizontal.2.square")
                 }
             })
+            Color.gray
+                .frame(maxWidth: 1, maxHeight: 30)
+            NavigationLink {
+                EditWreckView()
+            } label: {
+                Color.clear.overlay {
+                    Label("Add", systemImage: "plus.square")
+                }
+            }
+
         }
         .frame(maxHeight: 50)
         .foregroundStyle(.secondary)
@@ -73,7 +94,7 @@ struct MapOverlayView: View {
                     .focused($searchFieldSelected)
                     .submitLabel(.search)
                     .autocorrectionDisabled(true)
-                Button(action: { }, label: {
+                Button(action: { map.textToSearch = "" }, label: {
                     Image(systemName: "xmark")
                         .font(.headline.bold())
                         .foregroundStyle(Color.primary)
@@ -87,7 +108,10 @@ struct MapOverlayView: View {
             List {
                 ForEach(map.searchedWrecks) { wreck in
                     Button {
-                        map.selectedWreck = wreck
+                        withAnimation {
+                            map.selectedWreck = wreck
+                            map.activeUIElement = .none
+                        }
                     } label: {
                         WreckRowView(wreck: wreck)
                     }
@@ -127,6 +151,19 @@ struct MapOverlayView: View {
                 })
             }
         }
+    }
+    
+    private var readMoreButton: some View {
+        HStack {
+            Label("Read more", systemImage: "book")
+            Spacer()
+            Image(systemName: "chevron.right")
+        }
+        .padding()
+        .foregroundStyle(Color.secondary)
+        .background()
+        .clipShape(RoundedRectangle(cornerRadius: 15))
+        .shadow(radius: 7)
     }
     
     private func clearFilter() {

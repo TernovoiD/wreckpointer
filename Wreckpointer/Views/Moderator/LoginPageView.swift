@@ -28,12 +28,13 @@ struct LoginPageView: View {
                 shipImage
             }
             .background()
+            .ignoresSafeArea(.keyboard)
             VStack(spacing: 15) {
                 VStack(alignment: .trailing) {
                     Text("Wreckpointer")
                         .font(.largeTitle.weight(.black))
                     Text(".moderator")
-                        .foregroundStyle(Color.accentColor)
+                        .foregroundStyle(Color.accent)
                 }
                 .font(.title2.bold())
                     
@@ -66,7 +67,7 @@ extension LoginPageView {
         TextField("Email", text: $email)
             .padding()
             .focused($selectedField, equals: .email)
-            .coloredBorder(color: selectedField == .email ? Color.accentColor : Color.clear)
+            .coloredBorder(color: selectedField == .email ? Color.accent : Color.clear)
             .submitLabel(.next)
             .textContentType(.username)
             .keyboardType(.emailAddress)
@@ -85,7 +86,7 @@ extension LoginPageView {
         SecureField("Password", text: $password)
             .padding()
             .focused($selectedField, equals: .password)
-            .coloredBorder(color: selectedField == .password ? Color.accentColor : Color.clear)
+            .coloredBorder(color: selectedField == .password ? Color.accent : Color.clear)
             .submitLabel(.go)
             .autocorrectionDisabled(true)
             .textContentType(.password)

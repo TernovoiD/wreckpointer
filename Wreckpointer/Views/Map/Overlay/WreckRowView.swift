@@ -26,7 +26,7 @@ struct WreckRowView: View {
             if arrow {
                 Image(systemName: "chevron.right")
                     .font(.headline.bold())
-                    .foregroundColor(.accentColor)
+                    .foregroundColor(.accent)
             }
         }
     }

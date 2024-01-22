@@ -9,43 +9,62 @@ import SwiftUI
 
 struct HomeView: View {
     
+    @AppStorage("proSubscription", store: UserDefaults(suiteName: "group.MWQ8P93RWJ.com.danyloternovoi.Wreckpointer"))
+    var proSubscription: Bool = false
+    
     @StateObject var viewModel = HomePageViewModel()
     @State var presentedWreck: Wreck?
     
     var body: some View {
         NavigationView {
-            ScrollView {
-                Text("Welcome to Wreckpointer.project, where the fascination for shipwrecks and history connects enthusiasts from across the globe! Delve into the depths of maritime heritage as we bring together a community passionate about exploring shipwrecks and their captivating histories.")
-                    .font(.callout)
-                    .foregroundStyle(Color.secondary)
-                    .padding(.horizontal, 20)
-                if viewModel.loading {
-                    ProgressView()
-                        .scaleEffect(2)
-                        .padding(50)
-                } else {
-                    WreckSelector(wrecks: $viewModel.random5Wrecks)
-                    lastApproved
-                        .padding()
-                    modernHistory
-                        .padding()
-                    Image("ship2")
-                        .resizable()
-                        .frame(maxHeight: 300)
+            VStack(spacing: 0) {
+                ScrollView {
+                    Text("Welcome to Wreckpointer.project, where the fascination for shipwrecks and history connects enthusiasts from across the globe!")
+                        .font(.callout)
+                        .foregroundStyle(Color.secondary)
+                        .padding(.horizontal)
+                    if viewModel.loading {
+                        ProgressView()
+                            .scaleEffect(2)
+                            .padding(50)
+                    } else {
+                        WreckSelector(wrecks: $viewModel.random5Wrecks)
+                        lastApproved
+                            .padding()
+                            .padding(.top)
+                        modernHistory
+                            .padding()
+                        Image("ship2")
+                            .resizable()
+                            .frame(maxHeight: 300)
+                    }
                 }
-            }
-            .alert(viewModel.errorMessage, isPresented: $viewModel.error) {
-                Button("OK", role: .cancel) { }
-            }
-            .navigationTitle("Wreckpointer")
-            .sheet(item: $presentedWreck) { wreck in
-                WreckView(wreck: wreck)
+                .alert(viewModel.errorMessage, isPresented: $viewModel.error) {
+                    Button("OK", role: .cancel) { }
+                }
+                .navigationTitle("Wreckpointer")
+                .sheet(item: $presentedWreck) { wreck in
+                    WreckView(wreck: wreck)
+                }
+                .toolbar {
+                    ToolbarItem {
+                        if !proSubscription {
+                            NavigationLink(".PRO") {
+                                PROSubscriptions()
+                            }
+                            .font(.headline.bold())
+                        }
+                    }
+                }
+                if proSubscription == false {
+                    BannerContentView()
+                }
             }
         }
     }
     
     private var lastApproved: some View {
-        VStack(alignment: .leading, spacing: 15) {
+        VStack(alignment: .leading) {
             HStack {
                 Image(systemName: "checkmark.seal.fill")
                     .foregroundStyle(Color.green)
@@ -66,10 +85,10 @@ struct HomeView: View {
     }
     
     private var modernHistory: some View {
-        VStack(alignment: .leading, spacing: 15) {
+        VStack(alignment: .leading) {
             HStack {
                 Image(systemName: "ferry")
-                    .foregroundStyle(Color.accentColor)
+                    .foregroundStyle(Color.accent)
                 Text("Modern history")
             }
             .font(.title2.bold())
@@ -89,4 +108,5 @@ struct HomeView: View {
 
 #Preview {
     HomeView(viewModel: HomePageViewModel())
+        .environmentObject(PurchasesManager())
 }

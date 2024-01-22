@@ -12,17 +12,19 @@ import MapKit
 struct Provider: TimelineProvider {
     
     func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), wreck: generateExampleWreck(), mapImage: UIImage(named: "RMSLusitania"))
+        return SimpleEntry(date: Date(), wreck: generateExampleWreck(), mapImage: UIImage(named: "RMSLusitania"), proSubscription: true)
     }
 
     func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> ()) {
-        let entry = SimpleEntry(date: Date(), wreck: generateExampleWreck(), mapImage: UIImage(named: "RMSLusitaniaMap"))
+        let entry = SimpleEntry(date: Date(), wreck: generateExampleWreck(), mapImage: UIImage(named: "RMSLusitaniaMap"), proSubscription: true)
         completion(entry)
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
         Task {
             var entries: [SimpleEntry] = []
+            var count = 0
+            let subscription = isProUser()
             let wrecks = await getWrecks()
             let today = Date()
             
@@ -32,7 +34,8 @@ struct Provider: TimelineProvider {
                 let wreck = wrecks[index]
                 let mapSnapshot = await generateMapSnapshot(latitude: wreck.hasCoordinates.latitude,
                                                             longitude: wreck.hasCoordinates.longitude)
-                let entry = SimpleEntry(date: entryDate, wreck: wreck, mapImage: mapSnapshot)
+                let entry = SimpleEntry(date: entryDate, wreck: wreck, mapImage: mapSnapshot, proSubscription: subscription)
+                count += 1
                 entries.append(entry)
             }
             
@@ -42,17 +45,21 @@ struct Provider: TimelineProvider {
         }
     }
     
+    private func isProUser() -> Bool {
+        let defaults = UserDefaults(suiteName: "group.MWQ8P93RWJ.com.danyloternovoi.Wreckpointer")
+        let subscription = defaults?.bool(forKey: "proSubscription") ?? false
+        return subscription
+    }
+    
     private func getWrecks() async -> [Wreck] {
         do {
-            guard let url = URL(string: ServerURL.homePageWrecks.path) else {
+            guard let url = URL(string: ServerURL.widgetWrecks.path) else {
                 throw HTTPError.badURL
             }
             let serverData = try await HTTPServer.shared.sendRequest(url: url, HTTPMethod: .GET)
-            let serverHomePageModel = try JSONCoder.shared.decodeItemFromData(data: serverData) as HomePageModel
-            let wrecks = serverHomePageModel.random5Wrecks
+            let wrecks = try JSONCoder.shared.decodeItemFromData(data: serverData) as [Wreck]
             return wrecks
-        } catch let error {
-            print("Wreckpointer.Today Error: \(error.localizedDescription)")
+        } catch {
             return [ ]
         }
     }
@@ -80,7 +87,7 @@ struct Provider: TimelineProvider {
                      approved: true,
                      dive: false,
                      dateOfLoss: dateOfLoss,
-                     lossOfLive: 1191,
+                     lossOfLife: 1191,
                      displacement: 44060,
                      depth: 305,
                      image: imageData,
@@ -96,11 +103,44 @@ struct Provider: TimelineProvider {
         let mapSnapshotter = MKMapSnapshotter(options: options)
         do {
             let snapshot = try await mapSnapshotter.start()
-            return snapshot.image
-        } catch let error {
-            print(error.localizedDescription)
+            return resizeimage(image: snapshot.image, withSize: CGSize(width: 300, height: 300))
+        } catch {
             return nil
         }
+    }
+    
+    private func resizeimage(image:UIImage,withSize:CGSize) -> UIImage {
+        var actualHeight:CGFloat = image.size.height
+        var actualWidth:CGFloat = image.size.width
+        let maxHeight:CGFloat = withSize.height
+        let maxWidth:CGFloat = withSize.width
+        var imgRatio:CGFloat = actualWidth/actualHeight
+        let maxRatio:CGFloat = maxWidth/maxHeight
+//        let compressionQuality = 0.5
+        if (actualHeight>maxHeight||actualWidth>maxWidth) {
+            if (imgRatio<maxRatio){
+                //adjust width according to maxHeight
+                imgRatio = maxHeight/actualHeight
+                actualWidth = imgRatio * actualWidth
+                actualHeight = maxHeight
+            }else if(imgRatio>maxRatio){
+                // adjust height according to maxWidth
+                imgRatio = maxWidth/actualWidth
+                actualHeight = imgRatio * actualHeight
+                actualWidth = maxWidth
+            }else{
+                actualHeight = maxHeight
+                actualWidth = maxWidth
+            }
+        }
+        let rec:CGRect = CGRect(x:0.0,y:0.0,width:actualWidth,height:actualHeight)
+        UIGraphicsBeginImageContext(rec.size)
+        image.draw(in: rec)
+        let image:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        let imageData = image.jpegData(compressionQuality: 1)
+        UIGraphicsEndImageContext()
+        let resizedimage = UIImage(data: imageData!)
+        return resizedimage!
     }
 }
 
@@ -108,6 +148,7 @@ struct SimpleEntry: TimelineEntry {
     var date: Date
     let wreck: Wreck
     let mapImage: UIImage?
+    let proSubscription: Bool
 }
 
 struct TodayEntryView : View {
@@ -116,15 +157,28 @@ struct TodayEntryView : View {
     
     @ViewBuilder
     var body: some View {
-        switch family {
-        case .systemSmall:
-            SmallWidgetView(wreck: entry.wreck)
-        case .systemMedium:
-            MediumWidgetView(wreck: entry.wreck, map: entry.mapImage)
-        case .systemLarge:
-            LargeWidgetView(wreck: entry.wreck, map: entry.mapImage)
-        default:
-            Text("Wreckpointer")
+        if entry.proSubscription {
+            switch family {
+            case .systemSmall:
+                SmallWidgetView(wreck: entry.wreck)
+            case .systemMedium:
+                MediumWidgetView(wreck: entry.wreck, map: entry.mapImage)
+            case .systemLarge:
+                LargeWidgetView(wreck: entry.wreck)
+            default:
+                Text("Wreckpointer")
+            }
+        } else {
+            switch family {
+            case .systemSmall:
+                WidgetPlaceholder(size: .small, color: .accent)
+            case .systemMedium:
+                WidgetPlaceholder(size: .medium, color: .accent)
+            case .systemLarge:
+                WidgetPlaceholder(size: .large, color: .accent)
+            default:
+                Text("Wreckpointer")
+            }
         }
     }
 }

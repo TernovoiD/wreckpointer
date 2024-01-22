@@ -10,29 +10,35 @@ import SwiftUI
 struct MapView: View {
     
     @StateObject var viewModel = MapViewModel()
+    @EnvironmentObject var data: WreckpointerData
     
     var body: some View {
         NavigationView {
             ZStack {
                 iOS14WreckpointerMap(map: viewModel)
                     .ignoresSafeArea(edges: .top)
-                if viewModel.activeUIElement != nil || viewModel.selectedWreck != nil {
+                if viewModel.activeUIElement != nil {
                     Color.black.opacity(0.6)
                         .ignoresSafeArea(edges: .top)
                         .onTapGesture {
                             withAnimation(.spring) {
                                 viewModel.activeUIElement = .none
-                                viewModel.selectedWreck = nil
                             }
                         }
                 }
                 MapOverlayView(map: viewModel)
                     .padding(.top)
             }
-            .alert(viewModel.errorMessage, isPresented: $viewModel.error) {
-                Button("OK", role: .cancel) { }
-            }
             .ignoresSafeArea(.keyboard)
+            .onAppear(perform: {
+                viewModel.show(wrecks: data.wrecks)
+            })
+            .onChange(of: data.wrecks, perform: { wrecks in
+                viewModel.show(wrecks: wrecks)
+            })
+            .onChange(of: viewModel.filteredWrecks, perform: { _ in
+                viewModel.selectedWreck = nil
+            })
         }
     }
 }
@@ -40,4 +46,5 @@ struct MapView: View {
 #Preview {
     MapView()
         .environmentObject(MapViewModel())
+        .environmentObject(WreckpointerData())
 }

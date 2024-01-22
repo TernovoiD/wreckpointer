@@ -14,6 +14,7 @@ enum WidgetSize {
 struct WidgetPlaceholder: View {
     
     let size: WidgetSize
+    let color: Color
     
     var body: some View {
         switch size {
@@ -33,7 +34,7 @@ struct WidgetPlaceholder: View {
                     .font(.footnote.weight(.black))
                 Text(".widget")
                     .font(.caption2.bold())
-                    .foregroundStyle(Color.accentColor)
+                    .foregroundStyle(color)
             }
             Spacer()
             Text("Get .PRO subscription to unlock widgets. Wreckpointer is a super unique and niche app which requires your support!")
@@ -49,7 +50,7 @@ struct WidgetPlaceholder: View {
                     .font(.headline.weight(.black))
                 Text(".widget")
                     .font(.footnote.bold())
-                    .foregroundStyle(Color.accentColor)
+                    .foregroundStyle(color)
             }
             Spacer()
             Text("Get .PRO subscription to unlock widgets. Wreckpointer is a super unique and niche app which requires your support!")
@@ -65,7 +66,7 @@ struct WidgetPlaceholder: View {
                     .font(.largeTitle.weight(.black))
                 Text(".widget")
                     .font(.title2.bold())
-                    .foregroundStyle(Color.accentColor)
+                    .foregroundStyle(color)
             }
             Spacer()
             Text("Get .PRO subscription to unlock widgets. Wreckpointer is a super unique and niche app which requires your support!")
@@ -81,7 +82,7 @@ struct WidgetPlaceholder: View {
     ZStack {
         Color.cyan
             .ignoresSafeArea()
-        WidgetPlaceholder(size: .large)
+        WidgetPlaceholder(size: .large, color: .accent)
 //            .frame(maxWidth: 150, maxHeight: 150)
 //                    .frame(maxHeight: 150)
                     .frame(maxHeight: 350)

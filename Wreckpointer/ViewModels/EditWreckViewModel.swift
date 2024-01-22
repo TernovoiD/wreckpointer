@@ -1,13 +1,13 @@
 //
-//  AddUpdateWreckViewModel.swift
+//  EditWreckViewModel.swift
 //  Wreckpointer
 //
-//  Created by Danylo Ternovoi on 06.01.2024.
+//  Created by Danylo Ternovoi on 18.01.2024.
 //
 
 import Foundation
 
-final class AddUpdateWreckViewModel: ObservableObject {
+final class EditWreckViewModel: ObservableObject {
     
     @Published var id: UUID? = nil
     @Published var image: Data? = nil
@@ -32,16 +32,20 @@ final class AddUpdateWreckViewModel: ObservableObject {
     @Published var longitudeSeconds: String = ""
     @Published var longitudeEast: Bool = false
     
+    @Published var updated: Bool = false
+    
     var wreckLatitude: Double? {
+        
         let degrees = latitudeDegrees.isEmpty ? "00" : latitudeDegrees
         let minutes = latitudeMinutes.isEmpty ? "00" : latitudeMinutes
         let seconds = latitudeSeconds.isEmpty ? "00" : latitudeSeconds
         
-        if let latitude = Double(degrees + "." + minutes + seconds) {
-            return latitudeNorth ? latitude : -latitude
-        } else {
+        guard !latitudeDegrees.isEmpty || !latitudeMinutes.isEmpty || !latitudeSeconds.isEmpty,
+              let latitude = Double(degrees + "." + minutes + seconds) else {
             return nil
         }
+        
+        return latitudeNorth ? latitude : -latitude
     }
     
     var wreckLongitude: Double? {
@@ -49,14 +53,21 @@ final class AddUpdateWreckViewModel: ObservableObject {
         let minutes = longitudeMinutes.isEmpty ? "00" : longitudeMinutes
         let seconds = longitudeSeconds.isEmpty ? "00" : longitudeSeconds
         
-        if let latitude = Double(degrees + "." + minutes + seconds) {
-            return longitudeEast ? latitude : -latitude
-        } else {
+        guard !longitudeDegrees.isEmpty || !longitudeMinutes.isEmpty || !longitudeSeconds.isEmpty,
+              let latitude = Double(degrees + "." + minutes + seconds) else {
             return nil
+        }
+        return longitudeEast ? latitude : -latitude
+    }
+    
+    func update(_ wreck: Wreck) {
+        if !updated {
+            fill(wreck: wreck)
+            updated = true
         }
     }
     
-    func fill(wreck: Wreck) {
+    private func fill(wreck: Wreck) {
         id = wreck.id
         image = wreck.image
         name = wreck.hasName
@@ -92,7 +103,7 @@ final class AddUpdateWreckViewModel: ObservableObject {
                      approved: isApproved,
                      dive: isWreckDive,
                      dateOfLoss: dateOfLossKnown ? dateOfLoss : nil,
-                     lossOfLive: lossOfLive.isEmpty ? nil : Int(lossOfLive),
+                     lossOfLife: lossOfLive.isEmpty ? nil : Int(lossOfLive),
                      displacement: displacement.isEmpty ? nil : Int(displacement),
                      depth: depth.isEmpty ? nil : Int(depth),
                      image: image,

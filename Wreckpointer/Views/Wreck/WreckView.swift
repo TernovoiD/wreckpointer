@@ -9,44 +9,54 @@ import SwiftUI
 
 struct WreckView: View {
     
+    @AppStorage("proSubscription", store: UserDefaults(suiteName: "group.MWQ8P93RWJ.com.danyloternovoi.Wreckpointer"))
+    var proSubscription: Bool = false
     @StateObject var viewModel = WreckViewModel()
     @State var wreck: Wreck
     @State var loadWreck: Bool = false
     
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 0) {
-                ImageView(imageData: $wreck.image, placehoder: "warship.sunk")
-                    .frame(height: 350)
-                    .clipped()
-                    .overlay { imageOverlay }
-                WreckInfoView(wreck: wreck)
-                .font(.callout)
-                .foregroundStyle(.secondary)
-                .padding()
-                .padding(.top, 15)
-                Divider()
-                    .padding(.bottom)
-                Text(wreck.history ?? "")
+        VStack(spacing: 0) {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 0) {
+                    ImageView(imageData: $wreck.image, placehoder: "warship.sunk")
+                        .scaledToFill()
+                        .overlay { imageOverlay }
+                    WreckInfoView(wreck: wreck)
                     .font(.callout)
-                    .foregroundStyle(.primary)
-                    .padding(.horizontal)
-                    .padding(.bottom, 100)
-                Spacer()
-            }
-        }
-        .ignoresSafeArea()
-        .task {
-            if loadWreck {
-                let serverWreck = await viewModel.synchronize(wreck: wreck)
-                if let serverWreck {
-                    updateView(with: serverWreck)
+                    .foregroundStyle(.secondary)
+                    .padding()
+                    .padding(.top, 15)
+                    Divider()
+                        .padding(.bottom)
+                    Text(wreck.history ?? "")
+                        .font(.callout)
+                        .foregroundStyle(.primary)
+                        .padding(.horizontal)
+                        .padding(.bottom, 100)
                 }
             }
+            .navigationTitle("Overview")
+            .task {
+                if loadWreck {
+                    let serverWreck = await viewModel.synchronize(wreck: wreck)
+                    if let serverWreck {
+                        updateView(with: serverWreck)
+                    }
+                }
+            }
+            .toolbar {
+                ToolbarItem {
+                    if !wreck.isApproved {
+                        NavigationLink("Edit") {
+                            EditWreckView(wreckID: wreck.id)
+                        }
+                        .font(.headline.bold())
+                    }
+                }
         }
-        .toolbar {
-            ToolbarItem {
-                
+            if proSubscription == false {
+                BannerContentView()
             }
         }
     }

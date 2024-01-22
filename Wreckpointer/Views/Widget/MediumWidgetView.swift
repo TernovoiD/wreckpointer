@@ -21,7 +21,7 @@ struct MediumWidgetView: View {
                     .clipped()
                     .shadow(color: .black, radius: 3)
                     .overlay {
-                        MapPinMedium(wreck: wreck)
+                        MapPin(wreck: wreck)
                             .scaleEffect(0.8)
                             .foregroundStyle(Color.white)
                     }

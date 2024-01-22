@@ -22,10 +22,11 @@ struct WreckSelector: View {
                             WreckView(wreck: wrecks[wreckNumber])
                         }, label: {
                             ImageView(imageData: $wrecks[wreckNumber].image)
-                                .frame(maxHeight: 320)
+                                .aspectRatio(contentMode: .fill)
+                                .frame(maxWidth: proxy.size.width - 30, maxHeight: 400)
+                                .clipped()
                                 .clipShape(RoundedRectangle(cornerRadius: 25, style: .continuous))
                                 .rotation3DEffect(.degrees(proxy.frame(in: .global).minX / -10), axis: (x: 0, y: 1, z: 0))
-                                .shadow(color: Color.black.opacity(0.6), radius: 5, x: 0, y: 5)
                                 .blur(radius: abs(proxy.frame(in: .global).minX) / 50)
                                 .overlay(
                                     Text(wrecks[wreckNumber].hasName)
@@ -37,7 +38,6 @@ struct WreckSelector: View {
                                         .offset(x: proxy.frame(in: .global).minX))
                         })
                         .padding()
-                        
                     }
                 }
             }
@@ -46,9 +46,8 @@ struct WreckSelector: View {
                 Spacer()
                 selectedTabIndicator
             }
-            .padding()
         }
-        .frame(height: 380)
+        .frame(height: 400)
         .sheet(item: $presentedWreck) { wreck in
             WreckView(wreck: wreck)
         }

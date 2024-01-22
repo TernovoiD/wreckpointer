@@ -36,50 +36,6 @@ final class ModeratorViewModel: ObservableObject {
         self.errorMessage = message
         self.error = true
     }
-        
-    func loadWrecks() async {
-        do {
-            guard let url = URL(string: ServerURL.wrecks.path) else {
-                throw HTTPError.badURL
-            }
-            let token = HTTPServerToken.shared.get()
-            let serverData = try await HTTPServer.shared.sendRequest(url: url, HTTPMethod: .GET, loginToken: token)
-            let serverWrecks = try JSONCoder.shared.decodeArrayFromData(data: serverData) as [Wreck]
-            DispatchQueue.main.async {
-                self.wrecks = [ ]
-                self.wrecks = serverWrecks
-            }
-        } catch let error {
-            showError(withMessage: error.localizedDescription)
-        }
-    }
-    
-    func update(wreck: Wreck) async {
-        do {
-            if let uuid = wreck.id,
-               let url = URL(string: ServerURL.wreck(uuid).path) {
-                let token = HTTPServerToken.shared.get()
-                let data = try JSONCoder.shared.encodeItemToData(item: wreck)
-                let _ = try await HTTPServer.shared.sendRequest(url: url, data: data, HTTPMethod: .PATCH, loginToken: token)
-                await loadWrecks()
-            }
-        } catch let error {
-            showError(withMessage: error.localizedDescription)
-        }
-    }
-    
-    func delete(wreck: Wreck) async {
-        do {
-            if let uuid = wreck.id,
-               let url = URL(string: ServerURL.wreck(uuid).path) {
-                let token = HTTPServerToken.shared.get()
-                let _ = try await HTTPServer.shared.sendRequest(url: url, HTTPMethod: .DELETE, loginToken: token)
-                await loadWrecks()
-            }
-        } catch let error {
-            showError(withMessage: error.localizedDescription)
-        }
-    } 
 }
 
 // MARK: - Auth
@@ -114,7 +70,6 @@ extension ModeratorViewModel {
                 DispatchQueue.main.async {
                     self.user = user
                 }
-                await loadWrecks()
             } else {
                 self.user = nil
             }
