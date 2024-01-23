@@ -11,6 +11,7 @@ import StoreKit
 
 struct OptionsView: View {
     
+    @EnvironmentObject var store: PurchasesManager
     @AppStorage("hideUnapprovedWrecks",store: UserDefaults(suiteName: "group.MWQ8P93RWJ.com.danyloternovoi.Wreckpointer"))
     var hideUnapprovedWrecks: Bool = false
     
@@ -40,6 +41,7 @@ struct OptionsView: View {
 
 #Preview {
     OptionsView(showModeratorPage: .constant(false))
+        .environmentObject(PurchasesManager())
 }
 
 private extension OptionsView {
@@ -72,6 +74,7 @@ private extension OptionsView {
         Button(action: {
             Task {
                 try? await AppStore.sync()
+                await store.updateCustomerProductStatus()
             }
         }, label: {
             Color.clear
