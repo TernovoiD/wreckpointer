@@ -34,6 +34,16 @@ struct PROSubscriptions: View {
                         }
                         Spacer()
                     }
+                    HStack {
+                        Spacer()
+                        Text("[Terms of Service](https://www.apple.com/legal/internet-services/itunes/dev/stdeula/)")
+                        Text("and")
+                            .foregroundStyle(Color.secondary)
+                        Text("[Privacy Policy](https://github.com/TernovoiD/wreckpointer_privacy_policy)")
+                        Spacer()
+                    }
+                    .font(.headline)
+                    .padding(.top, 20)
                 }
                 .padding(.horizontal)
             }
