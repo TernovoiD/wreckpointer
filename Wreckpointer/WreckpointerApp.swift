@@ -6,13 +6,11 @@
 //
 
 import SwiftUI
-import GoogleMobileAds
 
 @main
 struct WreckpointerApp: App {
     
     @StateObject var data = WreckpointerData()
-    @StateObject var store = PurchasesManager()
     
     var body: some Scene {
         WindowGroup {
@@ -20,7 +18,6 @@ struct WreckpointerApp: App {
                 WreckpointerView()
                     .defaultAppStorage(userDefaults)
                     .environmentObject(data)
-                    .environmentObject(store)
             } else {
                 Text("Failed to load UserDefaults")
             }

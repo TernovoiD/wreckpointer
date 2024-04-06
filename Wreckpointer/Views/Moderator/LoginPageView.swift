@@ -50,6 +50,7 @@ struct LoginPageView: View {
     }
     
     private func login() {
+        selectedField = .none
         if !email.isEmpty && !password.isEmpty {
             Task {
                 await viewModel.login(email: email,password: password)

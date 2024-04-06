@@ -8,9 +8,6 @@
 import SwiftUI
 
 struct WreckView: View {
-    
-    @AppStorage("proSubscription", store: UserDefaults(suiteName: "group.MWQ8P93RWJ.com.danyloternovoi.Wreckpointer"))
-    var proSubscription: Bool = false
     @StateObject var viewModel = WreckViewModel()
     @State var wreck: Wreck
     @State var loadWreck: Bool = false
@@ -54,9 +51,6 @@ struct WreckView: View {
                         .font(.headline.bold())
                     }
                 }
-        }
-            if proSubscription == false {
-                BannerContentView()
             }
         }
     }
