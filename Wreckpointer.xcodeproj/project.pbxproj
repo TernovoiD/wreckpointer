@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		81003ADD2B49E6D500878ABD /* WreckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81003ADC2B49E6D500878ABD /* WreckView.swift */; };
-		81130F942B4C33C8000312A1 /* WidgetPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81130F932B4C33C8000312A1 /* WidgetPlaceholder.swift */; };
-		81130F962B4C3D83000312A1 /* WidgetPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81130F932B4C33C8000312A1 /* WidgetPlaceholder.swift */; };
 		813141B22B59197C00B941BA /* MapPin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813141B12B59197C00B941BA /* MapPin.swift */; };
 		813141B32B591FCF00B941BA /* MapPin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813141B12B59197C00B941BA /* MapPin.swift */; };
 		813141B82B594A5600B941BA /* EditWreckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813141B72B594A5500B941BA /* EditWreckView.swift */; };
@@ -60,11 +58,6 @@
 		816E9FBD29CAF74E00C3BC0F /* WreckpointerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816E9FBC29CAF74E00C3BC0F /* WreckpointerApp.swift */; };
 		817FE6B12B5A778400947355 /* EditWreckInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817FE6B02B5A778400947355 /* EditWreckInfoView.swift */; };
 		817FE6B32B5A779500947355 /* EditWreckHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817FE6B22B5A779500947355 /* EditWreckHistoryView.swift */; };
-		817FE6B52B5C065500947355 /* PROSubscriptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817FE6B42B5C065500947355 /* PROSubscriptions.swift */; };
-		817FE6B72B5C066E00947355 /* PurchasesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817FE6B62B5C066E00947355 /* PurchasesManager.swift */; };
-		817FE6C12B5C082500947355 /* WreckpointerStoreConfiguration.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 817FE6C02B5C082500947355 /* WreckpointerStoreConfiguration.storekit */; };
-		817FE6C22B5C082500947355 /* WreckpointerStoreConfiguration.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 817FE6C02B5C082500947355 /* WreckpointerStoreConfiguration.storekit */; };
-		817FE6C32B5C0D4600947355 /* PurchasesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817FE6B62B5C066E00947355 /* PurchasesManager.swift */; };
 		818438422B3CAFA90013EFBD /* HTTPServerToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818438412B3CAFA90013EFBD /* HTTPServerToken.swift */; };
 		818438442B3CB2020013EFBD /* HTTPServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818438432B3CB2020013EFBD /* HTTPServer.swift */; };
 		818438462B3CBE070013EFBD /* JSONCoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818438452B3CBE070013EFBD /* JSONCoder.swift */; };
@@ -81,6 +74,8 @@
 		81B7B14A2B3DFF00009062AE /* WreckRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B7B1492B3DFEFF009062AE /* WreckRowView.swift */; };
 		81B7B1572B3E0192009062AE /* DegreeSymbolModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B7B1512B3E0192009062AE /* DegreeSymbolModifier.swift */; };
 		81B7B1592B3E0192009062AE /* ColoredBorderModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B7B1532B3E0192009062AE /* ColoredBorderModifier.swift */; };
+		81BFA7012BC1903D00279983 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 81BFA7002BC1903D00279983 /* PrivacyInfo.xcprivacy */; };
+		81BFA7022BC1903D00279983 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 81BFA7002BC1903D00279983 /* PrivacyInfo.xcprivacy */; };
 		81D9CA592B39743100E14B49 /* Wreck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D9CA562B39743100E14B49 /* Wreck.swift */; };
 		81DD4E8B2B38495500E58646 /* WreckCauses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81DD4E852B38495500E58646 /* WreckCauses.swift */; };
 		81DD4E8C2B38495500E58646 /* WreckTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81DD4E862B38495500E58646 /* WreckTypes.swift */; };
@@ -89,8 +84,6 @@
 		81F316C52B46DCCA00558659 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F316C42B46DCCA00558659 /* HomeView.swift */; };
 		81F316C72B46DFDA00558659 /* WreckSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F316C62B46DFDA00558659 /* WreckSelector.swift */; };
 		81F316C92B47051900558659 /* WreckPlateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F316C82B47051900558659 /* WreckPlateView.swift */; };
-		81F8BC2A2B5D23D8007BB3B2 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 81F8BC292B5D23D8007BB3B2 /* GoogleMobileAds */; };
-		81F8BC2F2B5D2E3B007BB3B2 /* BannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F8BC2E2B5D2E3B007BB3B2 /* BannerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -130,7 +123,6 @@
 /* Begin PBXFileReference section */
 		81003ADC2B49E6D500878ABD /* WreckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WreckView.swift; sourceTree = "<group>"; };
 		81130F872B4C1166000312A1 /* TodayExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TodayExtension.entitlements; sourceTree = "<group>"; };
-		81130F932B4C33C8000312A1 /* WidgetPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetPlaceholder.swift; sourceTree = "<group>"; };
 		813141B12B59197C00B941BA /* MapPin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapPin.swift; sourceTree = "<group>"; };
 		813141B72B594A5500B941BA /* EditWreckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditWreckView.swift; sourceTree = "<group>"; };
 		813141B92B594B1200B941BA /* EditWreckViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditWreckViewModel.swift; sourceTree = "<group>"; };
@@ -166,9 +158,6 @@
 		816E9FE929CAF7FD00C3BC0F /* Wreckpointer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Wreckpointer.entitlements; sourceTree = "<group>"; };
 		817FE6B02B5A778400947355 /* EditWreckInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditWreckInfoView.swift; sourceTree = "<group>"; };
 		817FE6B22B5A779500947355 /* EditWreckHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditWreckHistoryView.swift; sourceTree = "<group>"; };
-		817FE6B42B5C065500947355 /* PROSubscriptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PROSubscriptions.swift; sourceTree = "<group>"; };
-		817FE6B62B5C066E00947355 /* PurchasesManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PurchasesManager.swift; sourceTree = "<group>"; };
-		817FE6C02B5C082500947355 /* WreckpointerStoreConfiguration.storekit */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = WreckpointerStoreConfiguration.storekit; sourceTree = "<group>"; };
 		818438412B3CAFA90013EFBD /* HTTPServerToken.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPServerToken.swift; sourceTree = "<group>"; };
 		818438432B3CB2020013EFBD /* HTTPServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPServer.swift; sourceTree = "<group>"; };
 		818438452B3CBE070013EFBD /* JSONCoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONCoder.swift; sourceTree = "<group>"; };
@@ -185,6 +174,7 @@
 		81B7B1492B3DFEFF009062AE /* WreckRowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WreckRowView.swift; sourceTree = "<group>"; };
 		81B7B1512B3E0192009062AE /* DegreeSymbolModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DegreeSymbolModifier.swift; sourceTree = "<group>"; };
 		81B7B1532B3E0192009062AE /* ColoredBorderModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColoredBorderModifier.swift; sourceTree = "<group>"; };
+		81BFA7002BC1903D00279983 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		81D9CA562B39743100E14B49 /* Wreck.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Wreck.swift; sourceTree = "<group>"; };
 		81DD4E852B38495500E58646 /* WreckCauses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WreckCauses.swift; sourceTree = "<group>"; };
 		81DD4E862B38495500E58646 /* WreckTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WreckTypes.swift; sourceTree = "<group>"; };
@@ -194,7 +184,6 @@
 		81F316C42B46DCCA00558659 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		81F316C62B46DFDA00558659 /* WreckSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WreckSelector.swift; sourceTree = "<group>"; };
 		81F316C82B47051900558659 /* WreckPlateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WreckPlateView.swift; sourceTree = "<group>"; };
-		81F8BC2E2B5D2E3B007BB3B2 /* BannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -211,7 +200,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				81F8BC2A2B5D23D8007BB3B2 /* GoogleMobileAds in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -299,7 +287,6 @@
 				81665B1A2B4AE18700052C3C /* SmallWidgetView.swift */,
 				81665B1F2B4AE4D800052C3C /* MediumWidgetView.swift */,
 				81665B212B4AE4E400052C3C /* LargeWidgetView.swift */,
-				81130F932B4C33C8000312A1 /* WidgetPlaceholder.swift */,
 			);
 			path = Widget;
 			sourceTree = "<group>";
@@ -307,6 +294,7 @@
 		816E9FB029CAF74E00C3BC0F = {
 			isa = PBXGroup;
 			children = (
+				81BFA7002BC1903D00279983 /* PrivacyInfo.xcprivacy */,
 				81130F872B4C1166000312A1 /* TodayExtension.entitlements */,
 				816E9FBB29CAF74E00C3BC0F /* Wreckpointer */,
 				81665AFB2B4AAE9F00052C3C /* Today */,
@@ -332,14 +320,12 @@
 				81550C132B5E870C00A7CA83 /* Preview Content */,
 				816E9FBC29CAF74E00C3BC0F /* WreckpointerApp.swift */,
 				818C79FF2B585AC500B242AC /* WreckpointerData.swift */,
-				817FE6B62B5C066E00947355 /* PurchasesManager.swift */,
 				816E9FCA29CAF78300C3BC0F /* Views */,
 				8165034E2B49A4690076EFD4 /* ViewModels */,
 				81E255CC2B3C86BB0063DCAB /* Models */,
 				816E9FBA29CAF74E00C3BC0F /* Products */,
 				816E9FE929CAF7FD00C3BC0F /* Wreckpointer.entitlements */,
 				81E7102829D9C4C7008724FA /* Info.plist */,
-				817FE6C02B5C082500947355 /* WreckpointerStoreConfiguration.storekit */,
 				81B34C8E2B3993630024E48B /* Assets.xcassets */,
 			);
 			path = Wreckpointer;
@@ -373,8 +359,6 @@
 			isa = PBXGroup;
 			children = (
 				81B7B14D2B3E0192009062AE /* ViewModifiers */,
-				81F8BC2E2B5D2E3B007BB3B2 /* BannerView.swift */,
-				817FE6B42B5C065500947355 /* PROSubscriptions.swift */,
 				81A94E2B2B44710800B63C9F /* ImageView.swift */,
 				81665B252B4AE72600052C3C /* WreckInfoView.swift */,
 			);
@@ -505,7 +489,6 @@
 			);
 			name = Wreckpointer;
 			packageProductDependencies = (
-				81F8BC292B5D23D8007BB3B2 /* GoogleMobileAds */,
 			);
 			productName = Wreckpointer;
 			productReference = 816E9FB929CAF74E00C3BC0F /* Wreckpointer.app */;
@@ -539,7 +522,6 @@
 			);
 			mainGroup = 816E9FB029CAF74E00C3BC0F;
 			packageReferences = (
-				81320A652B5D186400834785 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
 			);
 			productRefGroup = 816E9FBA29CAF74E00C3BC0F /* Products */;
 			projectDirPath = "";
@@ -556,7 +538,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				817FE6C22B5C082500947355 /* WreckpointerStoreConfiguration.storekit in Resources */,
+				81BFA7022BC1903D00279983 /* PrivacyInfo.xcprivacy in Resources */,
 				81665B012B4AAEA200052C3C /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -565,7 +547,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				817FE6C12B5C082500947355 /* WreckpointerStoreConfiguration.storekit in Resources */,
+				81BFA7012BC1903D00279983 /* PrivacyInfo.xcprivacy in Resources */,
 				81B34C8F2B3993630024E48B /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -578,8 +560,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				81665B232B4AE57200052C3C /* LargeWidgetView.swift in Sources */,
-				81130F962B4C3D83000312A1 /* WidgetPlaceholder.swift in Sources */,
-				817FE6C32B5C0D4600947355 /* PurchasesManager.swift in Sources */,
 				81665B152B4AB28B00052C3C /* MIMETypes.swift in Sources */,
 				81665B272B4AE72A00052C3C /* WreckInfoView.swift in Sources */,
 				81665B0A2B4AB26200052C3C /* HomePageModel.swift in Sources */,
@@ -620,12 +600,10 @@
 				81AF6E392B1B6793000C3CBB /* WreckpointerView.swift in Sources */,
 				81D9CA592B39743100E14B49 /* Wreck.swift in Sources */,
 				81F316C92B47051900558659 /* WreckPlateView.swift in Sources */,
-				81F8BC2F2B5D2E3B007BB3B2 /* BannerView.swift in Sources */,
 				81B7B1572B3E0192009062AE /* DegreeSymbolModifier.swift in Sources */,
 				817FE6B32B5A779500947355 /* EditWreckHistoryView.swift in Sources */,
 				8165035A2B49B8AB0076EFD4 /* WreckViewModel.swift in Sources */,
 				813141BA2B594B1200B941BA /* EditWreckViewModel.swift in Sources */,
-				817FE6B52B5C065500947355 /* PROSubscriptions.swift in Sources */,
 				81B7B1432B3DD48C009062AE /* MapOverlayView.swift in Sources */,
 				818438462B3CBE070013EFBD /* JSONCoder.swift in Sources */,
 				81A748BA2B5D8504002ECFBA /* AboutView.swift in Sources */,
@@ -639,7 +617,6 @@
 				816503502B49AD120076EFD4 /* MapViewModel.swift in Sources */,
 				81665B1E2B4AE4C300052C3C /* SmallWidgetView.swift in Sources */,
 				81665B202B4AE4D800052C3C /* MediumWidgetView.swift in Sources */,
-				81130F942B4C33C8000312A1 /* WidgetPlaceholder.swift in Sources */,
 				813141B22B59197C00B941BA /* MapPin.swift in Sources */,
 				814D9AC22B3B6604005B13D4 /* HTTPHeaders.swift in Sources */,
 				816762042A8C378200A8A2A4 /* DoubleExtension.swift in Sources */,
@@ -658,7 +635,6 @@
 				81DD4E8C2B38495500E58646 /* WreckTypes.swift in Sources */,
 				81B7B1592B3E0192009062AE /* ColoredBorderModifier.swift in Sources */,
 				814D5CD02B3EC17B005C1E40 /* OptionsView.swift in Sources */,
-				817FE6B72B5C066E00947355 /* PurchasesManager.swift in Sources */,
 				81B6D0F62A601D4A00B5978F /* StringExtensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -682,7 +658,7 @@
 				CODE_SIGN_ENTITLEMENTS = TodayExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MWQ8P93RWJ;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -696,7 +672,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 3.0;
+				MARKETING_VERSION = 3.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.danyloternovoi.Wreckpointer.Today;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -720,7 +696,7 @@
 				CODE_SIGN_ENTITLEMENTS = TodayExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MWQ8P93RWJ;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -734,7 +710,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 3.0;
+				MARKETING_VERSION = 3.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.danyloternovoi.Wreckpointer.Today;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -877,7 +853,7 @@
 				CODE_SIGN_ENTITLEMENTS = Wreckpointer/Wreckpointer.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "Wreckpointer/Preview\\ Content";
 				DEVELOPMENT_TEAM = MWQ8P93RWJ;
 				ENABLE_PREVIEWS = YES;
@@ -895,7 +871,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.0;
+				MARKETING_VERSION = 3.0.1;
 				"OTHER_LDFLAGS[arch=*]" = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.danyloternovoi.Wreckpointer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -920,7 +896,7 @@
 				CODE_SIGN_ENTITLEMENTS = Wreckpointer/Wreckpointer.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "Wreckpointer/Preview\\ Content";
 				DEVELOPMENT_TEAM = MWQ8P93RWJ;
 				ENABLE_PREVIEWS = YES;
@@ -938,7 +914,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.0;
+				MARKETING_VERSION = 3.0.1;
 				"OTHER_LDFLAGS[arch=*]" = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.danyloternovoi.Wreckpointer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -984,25 +960,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		81320A652B5D186400834785 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 10.14.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		81F8BC292B5D23D8007BB3B2 /* GoogleMobileAds */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 81320A652B5D186400834785 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
-			productName = GoogleMobileAds;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 816E9FB129CAF74E00C3BC0F /* Project object */;
 }

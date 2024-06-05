@@ -8,10 +8,6 @@
 import SwiftUI
 
 struct HomeView: View {
-    
-    @AppStorage("proSubscription", store: UserDefaults(suiteName: "group.MWQ8P93RWJ.com.danyloternovoi.Wreckpointer"))
-    var proSubscription: Bool = false
-    
     @StateObject var viewModel = HomePageViewModel()
     @State var presentedWreck: Wreck?
     
@@ -45,19 +41,6 @@ struct HomeView: View {
                 .navigationTitle("Wreckpointer")
                 .sheet(item: $presentedWreck) { wreck in
                     WreckView(wreck: wreck)
-                }
-                .toolbar {
-                    ToolbarItem {
-                        if !proSubscription {
-                            NavigationLink(".PRO") {
-                                PROSubscriptions()
-                            }
-                            .font(.headline.bold())
-                        }
-                    }
-                }
-                if proSubscription == false {
-                    BannerContentView()
                 }
             }
         }
@@ -108,5 +91,4 @@ struct HomeView: View {
 
 #Preview {
     HomeView(viewModel: HomePageViewModel())
-        .environmentObject(PurchasesManager())
 }

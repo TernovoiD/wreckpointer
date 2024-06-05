@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import GoogleMobileAds
 
 struct WreckpointerView: View {
     
@@ -32,19 +31,13 @@ struct WreckpointerView: View {
                     .tag(3)
             }
         }
-        .onAppear { startAds() }
         .alert(wreckpointerData.errorMessage, isPresented: $wreckpointerData.error) {
             Button("OK", role: .cancel) { }
         }
-    }
-    
-    private func startAds() {
-            GADMobileAds.sharedInstance().start(completionHandler: nil)
     }
 }
 
 #Preview {
     WreckpointerView()
         .environmentObject(WreckpointerData())
-        .environmentObject(PurchasesManager())
 }

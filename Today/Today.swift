@@ -12,11 +12,11 @@ import MapKit
 struct Provider: TimelineProvider {
     
     func placeholder(in context: Context) -> SimpleEntry {
-        return SimpleEntry(date: Date(), wreck: generateExampleWreck(), mapImage: UIImage(named: "RMSLusitania"), proSubscription: true)
+        return SimpleEntry(date: Date(), wreck: generateExampleWreck(), mapImage: UIImage(named: "RMSLusitania"))
     }
 
     func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> ()) {
-        let entry = SimpleEntry(date: Date(), wreck: generateExampleWreck(), mapImage: UIImage(named: "RMSLusitaniaMap"), proSubscription: true)
+        let entry = SimpleEntry(date: Date(), wreck: generateExampleWreck(), mapImage: UIImage(named: "RMSLusitaniaMap"))
         completion(entry)
     }
 
@@ -24,7 +24,6 @@ struct Provider: TimelineProvider {
         Task {
             var entries: [SimpleEntry] = []
             var count = 0
-            let subscription = isProUser()
             let wrecks = await getWrecks()
             let today = Date()
             
@@ -34,7 +33,7 @@ struct Provider: TimelineProvider {
                 let wreck = wrecks[index]
                 let mapSnapshot = await generateMapSnapshot(latitude: wreck.hasCoordinates.latitude,
                                                             longitude: wreck.hasCoordinates.longitude)
-                let entry = SimpleEntry(date: entryDate, wreck: wreck, mapImage: mapSnapshot, proSubscription: subscription)
+                let entry = SimpleEntry(date: entryDate, wreck: wreck, mapImage: mapSnapshot)
                 count += 1
                 entries.append(entry)
             }
@@ -43,12 +42,6 @@ struct Provider: TimelineProvider {
             let timeline = Timeline(entries: entries, policy: .atEnd)
             completion(timeline)
         }
-    }
-    
-    private func isProUser() -> Bool {
-        let defaults = UserDefaults(suiteName: "group.MWQ8P93RWJ.com.danyloternovoi.Wreckpointer")
-        let subscription = defaults?.bool(forKey: "proSubscription") ?? false
-        return subscription
     }
     
     private func getWrecks() async -> [Wreck] {
@@ -148,7 +141,6 @@ struct SimpleEntry: TimelineEntry {
     var date: Date
     let wreck: Wreck
     let mapImage: UIImage?
-    let proSubscription: Bool
 }
 
 struct TodayEntryView : View {
@@ -157,28 +149,15 @@ struct TodayEntryView : View {
     
     @ViewBuilder
     var body: some View {
-        if entry.proSubscription {
-            switch family {
-            case .systemSmall:
-                SmallWidgetView(wreck: entry.wreck)
-            case .systemMedium:
-                MediumWidgetView(wreck: entry.wreck, map: entry.mapImage)
-            case .systemLarge:
-                LargeWidgetView(wreck: entry.wreck)
-            default:
-                Text("Wreckpointer")
-            }
-        } else {
-            switch family {
-            case .systemSmall:
-                WidgetPlaceholder(size: .small, color: .accent)
-            case .systemMedium:
-                WidgetPlaceholder(size: .medium, color: .accent)
-            case .systemLarge:
-                WidgetPlaceholder(size: .large, color: .accent)
-            default:
-                Text("Wreckpointer")
-            }
+        switch family {
+        case .systemSmall:
+            SmallWidgetView(wreck: entry.wreck)
+        case .systemMedium:
+            MediumWidgetView(wreck: entry.wreck, map: entry.mapImage)
+        case .systemLarge:
+            LargeWidgetView(wreck: entry.wreck)
+        default:
+            Text("Wreckpointer")
         }
     }
 }

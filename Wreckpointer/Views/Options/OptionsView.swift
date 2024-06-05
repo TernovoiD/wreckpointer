@@ -10,8 +10,6 @@ import WidgetKit
 import StoreKit
 
 struct OptionsView: View {
-    
-    @EnvironmentObject var store: PurchasesManager
     @AppStorage("hideUnapprovedWrecks",store: UserDefaults(suiteName: "group.MWQ8P93RWJ.com.danyloternovoi.Wreckpointer"))
     var hideUnapprovedWrecks: Bool = false
     
@@ -22,7 +20,6 @@ struct OptionsView: View {
                 VStack(spacing: 25) {
                     hideUnapprovedSwitch
                     moderatorModeSwitch
-                    resetPurchasesButton
                 }
                 .padding(.horizontal)
             }
@@ -41,7 +38,6 @@ struct OptionsView: View {
 
 #Preview {
     OptionsView(showModeratorPage: .constant(false))
-        .environmentObject(PurchasesManager())
 }
 
 private extension OptionsView {
@@ -68,23 +64,6 @@ private extension OptionsView {
                 .foregroundStyle(Color.secondary)
                 .padding(.top, 5)
         }
-    }
-    
-    var resetPurchasesButton: some View {
-        Button(action: {
-            Task {
-                try? await AppStore.sync()
-                await store.updateCustomerProductStatus()
-            }
-        }, label: {
-            Color.clear
-                .frame(height: 50)
-                .overlay {
-                    Text("Restore Purchases")
-                        .font(.headline)
-                }
-                .coloredBorder(color: .accent)
-        })
     }
     
 }

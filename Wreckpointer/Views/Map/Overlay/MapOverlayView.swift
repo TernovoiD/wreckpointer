@@ -8,10 +8,6 @@
 import SwiftUI
 
 struct MapOverlayView: View {
-    
-    
-    @AppStorage("proSubscription", store: UserDefaults(suiteName: "group.MWQ8P93RWJ.com.danyloternovoi.Wreckpointer"))
-    var proSubscription: Bool = false
     @FocusState private var searchFieldSelected: Bool
     @ObservedObject var map: MapViewModel
     
@@ -43,9 +39,6 @@ struct MapOverlayView: View {
                         .padding()
                         .padding(.bottom)
                 }
-            }
-            if proSubscription == false {
-                BannerContentView()
             }
         }
         .onChange(of: map.activeUIElement, perform: { element in
